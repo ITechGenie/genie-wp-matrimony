@@ -19,14 +19,31 @@ class GwpmAjaxController {
 				echo "Invalid Ajax request." ;
 		}
 	}
-	
+
 	function delete_gallery_photo($controlObj) {
 		$galleryModel = new GwpmGalleryModel();
 		$galleryModel->delete($controlObj["userId"], $controlObj["val"]) ;
 	}
-	
+
 	function dynafield_delete($controlObj) {
 		$adminModel = new GwpmAdminModel() ;
 		$adminModel-> deleteDynamicField($controlObj["val"]) ;
+	}
+
+	function open_search($controlObj) {
+		if (!$searchModel )
+		$searchModel = new GwpmSearchModel() ;
+
+	}
+
+	function processOpenRequest($controlObj){
+		$model = $controlObj["model"] ;
+		switch ($model) {
+			case "open_search":
+				$this->open_search($controlObj);
+				break;
+			default:
+				echo "Invalid Ajax request." ;
+		}
 	}
 }
