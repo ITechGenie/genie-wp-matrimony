@@ -9,7 +9,7 @@ Author: prakashm88
 Author URI: http://www.itechgenie.com
 License: GPLv2
 */
-
+error_reporting(0);
 /*  Copyright 2012-2014  prakashm88
 
     This program is free software; you can redistribute it and/or modify
@@ -36,6 +36,16 @@ License: GPLv2
     exit();
 }
 */
+add_action('wp_logout','go_home');
+function go_home(){
+  wp_redirect( home_url() );
+  exit();
+}
+add_action('profile_update', 'go_update_profile' );
+function go_update_profile(){
+  wp_redirect( '/?page_id=6' );
+  exit();
+}
 if ( ! defined( 'DS' ) )
 	define('DS', DIRECTORY_SEPARATOR);
 if ( ! defined( 'URL_S' ) )
@@ -115,5 +125,6 @@ function deactivate_gwpm_plugin() {
 	}
 	$gwpm_setup_model->removeGWPMDetails(); */
 }
+
 
 ?>
