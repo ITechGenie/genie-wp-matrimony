@@ -19,7 +19,7 @@ class GwpmProfileController extends GwpmMainController {
 		$validateObj = $profileObj->validate();
 		if (sizeof($validateObj) == 0) {
 			$this->_model->updateUser($profileObj);
-			$this->set('success_message', 'Profile updated successfully!!');
+			$this->set('success_message', 'Biodata updated successfully!!');
 		} else {
 			$this->set('error_messages', $validateObj);
 			$this->set('warn_message', 'Please correct the below fields');

@@ -7,22 +7,22 @@ $resultCount = sizeof($resultObj);
 <table class='gwpm-search-result'>
 	<tbody>
 		<?php
-			
+
 			if ($resultCount > 0) {
 				$counter = 1;
-					?> 
+					?>
 					<tr>
 						<th valign="top">S.No. </th>
 				        <th valign="top">User Id</th>
 				        <th valign="top">Name</th>
 				        <th valign="top">Email Id</th>
 		      		</tr>
-		      		<?php  
+		      		<?php
 				foreach ($resultObj as $userObj) {
 					?>
 					<tr>
-						<td valign="top"><?php gwpm_echo(  $counter ); ?></td>
-				        <td valign="top"><a href="<?php $this->get_gwpm_formated_url('page=profile&action=view&pid=' . $userObj->ID) ?>" 
+						<td valign="top"><?php echo $userObj->ID ?></td>
+				        <td valign="top"><a href="<?php $this->get_gwpm_formated_url('page=profile&action=view&pid=' . $userObj->ID) ?>"
 				        				target="_blank" ><?php gwpm_echo( GWPM_USER_PREFIX . $userObj->ID ); ?></a></td>
 				        <td valign="top"><?php gwpm_echo(  $userObj->display_name ); ?></td>
 				        <td valign="top"><?php gwpm_echo(  $userObj->user_email ); ?></td>
@@ -33,18 +33,11 @@ $resultCount = sizeof($resultObj);
 			} else {
 				echo "<h3>No Results found with the given criterias. Please try some other options.</h3>" ;
 			}
-			
 		?>
 	</tbody>
 </table>
-<nav id="nav-single"><br />					
+<nav id="nav-single"><br />
 		<span class="nav-previous">
 		<?php echo $this->getPlainURL(); ?>
-		</span> 
+		</span>
 </nav>
-<script type="text/javascript">
-  
-jQuery(document).ready(function() {
-});
-
-</script>

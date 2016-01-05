@@ -329,12 +329,36 @@ class GenieWPMatrimonyController {
 	}
 
 	function page_route($content) {
-		global $post;		
+		global $post;
+		$allowEdit = false;
+		$action ='';
+		$controller = '';
 		if ($post->ID == $this->_matrimonyPageId) {
 			$content = "" ;
 			ob_start();
 			try {
-				if (current_user_can('level_1')) {
+				if (current_user_can('level_0') && !current_user_can('level_1')) {
+					//if (isset ($_GET['page'])) {
+					//	if ($_GET['page'] == 'subscribe') {
+							if (isset ($_GET['action'])) {
+								$action = $_GET['action'];
+							}
+							if (isset ($_GET['page'])) {
+								$controller = $_GET['page'];
+							}
+							if($action != "edit" && $action != "update" && !($action=="view" && $controller == "search") && !($controller=="profile"  && $action=="view") ){
+								include (GWPM_APPLICATION_URL . DS . 'views' . DS . 'gwpm_pg_subscribe.php');
+								$content = ob_get_contents();
+								ob_end_clean();
+								return $content;
+							}
+							if($action == "edit" || $action == "update" || ($action=="view" && $controller == "search") || ($controller=="profile"  && $action=="view")){
+								$allowEdit = true;
+							}
+					//	}
+					//}
+				}
+				if (current_user_can('level_1') || $allowEdit) {
 					//wp_register_style('GWPM_CSS', GWPM_PUBLIC_CSS_URL . URL_S . 'gwpm_style.css');
 					//wp_enqueue_style('GWPM_CSS', null, null, true);
 					$controller = null ;
@@ -383,17 +407,32 @@ class GenieWPMatrimonyController {
 					} else {
 						throw new GwpmCommonException("Method " . $action . ' not found in class ' . $controllerName);
 					}
-				} elseif (current_user_can('level_0')) {
-					//if (isset ($_GET['page'])) {
-					//	if ($_GET['page'] == 'subscribe') {
-							include (GWPM_APPLICATION_URL . DS . 'views' . DS . 'gwpm_pg_subscribe.php');
-							$content = ob_get_contents();
-							ob_end_clean();
-							return $content;
-					//	}
-					//}
 				} else {
-					include (GWPM_APPLICATION_URL . DS . 'views' . DS . 'gwpm_pg_login.php');
+						$controller = null;
+						if (isset ($_GET['page'])) {
+							$controller = $_GET['page'];
+						}
+					if($controller=="search" || $controller=="profile"){
+						$controllerName = 'Gwpm' . ucwords($controller) . 'Controller';
+						$modelName = 'Gwpm' . ucwords($controller) . 'Model';
+						$controllerURL = GWPM_APPLICATION_URL . DS . 'controllers' . DS . $controllerName . '.php';
+						$modelURL = GWPM_APPLICATION_URL . DS . 'models' . DS . $modelName . '.php';
+						require_once ($controllerURL);
+						require_once ($modelURL);
+						if ($action == null || $action == '') {
+							$action = 'view';
+						}
+						$queryVariables = $this->get_query_string_values($_SERVER['REQUEST_URI']);
+						$dispatch = new $controllerName ($controller, $action, $queryVariables, $modelName);
+		
+						if ((int) method_exists($controllerName, $action)) {
+							call_user_func_array(array ($dispatch, $action ), $queryVariables);
+						} else {
+							throw new GwpmCommonException("Method " . $action . ' not found in class ' . $controllerName);
+						}
+					}else{
+						include (GWPM_APPLICATION_URL . DS . 'views' . DS . 'gwpm_pg_login.php');
+					}
 				}
 			} catch (Exception $e) {
 				$backUrl = '<a href="javascript:window.history.back();" rel="prev">Go Back</a>';

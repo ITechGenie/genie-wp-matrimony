@@ -18,7 +18,7 @@ class GwpmIndexModel {
 	function getUnreadMessages() {
 		global $wpdb;
 		$userId = get_current_user_id();
-		print_r ( $userId );
+		//print_r ( $userId );
 		$messages_table_name = $wpdb->prefix . "gwpm_messages";	
 		$queryString = "SELECT SUM(unread) counts " .
 				"FROM " . $messages_table_name .

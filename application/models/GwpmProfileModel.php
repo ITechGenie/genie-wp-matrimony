@@ -9,9 +9,9 @@
 
 class GwpmProfileModel {
 	function getUserObj($pid = null) {
-		if($pid != null) 
+		if($pid != null)
 			$user = get_userdata( $pid );
-		else 
+		else
 			$user = wp_get_current_user();
 		$userMeta = get_user_meta($user->ID);
 		/*foreach ($userMeta as $key => $value) {
@@ -35,6 +35,7 @@ class GwpmProfileModel {
 		$userObj = new GwpmProfileVO($userMeta, $_keys);
 		$userObj->userId = $user->ID;
 		$userObj->user_email = $user->user_email;
+		$userObj->user_login = $user->user_login;
 		$userObj->gender = 'Male';
 		$userObj->gwpm_physical = unserialize($userObj->gwpm_physical[0]);
 		$userObj->gwpm_address = unserialize($userObj->gwpm_address[0]);
@@ -42,13 +43,13 @@ class GwpmProfileModel {
 		$userObj->gwpm_work = unserialize($userObj->gwpm_work[0]);
 		$userObj->gwpm_tmasvs = unserialize($userObj->gwpm_tmasvs[0]);
 		$userObj->gwpm_profile_photo = unserialize($userObj->gwpm_profile_photo[0]);
-		
+
 		foreach($_keys as $key) {
 			$tempValObj = $userObj->$key ;
 			$tempVal = $tempValObj[0] ;
 			$userObj->$key = $tempVal;
 		}
-		
+
 		/*foreach (array_keys(get_class_vars(get_class($userObj))) as $key) {
 			$value = $userObj-> $key;
 			echo $key . ' - ' ;
@@ -69,11 +70,11 @@ class GwpmProfileModel {
 		global $gwpm_activity_model;
 		$isGwpmUser = get_user_meta($userObj->userId, 'gwpm_user');
 		if (isset ($isGwpmUser) && sizeof($isGwpmUser) > 0) {
-			
+
 		} else {
 			appendLog (add_user_meta($userObj->userId, 'gwpm_user', true, true));
 		}
-		
+
 		$processKeys = array_keys(get_class_vars(get_class($userObj))) ;
 		$dynaKeys = getDynamicFieldKeys() ;
 		foreach($dynaKeys as $__keys) {
@@ -99,9 +100,9 @@ class GwpmProfileModel {
 		}
 		$gwpm_activity_model->addActivityLog("profile", "Updated Profile", $userObj->userId);
 	}
-	
+
 	/*
-	 * 
+	 *
 	function saveProfilePhoto($photo, $userId) {
 		if ((($photo["type"] == "image/gif") || ($photo["type"] == "image/jpeg") || ($photo["type"] == "image/pjpeg")) && ($photo["size"] < 1000000)) {
 			if ($photo["error"] > 0) {
@@ -124,7 +125,7 @@ class GwpmProfileModel {
 		}
 		return $photo ;
 	}
-	 * 
+	 *
 	 */
 
 }
