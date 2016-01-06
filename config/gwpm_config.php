@@ -2,8 +2,8 @@
 
 /** Configuration Variables **/
 
-define('DEVELOPMENT_ENVIRONMENT', false);
-define('GWPM_ENABLE_DEBUGGING', false);
+define('DEVELOPMENT_ENVIRONMENT', true);
+define('GWPM_ENABLE_DEBUGGING', true);
 
 define('GWPM_APPLICATION_URL', GWPM_ROOT . DS . 'application');
 define('GWPM_LIBRARY_URL', GWPM_ROOT . DS . 'library');
@@ -27,6 +27,7 @@ define("GWPM_DYNA_KEY_PREFIX", "gwpm_dyna_field_");
 define("GWPM_DYNA_FIELD_COUNT", "gwpm_dyna_field_count");
 define("GWPM_AVATAR", "gwpm_avatar");
 define("GWPM_MAX_USER_MESSAGES", 5);
+define("GWPM_PAGINATION_PAGE_SIZE", 20);
 
 $gwpm_db_version = 0.1;
 

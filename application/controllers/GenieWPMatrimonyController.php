@@ -133,7 +133,7 @@ class GenieWPMatrimonyController {
 	function gwpm_get_avatar($avatar, $id_or_email, $size, $default) {
 		global $wpdb ;
 		
-		appendLog( $id_or_email );
+		appendLog( "Id or Email : " . $id_or_email );
 		
 		if( strpos($default, GWPM_AVATAR) !== false ) {
 			$imageURL = GWPM_PUBLIC_IMG_URL . URL_S . 'gwpm_icon.png' ;
@@ -316,14 +316,19 @@ class GenieWPMatrimonyController {
 	}
 
 	function gwpm_ajax_call_bootstrap() {
+		appendLog("Inside the AJAX Controller hook") ;
 		if (!wp_verify_nonce($_POST['gwpm_nounce'], 'gwpm'))
 			die('Busted!');
 		if (current_user_can('matrimony_user') || current_user_can('level_10')) {
 			$ajaxController = new GwpmAjaxController();
-			$ajaxController->processRequest($_POST) ;
+			$ajaxController->processOpenRequest($_POST) ;  // Open search AJAX request
+			$ajaxController->processRequest($_POST) ;			
 		} else {
-			echo 'Invalid request from Unauthorized User';
+			$ajaxController->processOpenRequest($_POST) ;
 		}
+		
+		if ($_POST["model"] != 'gallery_delete' && $_POST["model"] != 'dynafield_delete' && $_POST["model"] != 'open_search') 
+			echo 'Invalid request from Unauthorized User';
 
 		die(); // this is required to return a proper result
 	}
