@@ -87,6 +87,7 @@ require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmSetupModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmActivityModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmProfileModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmGalleryModel.php');
+require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmSearchModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmMessagesModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'vos' . DS . 'GwpmProfileVO.php');
 require_once (GWPM_APPLICATION_URL . DS . 'vos' . DS . 'GwpmActivityVO.php');

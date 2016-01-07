@@ -21,7 +21,7 @@
 				<option value="5">Widow</option>
 		</select>
 		</td> </tr>
-		<tr> <td> Page No: <input name="gwpm_page_no" id="gwpm_page_no" value="1" /> </td></tr>
+		<tr> <td> Page No: <input name="gwpm_page_no" id="gwpm_page_no" value="1"  /> </td></tr>
 		<tr>
 		<td style="width: 220px;"><input id="searchBtn" value="Search"
 			class="gwpm-button" name="search" style="width: 100px; float: left"
@@ -30,23 +30,75 @@
 	</tr>
 	
 </tbody> </table> </form>
-<div id="gwpm_resultBox">
 
-</div>
+<input id="first_page_id" type="button" value="First Page" />
+<input id="prev_page_id" type="button" value="Previous Page" />
+<input id="next_page_id" type="button" value="Next Page" />
+<!--  <input id="last_page_id" type="button" value="Last Page" />  -->
+ 
+<div id="gwpm_resultBox"></div>
 
 <script>
 
+function fetchResults() {
+	var req_data = jQuery("#gwpm_qsearch_form").serialize();
+	var mtData = getAjaxRequestorObj ("open_search", req_data) ;	
+	
+	jQuery.post(MyAjax.ajaxurl, mtData, function(response) {
+		// var resObj = jQuery.parseJSON( response ) ;
+		jQuery("#gwpm_resultBox").text("") ;
+		var resObj = jQuery.parseJSON( response ) ;
+		var displayText = "" ;
+		for ( myObj in resObj ) {
+			displayText = displayText + "<tr><td>" + resObj[myObj].gwpm_id + "</td><td>" + resObj[myObj].display_name + " </td><td> " + resObj[myObj].user_email + " </td>" ;
+		//	displayText = displayText + "<td><img src='" + resObj[myObj].gwpm_image_url + "' alt='profile_pic' /></td>" ;
+			displayText = displayText + "<td><a target='_blank' href=?page=profile&action=view&pid=" + resObj[myObj].gwpm_id + ">View BioData</a></td></tr>" ; 
+		}
+		if (displayText == "") {
+			displayText = "No Results Found !" ;
+		} else {
+			displayText = "<table>" + displayText + "</table>" ;
+		}
+		jQuery("#gwpm_resultBox").html(displayText) ;
+	});
+}
+
+function getPageNo () {
+	return parseInt( jQuery("#gwpm_page_no").val() ) ;
+}
+
 jQuery(document).ready(function(){
 
+	jQuery("#gwpm_martial_status").change(function(){
+		jQuery("#gwpm_page_no").val( 1 ) ;
+	});
+
+	jQuery("#gwpm_gender").change(function(){
+		jQuery("#gwpm_page_no").val( 1 ) ;
+	});
+	
+	jQuery("#next_page_id").click(function(){
+		var page_no =  getPageNo()+ 1 ;
+		jQuery("#gwpm_page_no").val( page_no ) ;
+		fetchResults() ;
+	});
+
+	jQuery("#prev_page_id").click(function(){
+		var page_no =  getPageNo() ;
+		if (page_no > 1)
+			jQuery("#gwpm_page_no").val( page_no - 1 ) ;
+		fetchResults() ;
+	}); 
+
+	jQuery("#first_page_id").click(function(){
+		var page_no =  getPageNo() ;
+		jQuery("#gwpm_page_no").val( 1 ) ;
+		fetchResults() ;
+	});	
+	
 	jQuery("#searchBtn").click(function() {
 		// var req_data = jQuery("#gwpm_qsearch_form").serializeArray();
-		var req_data = jQuery("#gwpm_qsearch_form").serialize();
-		var mtData = getAjaxRequestorObj ("open_search", req_data) ;	
-		
-		jQuery.post(MyAjax.ajaxurl, mtData, function(response) {
-			var resObj = jQuery.parseJSON( response ) ;
-			jQuery("#gwpm_resultBox").text(resObj) ;
-		});
+		fetchResults() ;
 	}) ;
 
 });

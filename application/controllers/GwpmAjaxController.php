@@ -29,31 +29,18 @@ class GwpmAjaxController {
 		$adminModel = new GwpmAdminModel() ;
 		$adminModel-> deleteDynamicField($controlObj["val"]) ;
 	}
-
+	
 	function openSearch($controlObj) {
-		$searchModel = new GwpmSearchModel() ;		
+		$searchModel = new GwpmSearchModel() ;
 		$searchModel->openSearch($controlObj) ;
-		print_r($controlObj) ;
 	}
 
 	function processOpenRequest($controlObj){
 		$model = $controlObj["model"] ;
 		if ($model == "open_search" ) {
 			$val = $controlObj["val"] ;
-			$searchVal = $this->get_query_string_values ($controlObj["val"]) ;
-			$this->openSearch($searchVal);
+			$this->openSearch($val);
 		}
-	}
-
-	function get_query_string_values($vars) {
-		$queryStrings = array ();
-		$qStrs = explode('&', $vars);
-		foreach ($qStrs as $qStr) {
-			appendLog( $qStr );
-			$pairs = explode('=', $qStr);
-			$queryStrings[$pairs[0]] = $pairs[1];
-		}
-		return $queryStrings;
 	}
 
 }
