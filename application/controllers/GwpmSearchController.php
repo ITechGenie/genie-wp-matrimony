@@ -8,6 +8,7 @@ class GwpmSearchController extends GwpmMainController {
 	function update() {
 		$_keys = getDynamicFieldKeys() ;
 		$searchObj = new GwpmSearchVO($_POST, $_keys);
+		appendLog("Search Object: " . print_r($searchObj, true) ) ;
 		$this->set("model", $this->_model->searchUsers($searchObj)) ;
 	}
 

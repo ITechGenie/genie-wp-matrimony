@@ -13,29 +13,47 @@ echo "<h2>" . __('Genie WP Matrimony Configuration', 'genie_wp_matrimony') . "</
 
 if( isset( $_GET[ 'tab' ] ) ) {
 	$active_tab = $_GET[ 'tab' ];  
+	if ($active_tab != 'main_options' && $active_tab != 'dyna_options' && $active_tab != 'oauth10a_options') {
+		$active_tab = "main_options" ;
+	}
 } else {
 	$active_tab = "main_options" ;
 }
 
-$dynaTabUrl = "?page=gpwma&tab=dyna_options" ;
+$dynaTabUrl = "?page=gwpma&tab=dyna_options" ;
+$mobileTabUrl = "?page=gwpma&tab=oauth10a_options" ;
 
 if($active_tab == "main_options") {
 	$gwpmSetupModel = new GwpmSetupModel();
 	$urlId = $gwpmSetupModel->getMatrimonialId();
 	
-	if (isset($_POST['userRole']) && $_POST['userRole'] == 'yes') {
-		$gwpmSetupModel->setupGWPMDetails();
+	if (isset($_POST['pluginSetup']) && $_POST['pluginSetup'] == 'yes') {
+		$userPref = $_POST['loginPreferences'] ;
+		$init_request[GWPM_USER_LOGIN_PREF] = $userPref ;
+		$gwpmSetupModel->setupGWPMDetails($init_request);
 		$setupStatus = true;
-	} elseif (isset($_POST['userRole']) && $_POST['userRole'] == 'no') {		
+	} elseif (isset($_POST['pluginSetup']) && $_POST['pluginSetup'] == 'no') {		
 		$gwpmSetupModel->removeGWPMDetails();
 		$setupStatus = false;
 	} else {
 		$setupStatus = $gwpmSetupModel->checkSetupStatus();
 	}
 	
+	appendLog("admin ctrl page: setupStatus " . $setupStatus) ;
+	
 	if ($setupStatus) {
 		$resultObj[1] = "";
 		$resultObj[0] = "selected";
+		$resultObj[2] = "selected";
+		$resultObj[4] = "checked='checked'";
+		$user_pref = get_option(GWPM_USER_LOGIN_PREF) ;
+		appendLog("admin ctrl page user_pref: " . $user_pref) ;
+		if (!isset($user_pref)) {
+			update_option (GWPM_USER_LOGIN_PREF, 1) ;
+		} else {
+			$user_pref = (int) $user_pref ;
+			$resultObj[$user_pref + 3] = "checked='checked'";
+		}
 	} else {
 		$resultObj[0] = "";
 		$resultObj[1] = "selected";
@@ -46,8 +64,9 @@ if($active_tab == "main_options") {
 ?>
 <div id="icon-themes" class="icon32"></div>         
 <h2 class="nav-tab-wrapper">  
-	<a href="?page=gpwma&tab=main_options" class="nav-tab <?php echo $active_tab == 'main_options' ? 'nav-tab-active' : ''; ?>" >General Options</a>  
+	<a href="?page=gwpma&tab=main_options" class="nav-tab <?php echo $active_tab == 'main_options' ? 'nav-tab-active' : ''; ?>" >General Options</a>  
 	<a href="<?php echo $dynaTabUrl ; ?>" class="nav-tab <?php echo $active_tab == 'dyna_options' ? 'nav-tab-active' : ''; ?>" >Dynamic Fields</a>  
+	<a href="<?php echo $mobileTabUrl ; ?>" class="nav-tab <?php echo $active_tab == 'oauth10a_options' ? 'nav-tab-active' : ''; ?>" >Mobile Integration</a>
 </h2>
 
 <div class="current-theme-new">
@@ -56,8 +75,10 @@ if($active_tab == "main_options") {
 
 if($active_tab == "main_options") {
 	require_once 'admin/gwpm_ctrl_admin_main.php';
-} else {
+} elseif($active_tab == "dyna_options") {
 	require_once 'admin/gwpm_ctrl_admin_dyna_fields.php';
+} elseif($active_tab == "oauth10a_options") {
+	require_once 'admin/gwpm_ctrl_admin_oauth10a.php';
 }
 ?>
 </div>

@@ -9,6 +9,13 @@ $modelObj = $this->get('model');
 <table class='gwpm-table'>
 		<tbody>
 			<tr>
+		        <td valign="top">Search Filter:</td>
+		        <td valign="top">
+		        	<span style="text-align: left;"><input type="radio" name="search_filter_option" value="1" style="width: 5px;" checked="checked"> &nbsp; <?php _e('Use "AND" criteria (Match all filters)', 'genie_wp_matrimony'); ?><br />
+		        	<input type="radio" name="search_filter_option" value="2" style="width: 5px;"> &nbsp; <?php _e('Use "OR" criteria (Match any filter)', 'genie_wp_matrimony'); ?></span>
+		        </td>
+      		</tr>
+			<tr>
 		        <td valign="top">Account ID:</td>
 		        <td valign="top"><input name="userId" id="userId" value="" /></td>
       		</tr>
