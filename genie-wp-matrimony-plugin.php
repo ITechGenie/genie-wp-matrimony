@@ -68,6 +68,7 @@ require_once (GWPM_LIBRARY_URL . DS . 'gwpm_controller.class.php');
 require_once (GWPM_LIBRARY_URL . DS . 'gwpm_command.class.php');
 require_once (GWPM_LIBRARY_URL . DS . 'gwpm_exception.class.php');
 require_once (GWPM_LIBRARY_URL . DS . 'gwpm_oauthconf.class.php');
+require_once (GWPM_LIBRARY_URL . DS . 'phpqrcode' . DS . 'phpqrcode.php');
 require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GenieWPMatrimonyController.php');
 require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GwpmActivityController.php');
 require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GwpmGalleryController.php');

@@ -176,6 +176,29 @@ class GwpmAdminModel {
 		
 	}
 	
+	/** Generating QRCode **/
+	
+	function getQRinSVG($qrObject) {
+		
+	    $dataText   = 'PHP QR Code :)';
+	    $svgTagId   = 'gwpm_user_config_id';
+	    $saveToFile = true;
+	    $imageWidth = 250; 
+	    
+		$qrInputStr = json_encode ($qrObject) ;
+		appendLog('Printing QR Codes:: ' . $qrInputStr) ;
+		return QRcode::svg($qrInputStr, $svgTagId, $saveToFile, QR_ECLEVEL_L, $imageWidth); 
+		
+	}
+	
+	function getQRinCanvas($qrObject) {
+	    
+	    $qrInputStr = json_encode ($qrObject) ;
+	    appendLog('Printing QR Codes:: ' . $qrInputStr) ;
+	    return QRcode::canvas($qrInputStr ) ;
+	    
+	}
+	
 	function getGwpmOption($optionKey) {
 		global $wpdb ;
 		return  get_option ( $optionKey); 
