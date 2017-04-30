@@ -17,8 +17,19 @@ echo "<h2>" . __('Matrimonial Profile OAuth1.0a Config', 'genie_wp_matrimony') .
          "</h2>";
 
 $removeConfig = $_GET['removeToken'];
+$testToken = $_GET['testToken'];
 
-if (isset($removeConfig) && $removeConfig == true) {
+if (isset($testToken) && $testToken== true) {
+    
+    $oauth10aUserConfig = get_user_option('oauth_access_token');
+    appendLog($oauth10aUserConfig) ;
+    $auth = new OAuthWP($oauth10aUserConfig);
+    appendLog('Using new tokens: ' . $oauth10aUserConfig['gwpm_oauth10a_oauth_token_secret'] . ', ' . $oauth10aUserConfig['gwpm_oauth10a_oauth_token']) ;
+    $respObject = $auth->oauthRequest( get_site_url() .  $oauth10aUserConfig['gwpm_oauth10a_api_url'] . '/users/me','GET', $oauth10aUserConfig['gwpm_oauth10a_oauth_token'], $oauth10aUserConfig['gwpm_oauth10a_oauth_token_secret']);
+    appendLog ($current_user_object) ;
+    echo ('<strong>User Info API Response: </strong><pre>' . json_encode(json_decode($respObject),  JSON_PRETTY_PRINT) . '</pre>');
+    
+} elseif (isset($removeConfig) && $removeConfig == true) {
     
     $confirmVal = $_GET['confirm'];
     
@@ -56,6 +67,8 @@ if (isset($removeConfig) && $removeConfig == true) {
         echo '<br /><br />';
         gwpm_echo(
                 "<a href='" . get_admin_url() .
+                         "admin.php?page=gpwmp_oauth10a&testToken=true'><button type='button'
+            class='button button-primary' >Test Token</button></a>&nbsp;&nbsp;&nbsp;<a href='" . get_admin_url() .
                          "admin.php?page=gpwmp_oauth10a&removeToken=true'><button type='button'
             class='button button-primary' >Remove OAuth1.0a config</button></a>");
         echo '<br /><br />Note: This does not mean your Generated Token is invalidated. The tokens can still be used by the authorized applications. ';
@@ -95,8 +108,9 @@ if (isset($removeConfig) && $removeConfig == true) {
             appendLog('Using existing token from request: ');
             appendLog($_REQUEST);
             $temp_oauth_token = $_REQUEST['oauth_token'];
+            $oauthVerifier = $_REQUEST['oauth_verifier'] ;
             $request_data = array(
-                    'oauth_verifier' => $_REQUEST['oauth_verifier']
+                    'oauth_verifier' => $oauthVerifier
             );
             // $temp_secret = $auth->oauth_token_secret ;
             $temp_secret = get_user_option("oauth_temp_token_secret", 
@@ -120,6 +134,7 @@ if (isset($removeConfig) && $removeConfig == true) {
                 
                 $oauth10aConfig['gwpm_oauth10a_oauth_token'] = $access_token;
                 $oauth10aConfig['gwpm_oauth10a_oauth_token_secret'] = $access_token_secret;
+                $oauth10aConfig['gwpm_oauth10a_oauth_verifier'] = $oauthVerifier;
                 
                 appendLog('New Keys tokens: ');
                 appendLog($oauth10aConfig);

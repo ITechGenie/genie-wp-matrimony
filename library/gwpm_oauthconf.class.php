@@ -161,6 +161,9 @@ class OAuthWP
 	{
 		$ch = curl_init();
 		
+	//	curl_setopt($ch, CURLOPT_PROXY, "http://114.1.1.9"); //your proxy url
+	//	curl_setopt($ch, CURLOPT_PROXYPORT, "8888"); // your proxy port number 
+		
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);

@@ -44,7 +44,7 @@ class GwpmProfileVO extends GwpmCommand {
 	var $gwpm_contact_no;
 	/** 
 	 * @mandatory
-	 * @message="Invalid value for Martial Status" 
+	 * @message="Invalid value for Marital Status" 
 	 */
 	var $gwpm_martial_status;
 	/** 

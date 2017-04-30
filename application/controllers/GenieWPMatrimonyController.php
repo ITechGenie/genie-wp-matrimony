@@ -139,7 +139,9 @@ class GenieWPMatrimonyController {
 	
 	function gwpm_get_avatar($avatar, $id_or_email, $size, $default) {
 		global $wpdb ;
-
+		
+		appendLog( "Id or Email : " . $id_or_email );
+		
 		if( strpos($default, GWPM_AVATAR) !== false ) {
 			$imageURL = GWPM_PUBLIC_IMG_URL . URL_S . 'gwpm_icon.png' ;
 			appendLog("isAdmin: " . is_admin()) ;
@@ -325,6 +327,7 @@ class GenieWPMatrimonyController {
 	}
 
 	function gwpm_ajax_call_bootstrap() {
+		appendLog("Inside the AJAX Controller hook") ;
 		if (!wp_verify_nonce($_POST['gwpm_nounce'], 'gwpm'))
 			die('Busted!');
 		if (current_user_can('matrimony_user') || current_user_can('level_10')) {
@@ -425,6 +428,8 @@ class GenieWPMatrimonyController {
 			} catch (Exception $e) {
 				$backUrl = '<a href="javascript:window.history.back();" rel="prev">Go Back</a>';
 				echo "\r\n" . $e->getMessage() . " \r\n\r\n " . $backUrl . "\n" ;
+				appendLog("Exception in Handling !!! ") ;
+				appendLog($e) ;
 				if(DEVELOPMENT_ENVIRONMENT == true) {
 					throw $e;
 				}

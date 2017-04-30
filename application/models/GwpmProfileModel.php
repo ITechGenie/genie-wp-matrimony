@@ -41,6 +41,7 @@ class GwpmProfileModel {
 			$userObj = new GwpmProfileVO($userMeta, $_keys);
 			$userObj->userId = $user->ID;
 			$userObj->user_email = $user->user_email;
+			$userObj->user_login = $user->user_login;
 			$userObj->gender = 'Male';
 			$userObj->gwpm_physical = unserialize($userObj->gwpm_physical[0]);
 			$userObj->gwpm_address = unserialize($userObj->gwpm_address[0]);

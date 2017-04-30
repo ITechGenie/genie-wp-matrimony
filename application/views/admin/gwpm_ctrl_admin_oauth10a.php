@@ -22,7 +22,7 @@ if ($formSubmitted != null) {
 	
 	$save_options['gwpm_oauth10a_client_key'] =  $gwpmOauth10aClientKey ;
 	$save_options['gwpm_oauth10a_client_secret'] =  $gwpmOauth10aClientSecret;
-	$save_options['gwpm_oauth10a_domain'] =  $gwpmOauth10aClientSecret;
+	$save_options['gwpm_oauth10a_domain'] =  $oauth10aDomain;
 	$save_options['gwpm_oauth10a_api_url'] =  $oauth10aRestApiPath;
 	$save_options['gwpm_oauth10a_token_request'] =  $oauth10aTokenRequestAPI;
 	$save_options['gwpm_oauth10a_token_access'] =  $oauth10aTokenAccessAPI;

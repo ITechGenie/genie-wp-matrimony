@@ -23,10 +23,44 @@ class GwpmSearchModel {
 	function getDynamicFieldData() {
 		return getDynamicFieldData() ; ;
 	}
+	
+	function searchUsersAjax($searchObj) {
+	    $inputs = explode('&', $searchObj);
+	    appendLog($inputs) ;
+	    $keys = array_values($inputs)  ;
+	    foreach ($keys as $vkey) {
+	        appendLog($vkey) ;
+	        $obj = explode('=', $vkey); 
+	        appendLog($obj) ;
+	        $searchInput[$obj[0]] = $obj[1] ;
+	    }
+	    appendLog('final object: ') ;
+	    $o = new GwpmSearchVO($searchInput);
+	    $o->search_filter_option = 2 ;
+	    appendLog($searchInput->gwpm_gender . ' - ' . $o->gwpm_gender) ;
+	    $responseObj = array () ;
+	    try {
+	        appendLog($o) ;
+	        $result = $this->searchUsers ($o) ; 
+	        $resArray = array_values($result) ;
+	        appendLog($resArray) ;
+	        foreach ($resArray as $vkey) {
+	            appendLog('Vley object ini array ') ; appendLog($vkey) ;
+	            $inObj = $vkey->data ;
+	            unset($inObj->user_pass);
+	            unset($inObj->user_activation_key);
+	            array_push($responseObj, $inObj);
+	        }
+	    } catch (Exception $e) {
+	        appendLog($e ) ;
+	    }
+	    return $responseObj;
+	}
 
 	function searchUsers($searchObj) {
 		global $wpdb;
 		$resultList = array ();
+		appendLog($searchObj) ;
 		if (!isNull($searchObj->userId)) {
 			$tempObj = $this->getUserById(getStrippedUserId($searchObj->userId));
 			if (isset ($tempObj) && $tempObj != null)

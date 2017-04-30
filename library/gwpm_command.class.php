@@ -40,7 +40,7 @@ abstract class GwpmCommand {
 		} else {
 			$this-> containsDynamicField = false;
 		}
-		print_r ($this-> containsDynamicField) ;	
+		//print_r ($this-> containsDynamicField) ;	
 	}
 
 	/**
@@ -60,7 +60,7 @@ abstract class GwpmCommand {
 				}
 			}
 		}
-		print_r($this->containsDynamicField) ;
+		//print_r($this->containsDynamicField) ;
 		if($this->containsDynamicField) {
 			foreach ($this->dynamicFields as $key) {
 				$value = $this-> $key;
