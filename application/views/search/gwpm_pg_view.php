@@ -120,8 +120,8 @@ $modelObj = $this->get('model');
 		<tbody>
 			<tr>
 				<td><input type="submit" value="Search" class="gwpm-button"
-					name="search"><input type="button" value="Create JSON" class="gwpm-button"
-					name="createJson" id="createJson"></td>
+					name="search"><!-- <input type="button" value="Create JSON" class="gwpm-button"
+					name="createJson" id="createJson"> --></td>
 				<td><input type="reset" value="Clear"
 					 class="gwpm-button"
 					name="cancel"></td>
@@ -152,7 +152,6 @@ jQuery(document).ready(function() {
 //	    jQuery( "#gwpm_age_to" ).val("60") ;
 
 		jQuery("#createJson").click(function(){
-			alert ('df') ;
 			var data = JSON.stringify( jQuery("#gwpm-profile-form").serializeArray() );
 			console.log( data );
 		});

@@ -70,6 +70,10 @@ class GenieWPMatrimonyController {
 			& $this,
 			'gwpm_user_registered'
 		));
+		add_action( 'set_user_role', array (
+	        & $this,
+	        'gwpm_user_role_change'
+		), 10, 3);
 		add_action( 'template_redirect', array(
 			& $this, 
 			'gwpm_template_redirect'   
@@ -111,11 +115,14 @@ class GenieWPMatrimonyController {
 			& $this,
 			'gwpm_dashboard_page_show'
 		));
-		add_submenu_page( 'gpwmp', 'Manage Matrimonial Profile',
-			'OAuth1.0a Config', 'edit_posts', 'gpwmp_oauth10a', array (
-			& $this,
-			'gwpm_admin_page_oauth10a'
-		));
+		$existingRecords = get_option ( GWPM_OAUTH_10A_CONFIG );
+		if (isset($existingRecords)) {
+    		add_submenu_page( 'gpwmp', 'Manage Matrimonial Profile',
+    			'OAuth1.0a Config', 'edit_posts', 'gpwmp_oauth10a', array (
+    			& $this,
+    			'gwpm_admin_page_oauth10a'
+    		));
+		}
 		
 	}
 	
@@ -149,13 +156,13 @@ class GenieWPMatrimonyController {
 	function gwpm_get_avatar($avatar, $id_or_email, $size, $default) {
 		global $wpdb ;
 		
-		appendLog( "Id or Email : " . $id_or_email );
+		// appendLog( "Id or Email : " . $id_or_email );
 		
 		if( strpos($default, GWPM_AVATAR) !== false ) {
 			$imageURL = GWPM_PUBLIC_IMG_URL . URL_S . 'gwpm_icon.png' ;
-			appendLog("isAdmin: " . is_admin()) ;
+		//	appendLog("isAdmin: " . is_admin()) ;
 			if(!is_admin()) {
-				appendLog("Not Admin page") ;
+				// appendLog("Not Admin page") ;
 				if(is_object($id_or_email)){
 					if($id_or_email->ID)
 						$id_or_email = $id_or_email->ID;
@@ -174,18 +181,18 @@ class GenieWPMatrimonyController {
 				
 			}
 			
-			appendLog("imageURL: " . $imageURL) ;
+			// appendLog("imageURL: " . $imageURL) ;
 			
 			$doc = new DOMDocument();
 			$doc->loadHTML($avatar);
 			$imageTags = $doc->getElementsByTagName('img');	
 			
 			foreach($imageTags as $tag) {
-		        appendLog ( $tag->getAttribute('src') );
+		       // appendLog ( $tag->getAttribute('src') );
 		        $imgSrc = $tag->getAttribute('src') ;
 		        $tag->setAttribute( "src", $imageURL );
 		        $avatar = $tag->ownerDocument->saveXML( $tag ) ;
-		        appendLog("altered avatar: ") ;
+		        // appendLog("altered avatar: ") ;
 		    }
 		}
 		
@@ -310,6 +317,15 @@ class GenieWPMatrimonyController {
 	function gwpm_user_registered($user_id) {
 		global $gwpm_setup_model ;
 		$gwpm_setup_model->sendRegistrationMail($user_id) ;
+	}
+	
+	function  gwpm_user_role_change ($userId, $role, $oldRole = null) {
+	    appendLog($userId . '-' . $role  ) ;
+	    appendLog($oldRole ) ;
+	    if ($role == 'matrimony_user') {
+	        global $gwpm_setup_model ;
+	        $gwpm_setup_model->sendRoleChangeMail($userId, $role ) ;
+	    }
 	}
 
 	function load_scripts() {

@@ -22,7 +22,10 @@ if (!function_exists('is_admin')) {
 		<option value='dating' <?php echo $resultObj[3]; ?>>  <?php _e("Dating", 'genie_wp_matrimony'); ?> </option>
 	</select></td></tr>  <tr><td>  -->
 	<p><?php _e("User Login Preference: " ); ?></p></td><td>	
-	<input type="radio" name="loginPreferences" id="loginPreferences_1" value="1" <?php echo $resultObj[4]; ?> ><label for="loginPreferences_1"><?php _e("User should be registered and approved by Administrator", 'genie_wp_matrimony'); ?></label><br />
+	<input type="radio" name="loginPreferences" id="loginPreferences_1" value="1" <?php echo $resultObj[4]; ?> >
+        	<label for="loginPreferences_1">
+        			<?php _e("User should be registered and approved by Administrator", 'genie_wp_matrimony'); ?>
+        	</label><br />
 	<input type="radio" name="loginPreferences" id="loginPreferences_2" value="2" <?php echo $resultObj[5]; ?> ><label for="loginPreferences_2"><?php _e("User should be registered", 'genie_wp_matrimony'); ?></label><br />
 	<input type="radio" name="loginPreferences" id="loginPreferences_3" value="3" <?php echo $resultObj[6]; ?> ><label for="loginPreferences_3"><?php _e("Anybody can view the profiles", 'genie_wp_matrimony'); ?></label>
 	</td></tr> 
@@ -32,6 +35,13 @@ if (!function_exists('is_admin')) {
 		Logger Location: <?php echo  getLogDir(); ?>
 	</td></tr>
 	<?php } ?>
+	<tr><td><p><?php _e("Frequently Asked Questions (FAQs)"); ?></p></td><td>
+	<ol>
+	<li><?php _e("Register option not found?"); ?><br /> <a target="_blank" href="<?php echo get_admin_url() . 'options-general.php#users_can_register' ?>"><?php _e("Click here to enable Registration", 'genie_wp_matrimony'); ?></a></li>
+	<li><?php _e("Search result not displaying user picture?"); ?><br /> <a target="_blank" href="<?php echo get_admin_url() . 'options-discussion.php#show_avatars' ?>"><?php _e("Click here to check Default Avatar Options", 'genie_wp_matrimony'); ?></a></li>
+	<li><?php _e("Matrimonial menu not found?"); ?><br /> <a target="_blank" href="<?php echo get_admin_url() . 'nav-menus.php' ?>"><?php _e("Click here to Manage your Menu items", 'genie_wp_matrimony'); ?></a></li>
+	<li><?php _e("Matrimonial pages display data more than once? <br />The problem might be because of the theme used. Try to change the theme to Wordpress default and verify"); ?> </li>
+	</ol> </td></tr>
 	</table>
 	<?php
 		if(isset($urlId)) {

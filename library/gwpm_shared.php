@@ -478,4 +478,14 @@ function appendLog($message) {
 	}
 }
 
+function gwpmSendEmail ($email, $subject, $msg, $headers ){
+    appendLog($email . ' - ' . $subject . ' - ' . $msg . ' - ' . $headers ) ;
+    try {
+        $rep = wp_mail( $email, $subject, $msg, $headers );
+        appendLog(' WpMailResp: ' . $rep) ;
+    } catch (Exception $e) {
+        appendLog($e) ;
+    }
+}
+
 //setReporting();
