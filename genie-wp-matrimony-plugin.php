@@ -61,6 +61,7 @@ global $genieWPMatrimonyController;
 global $gwpm_db_version;
 global $gwpm_activity_model;
 global $gwpm_setup_model;
+global $genieWPRestController;
 
 require_once (GWPM_LIBRARY_URL . DS . 'gwpm_shared.php');
 require_once (GWPM_LIBRARY_URL . DS . 'gwpm_template.class.php');
@@ -74,6 +75,7 @@ require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GwpmActivityCont
 require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GwpmGalleryController.php');
 require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GwpmAjaxController.php');
 require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GwpmMessagesController.php');
+require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GwpmRestController.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmAdminModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmSetupModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmActivityModel.php');
@@ -87,9 +89,14 @@ require_once (GWPM_APPLICATION_URL . DS . 'vos' . DS . 'GwpmGalleryVO.php');
 require_once (GWPM_APPLICATION_URL . DS . 'vos' . DS . 'GwpmSearchVO.php');
 require_once (GWPM_APPLICATION_URL . DS . 'vos' . DS . 'GwpmAdminVO.php');
 require_once (GWPM_APPLICATION_URL . DS . 'vos' . DS . 'GwpmNotificationVO.php');
+require_once (GWPM_APPLICATION_URL . DS . 'vos' . DS . 'GwpmRestResponseVO.php');
+
+if (class_exists('GwpmRestController') && !$genieWPRestController) {
+    $genieWPRestController = new GwpmRestController();
+}
 
 if (class_exists('GenieWPMatrimonyController') && !$genieWPMatrimonyController) {
-	$genieWPMatrimonyController = new GenieWPMatrimonyController();
+    $genieWPMatrimonyController = new GenieWPMatrimonyController();
 }
 
 if(class_exists('GwpmActivityModel') && !$gwpm_activity_model) {

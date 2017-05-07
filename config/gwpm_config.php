@@ -32,6 +32,13 @@ define('GWPM_USER_LOGIN_PREF', 'gwpm_user_login_pref');
 
 define('GWPM_OAUTH_10A_CONFIG', 'gwpm_oauth10a_config');
 
+define('GWPM_INTERNAL_VERSION', 'gwpm_0.9');
+
+define ('GWPM_REST_GET_INFO' , 'GWPM_REST_GET_INFO' );
+define ('GWPM_REST_SEARCH_USERS' , 'GWPM_REST_SEARCH_USERS' );
+define ('GWPM_REST_GET_USER' , 'GWPM_REST_GET_USER' );
+define ('GWPM_REST_GET_MY_DETAILS' , 'GWPM_REST_GET_MY_DETAILS' );
+
 $gwpm_db_version = 0.1;
 
 /*

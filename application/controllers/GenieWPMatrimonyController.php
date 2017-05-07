@@ -10,6 +10,10 @@ class GenieWPMatrimonyController {
 			& $this,
 			'gwpm_init'
 		));
+		add_action('rest_api_init', array (
+	        & $this,
+	        'gwpm_rest_init'
+		));
 		add_action( 'admin_footer', array(
 			& $this, 
 			'gwpm_warning' 
@@ -72,10 +76,15 @@ class GenieWPMatrimonyController {
 		));
 	}
 
+	function gwpm_rest_init() {
+	    global $genieWPRestController ;
+	    $genieWPRestController->register_routes() ;
+	}
+	
 	function gwpm_init() {
-		global $wpdb;
-		$this->_matrimonyPageId = $wpdb->get_var($wpdb->prepare("select post_id from $wpdb->postmeta where meta_key = '%s'", GWPM_META_KEY));
-		$this->_userLoginPreference = get_option( GWPM_USER_LOGIN_PREF );
+	    global $wpdb;
+	    $this->_matrimonyPageId = $wpdb->get_var($wpdb->prepare("select post_id from $wpdb->postmeta where meta_key = '%s'", GWPM_META_KEY));
+	    $this->_userLoginPreference = get_option( GWPM_USER_LOGIN_PREF );
 	}
 	
 	function gwpm_admin_header() {

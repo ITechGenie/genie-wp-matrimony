@@ -10,14 +10,25 @@
 class GwpmSearchModel {
 
 	function getUserById($userId) {
+	    appendLog('Searching user ' . $userId ) ;
 		$userObj = get_userdata($userId);
-		$is_open_search = get_option( GWPM_USER_LOGIN_PREF );
-		if (!isset($is_open_search))
-			$is_open_search = 1 ; 
-		if (isset ($userObj) && isset ($userObj->ID) && !user_can($userObj->ID, 'level_10') && ( $is_open_search != 1 || user_can($userObj->ID, 'matrimony_user'))) {
+		appendLog($userObj) ;
+		if (isset ($userObj) && isset ($userObj->ID) ) {
 			return $userObj;
 		}
 		return null;
+	}
+	
+	// Assuming the controllers take care of the authentications, planning to remove this part of code
+	function ___getUserById($userId) {
+	    $userObj = get_userdata($userId);
+	    $is_open_search = get_option( GWPM_USER_LOGIN_PREF );
+	    if (!isset($is_open_search))
+	        $is_open_search = 1 ;
+	        if (isset ($userObj) && isset ($userObj->ID) && !user_can($userObj->ID, 'level_10') && ( $is_open_search != 1 || user_can($userObj->ID, 'matrimony_user'))) {
+	            return $userObj;
+	        }
+	        return null;
 	}
 	
 	function getDynamicFieldData() {
@@ -38,10 +49,25 @@ class GwpmSearchModel {
 	    $o = new GwpmSearchVO($searchInput);
 	    $o->search_filter_option = 2 ;
 	    appendLog($searchInput->gwpm_gender . ' - ' . $o->gwpm_gender) ;
+	    $responseObj =  $this->searchFactMtd ($o) ;
+	    return $responseObj;
+	}
+	
+	function searchUsersRest ($searchInput) {
+	    
+	    $_keys = getDynamicFieldKeys() ;
+	    $o = new GwpmSearchVO($searchInput, $_keys);
+	    $responseObj =  $this->searchFactMtd ($o) ; 
+	    return $responseObj;
+	    
+	}
+	
+	function searchFactMtd($searchObj) { 
 	    $responseObj = array () ;
 	    try {
-	        appendLog($o) ;
-	        $result = $this->searchUsers ($o) ; 
+	        appendLog($searchObj) ;
+	        $result = $this->searchUsers ($searchObj) ;
+	        appendLog('Response obtained: ') ; appendLog($result) ;
 	        $resArray = array_values($result) ;
 	        appendLog($resArray) ;
 	        foreach ($resArray as $vkey) {
@@ -49,6 +75,10 @@ class GwpmSearchModel {
 	            $inObj = $vkey->data ;
 	            unset($inObj->user_pass);
 	            unset($inObj->user_activation_key);
+	            $profileImgName = get_user_meta($inObj->ID, "gwpm_profile_photo", true);
+	            $inObj->gwpm_profile_photo =  (object)  array() ;
+	            if (isset( $profileImgName ) && '' != $profileImgName)
+	                $inObj->gwpm_profile_photo = $profileImgName ;
 	            array_push($responseObj, $inObj);
 	        }
 	    } catch (Exception $e) {
@@ -62,6 +92,7 @@ class GwpmSearchModel {
 		$resultList = array ();
 		appendLog($searchObj) ;
 		if (!isNull($searchObj->userId)) {
+		    appendLog('Search based on user_id ') ;
 			$tempObj = $this->getUserById(getStrippedUserId($searchObj->userId));
 			if (isset ($tempObj) && $tempObj != null)
 				array_push($resultList, $tempObj);
@@ -70,6 +101,9 @@ class GwpmSearchModel {
 			$args = array ();
 			$userLists = null ;
 			$searchFilterOption = $searchObj->search_filter_option ;
+			
+			if ( !isset($searchFilterOption) )
+			    $searchFilterOption = 1 ;
 			
 			if (!isNull($searchObj->username)) {
 				$args = array ();
