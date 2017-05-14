@@ -117,7 +117,17 @@ class GwpmRestController extends WP_REST_Controller
      */
     public function get_gwpm_access_info ($request)
     {
-        $opsName = $request->get_attributes()['args']['operation'];
+        $opsName = null ;
+        $attrs = $request->get_attributes() ;
+        if (isset($attrs) && is_array($attrs)) {
+            $args = $attrs['args'] ;
+            if (isset($args) && is_array($args)) {
+                $opsName = $args['operation'] ;
+            }
+        }
+        // $opsName = $request->get_attributes()['args']['operation'];
+        if ($opsName == null)
+            return false ;
         appendLog('Operation name: ' . $opsName);
         $userPref = $this->getUserLoginPreference();
         appendLog('User pref: ' . $userPref);

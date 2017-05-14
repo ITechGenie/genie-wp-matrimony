@@ -161,14 +161,18 @@ if (isset($testToken) && $testToken== true) {
                 appendLog($request_token_string);
                 parse_str($request_token_string, $request_parts);
                 
-                update_user_option(get_current_user_id(), 
-                        "oauth_temp_token_secret", 
-                        $request_parts['oauth_token_secret'], null);
-                
-                echo '<h3><a href="' . $auth->uri_authorize . '?' .
-                         $request_token_string . '&oauth_callback=' .
-                         urlencode($auth->oauth_callback) .
-                         '">Click Here to Authorize Genie WP Matrimony</a></h3>';
+                if (isset($request_parts) && isset($request_parts['oauth_token_secret'])) {
+                    update_user_option(get_current_user_id(), 
+                            "oauth_temp_token_secret", 
+                            $request_parts['oauth_token_secret'], null);
+                    
+                    echo '<h3><a href="' . $auth->uri_authorize . '?' .
+                             $request_token_string . '&oauth_callback=' .
+                             urlencode($auth->oauth_callback) .
+                             '">Click Here to Authorize Genie WP Matrimony</a></h3>';
+                } else {
+                    echo '<h3>OAuth1.0a Server is not configured or Invalid Client Key and Secrete, Please contact your Administrator !</h3>';
+                }
                 
             } else {
                 $userMsg = "OAuth1.0a config not found. Please contact your Administrator !";
@@ -193,7 +197,7 @@ if (isset($userMsg)) {
 ?>
 
 <div id="canvasForQRImageID" style="display: none;">
-			<canvas id="qr_code_canvas_id" height="250px"></canvas>
+			<canvas id="qr_code_canvas_id" height="300px" width="300px"></canvas>
 			<br /> <br /> <a id="download" download="image.png"><button
 					type="button" class="button button-primary" onClick="download()">Download
 					Image</button></a>
@@ -217,9 +221,12 @@ if (isset($userMsg)) {
 
         var pbx = new Image(); // document.createElement('img');
         var ctx = uCanvas.getContext('2d') ;
-    
-        pbx.style.width  = uSvg.style.width;
-        pbx.style.height = uSvg.style.height;
+
+        var wi = uSvg.style.width;
+        var hi = uSvg.style.height;
+
+        pbx.style.width  = wi ;
+        pbx.style.height = hi ;
 
         console.log (uSvg.outerHTML) ;
     

@@ -183,7 +183,7 @@ class GwpmAdminModel {
 	    $dataText   = 'PHP QR Code :)';
 	    $svgTagId   = 'gwpm_user_config_id';
 	    $saveToFile = true;
-	    $imageWidth = 250; 
+	    $imageWidth = 300; 
 	    
 		$qrInputStr = json_encode ($qrObject) ;
 		appendLog('Printing QR Codes:: ' . $qrInputStr) ;
