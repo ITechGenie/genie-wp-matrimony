@@ -90,11 +90,14 @@ class GwpmAdminModel {
 	}
 	
 	function deleteDynamicField($valObj) {
+	    appendLog('Delete request for: ' . $valObj ) ;
 		if(isset($valObj) && $valObj != null) {
 			if(strpos($valObj, '_')) {
 				$idsAry = explode('_', $valObj) ;
 				$rowId = $idsAry[0] ;
 				$valueId = $idsAry[1] ;
+				
+				appendLog('Deleting options: ' . $rowId ) ;
 
 				$editOption = get_option('gwpm_dyna_field_' . $rowId) ;
 				$valuesAry = $editOption['gwpm_dyna_field_values'] ;

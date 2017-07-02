@@ -1,4 +1,11 @@
-<form name="gwpm_qsearch_form" id="gwpm_qsearch_form" action="#" ><table><tbody>
+<?php 
+if (!function_exists('is_admin')) {
+    header('Status: 403 Forbidden');
+    header('HTTP/1.1 403 Forbidden');
+    exit ();
+}
+?>
+form name="gwpm_qsearch_form" id="gwpm_qsearch_form" action="#" ><table><tbody>
 	<tr>
 		<td>Gender:<select class="form-control" name="gwpm_gender"
 			id="gwpm_gender"><option value="">Select</option>

@@ -18,6 +18,7 @@ if($formSubmitted != null) {
 	$earlierCount = $_POST['earlierCount'] ;
 
 	if(isset($gwpmFieldLabels) && $gwpmFieldLabels != null ) {
+	    appendLog( print_r($earlierCount)) ;
 		appendLog( print_r($gwpmFieldLabels, true)) ;
 		appendLog( print_r($gwpmFieldTypes, true)) ;
 		appendLog( print_r($gwpmFieldValue, true)) ;

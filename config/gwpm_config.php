@@ -25,6 +25,7 @@ define("GWPM_CONVERSE_MAX_NOS", "10");
 define("GWPM_ACTIVITY_MAX_NOS", "10");
 define("GWPM_DYNA_KEY_PREFIX", "gwpm_dyna_field_");
 define("GWPM_DYNA_FIELD_COUNT", "gwpm_dyna_field_count");
+define("GWPM_DYNA_FIELD_MIG_OPTS", "gwpm_dyna_mig_opts_field");
 define("GWPM_AVATAR", "gwpm_avatar");
 define("GWPM_MAX_USER_MESSAGES", 5);
 
