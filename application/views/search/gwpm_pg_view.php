@@ -11,8 +11,8 @@ $modelObj = $this->get('model');
 			<tr>
 		        <td valign="top">Search Filter:</td>
 		        <td valign="top">
-		        	<span style="text-align: left;"><input type="radio" name="search_filter_option" value="1" style="width: 5px;" checked="checked"> &nbsp; <?php _e('Use "AND" criteria (Match all filters)', 'genie_wp_matrimony'); ?><br />
-		        	<input type="radio" name="search_filter_option" value="2" style="width: 5px;"> &nbsp; <?php _e('Use "OR" criteria (Match any filter)', 'genie_wp_matrimony'); ?></span>
+		        	<span style="text-align: left;"><input type="radio" name="search_filter_option" value="1" style="width: 5px;" checked="checked"> &nbsp; <?php _e('Use "AND" criteria (Match all filters)', 'genie-wp-matrimony'); ?><br />
+		        	<input type="radio" name="search_filter_option" value="2" style="width: 5px;"> &nbsp; <?php _e('Use "OR" criteria (Match any filter)', 'genie-wp-matrimony'); ?></span>
 		        </td>
       		</tr>
 			<tr>

@@ -11,7 +11,7 @@
 <?php
 
 screen_icon('options-general'); 
-echo "<h2>" . __( 'Matrimonial Profile', 'genie_wp_matrimony' ) . "</h2>" ;
+echo "<h2>" . __( 'Matrimonial Profile', 'genie-wp-matrimony' ) . "</h2>" ;
 try {
 	$profileModel = new GwpmProfileModel() ;
 	$userObj = wp_get_current_user();

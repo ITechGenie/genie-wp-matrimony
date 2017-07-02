@@ -9,7 +9,7 @@ if ($modelObj != null) {
 	{
 		?>
 	- <a class='edit-mode-link'
-		href='<?php $this->get_gwpm_edit_link(); ?>'>Edit Profile</a>
+		href='<?php $this->get_gwpm_edit_link(); ?>'><?php _e('Edit Profile', 'genie-wp-matrimony') ?></a>
 		<?php
 	} else if (is_user_logged_in()) {
 		?>
@@ -37,23 +37,23 @@ if ($modelObj != null) {
 				<td style="border-bottom: none;">
 					<table>
 						<tr>
-					        <td valign="top">User ID:</td>
+					        <td valign="top"><?php _e('User ID', 'genie-wp-matrimony') ?>:</td>
 					        <td valign="top"><?php echo GWPM_USER_PREFIX . $modelObj->userId ; ?></td>
 			      		</tr>
 						<tr>
-							<td valign="top">Name:</td>
+							<td valign="top"><?php _e('Name', 'genie-wp-matrimony') ?>:</td>
 							<td valign="top"><?php gwpm_echo( $modelObj->first_name ); ?> <?php gwpm_echo( $modelObj->last_name ); ?></td>
 						</tr>
 						<tr>
-				        	<td valign="top">Date of Birth:</td>
+				        	<td valign="top"><?php _e('Date of Birth', 'genie-wp-matrimony') ?>:</td>
 				       		<td valign="top"><?php gwpm_echo ( $modelObj->gwpm_dob ); ?></td>
 			      		</tr>
 			      		<tr>
-							<td valign="top">Contact:</td>
+							<td valign="top"><?php _e('Contact', 'genie-wp-matrimony') ?>:</td>
 							<td valign="top"> <?php gwpm_echo ( $modelObj->gwpm_contact_no ) ; ?> </td>
 						</tr>
 						<tr>
-				        	<td valign="top">Gender:</td>
+				        	<td valign="top"><?php _e('Gender', 'genie-wp-matrimony') ?>:</td>
 				       		<td valign="top"><?php gwpm_echo (getGenderOptions($modelObj->gwpm_gender )); ?></td>
 			      		</tr>
 					</table>
@@ -65,95 +65,95 @@ if ($modelObj != null) {
 		<tbody>
 			<tr>
 				<td colspan="2">  
-					<h3> Basic Information </h3>
+					<h3> <?php _e('Basic Information', 'genie-wp-matrimony') ?> </h3>
 				</td>
 			</tr>
 			<tr>
-		        <td valign="top">Email ID:</td>
+		        <td valign="top"><?php _e('Email ID', 'genie-wp-matrimony') ?>:</td>
 		        <td valign="top">   <?php echo ( $modelObj->user_email ) ; ?></td>
       		</tr>
       		<tr>
-				<td valign="top">Address Line 1:</td>
+				<td valign="top"><?php _e('Address Line', 'genie-wp-matrimony') ?> 1:</td>
 				<td valign="top"><?php echo ( $modelObj->gwpm_address['address1'] ) ; ?></td>
 			</tr>
 			<tr>
-				<td valign="top">Address Line 2:</td>
+				<td valign="top"><?php _e('Address Line', 'genie-wp-matrimony') ?> 2:</td>
 				<td valign="top"> <?php echo ( $modelObj->gwpm_address['address2'] ) ; ?></td>
 			</tr>
 			<tr>
-				<td valign="top">City:</td>
+				<td valign="top"><?php _e('City', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"> <?php echo ( $modelObj->gwpm_address['city'] ) ; ?></td>
 			</tr>
 			<tr>
-				<td valign="top">State:</td>
+				<td valign="top"><?php _e('State', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top">
 					<?php echo (getStateOptions( $modelObj->gwpm_address['state'])) ; 	?>
 				</td>
 			</tr>
 			<tr class="gwpm_hidden_fields">
-				<td valign="top">Country:</td>
+				<td valign="top"><?php _e('Country', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"> India </td>
 			</tr>
 			<tr class="gwpm_hidden_fields">
-				<td valign="top">Zip / Postal Code:</td>
+				<td valign="top"><?php _e('Zip / Postal Code', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"> 000000 </td>
 			</tr>
       		<tr>
-	        	<td valign="top">About You:</td>
+	        	<td valign="top"><?php _e('About You', 'genie-wp-matrimony') ?>:</td>
 	       		<td valign="top"><?php gwpm_echo( $modelObj->description ); ?></td>
       		</tr>
       		<tr>
 				<td colspan="2">  
-					<h3> Horoscope Information </h3>
+					<h3> <?php _e('Horoscope Information', 'genie-wp-matrimony') ?> </h3>
 				</td>
 			</tr>
 			<tr>
-	        	<td valign="top">Date of Birth:</td>
+	        	<td valign="top"><?php _e('Date of Birth', 'genie-wp-matrimony') ?>:</td>
 	       		<td valign="top"><?php gwpm_echo ( $modelObj->gwpm_dob ); ?></td>
       		</tr>
       		<tr >
-	        	<td valign="top">Marital Status:</td>
+	        	<td valign="top"><?php _e('Marital Status', 'genie-wp-matrimony') ?>:</td>
 	       		<td valign="top">
 	       			<?php gwpm_echo (getMaritalOptions($modelObj->gwpm_martial_status) ) ; 	?> 
 				</td>
       		</tr>
       		<tr>
-	        	<td valign="top">Star Sign (Nakshatram):</td>
+	        	<td valign="top"><?php _e('Star Sign (Nakshatram)', 'genie-wp-matrimony') ?>:</td>
 	       		<td valign="top">
 	       			<?php gwpm_echo (getStarSignOptions($modelObj->gwpm_starsign)) ; 	?> 
 				</td>
       		</tr>
       		<tr>
-	        	<td valign="top">Zodiac Sign (Raasi):</td>
+	        	<td valign="top"><?php _e('Zodiac Sign (Raasi)', 'genie-wp-matrimony') ?>:</td>
 	       		<td valign="top">
 	       			<?php gwpm_echo (getZodiacOptions($modelObj->gwpm_zodiac)) ; 	?> 
 				</td>
       		</tr>
       		<tr>
-	        	<td valign="top">Sevvai Dosham:</td>
+	        	<td valign="top"><?php _e('Sevvai Dosham', 'genie-wp-matrimony') ?>:</td>
 	       		<td valign="top">
 	       			<?php gwpm_echo (getYesNoOptions($modelObj->gwpm_sevvai_dosham)) ; 	?> 
 				</td>
       		</tr>
       		<tr>
-	        	<td valign="top">Caste:</td>
+	        	<td valign="top"><?php _e('Caste', 'genie-wp-matrimony') ?>:</td>
 	       		<td valign="top">
 	       			<?php gwpm_echo ( $modelObj->gwpm_caste ); 	?> 
 				</td>
       		</tr>
       		<tr>
-	        	<td valign="top">Religion:</td>
+	        	<td valign="top"><?php _e('Religion', 'genie-wp-matrimony') ?>:</td>
 	       		<td valign="top">
 	       			<?php gwpm_echo ( $modelObj->gwpm_religion ); 	?> 
 				</td>
       		</tr>
       		<tr>
 				<td colspan="2">  
-					<h3> Education & Work Information </h3>
+					<h3> <?php _e('Education & Work Information', 'genie-wp-matrimony') ?> </h3>
 				</td>
 			</tr>
 			<tr>
-				<td valign="top">Qualification:</td>
+				<td valign="top"><?php _e('Qualification', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top">
 					<?php 
 						gwpm_echo (getQualificationOptions($modelObj->gwpm_education['qualification'])) ; 	
@@ -164,44 +164,44 @@ if ($modelObj != null) {
 				</td>
 			</tr>
 			<tr>
-				<td valign="top">Specialization:</td>
+				<td valign="top"><?php _e('Specialization', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"> <?php gwpm_echo ( $modelObj->gwpm_education['specialization'] ); ?></td>
 			</tr>
 			<tr>
-				<td valign="top">Employement Status:</td>
+				<td valign="top"><?php _e('Employement Status', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"> <?php gwpm_echo ( getEmploymentStatusOptions( $modelObj->gwpm_education['status']) ) ; ?> </td>
 			</tr>
 			<tr>
-				<td valign="top">Work Place Information:</td>
+				<td valign="top"><?php _e('Work Place Information', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"> <?php gwpm_echo ( $modelObj->gwpm_work['place'] ); ?> </td>
 			</tr>
 			<tr>
-				<td valign="top">Designation:</td>
+				<td valign="top"><?php _e('Designation', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"> <?php gwpm_echo ( $modelObj->gwpm_work['designation'] ); ?> </td>
 			</tr>
 			<tr>
-				<td valign="top">Annual Income (INR):</td>
+				<td valign="top"><?php _e('Annual Income (INR)', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"> <?php gwpm_echo ( $modelObj->gwpm_work['income'] ); ?> </td>
 			</tr>
       		<tr>
 				<td colspan="2">  
-					<h3> Physical Apprearance </h3>
+					<h3> <?php _e('Physical Apprearance', 'genie-wp-matrimony') ?> </h3>
 				</td>
 			</tr>
       		<tr>
-				<td valign="top">Height (CMS):</td>
+				<td valign="top"><?php _e('Height (CMS)', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"><?php gwpm_echo( $modelObj->gwpm_physical['height'] ) ?></td>
 			</tr>
 			<tr>
-				<td valign="top">Weight (KGS):</td>
+				<td valign="top"><?php _e('Weight (KGS)', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"><?php gwpm_echo( $modelObj->gwpm_physical ['weight'] ) ?></td>
 			</tr>
 			<tr>
-				<td valign="top">Color Complexion:</td>
+				<td valign="top"><?php _e('Color Complexion', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top"><?php gwpm_echo( $modelObj->gwpm_physical ['color_complexion'] ) ?></td>
 			</tr>
 			<tr>
-				<td valign="top">Body Type:</td>
+				<td valign="top"><?php _e('Body Type', 'genie-wp-matrimony') ?>:</td>
 				<td valign="top">
 					<?php gwpm_echo( getPhysicalType($modelObj->gwpm_physical ['body_type'] )) ?>
 				</td>
@@ -216,7 +216,7 @@ if ($modelObj != null) {
 				?>
 				<tr>
 					<td colspan="2">  
-						<h3> Other Informations </h3>
+						<h3> <?php _e('Other Informations', 'genie-wp-matrimony') ?> </h3>
 					</td>
 				</tr>
 				<?php   

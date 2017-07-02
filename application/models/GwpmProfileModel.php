@@ -9,6 +9,9 @@
 
 class GwpmProfileModel {
 	function getUserObj($pid = null) {
+	    
+	   // $pid = sanitize_key( $pid );
+	    
 		if($pid != null)
 		$user = get_userdata( $pid );
 		else

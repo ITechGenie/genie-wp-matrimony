@@ -5,13 +5,15 @@ $signup_url = get_option('siteurl') . '/wp-login.php?action=register';
 
 ?>
 <p>
-<?php printf(__('You are either unauthorized or the page you requested is not available. Why don\'t you %s and try again.', ''), '<a href="'. $login_url . '">' . __('login', '') . '</a>'); ?>
+<?php 
+echo __("You are either unauthorized or the page you requested is not available. ", 'genie-wp-matrimony') ;
+printf(__('Why don\'t you %s and try again.', 'genie-wp-matrimony'), '<a href="'. $login_url . '">' . __('login', '') . '</a>'); ?>
 <?php if(get_option('users_can_register')) {
 	?>
 	<br /> <br />
 	<?php echo getBulletImg() ; ?>
-	<?php _e('Don\'t have a Login?', ''); ?>
-	<a href="<?php echo $signup_url; ?>"><?php _e('Register for an Account.', ''); ?>
+	<?php _e('Don\'t have a Login?', 'genie-wp-matrimony'); ?>
+	<a href="<?php echo $signup_url; ?>"><?php _e('Register for an Account.', 'genie-wp-matrimony'); ?>
 	</a>
 <?php } ?>
 <br />

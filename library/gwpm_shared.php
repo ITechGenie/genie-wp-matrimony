@@ -48,7 +48,7 @@ function gwpm_echo($value) {
 	if (is_array($value)) {
 		$value = implode($value);
 	}
-	_e($value, 'genie_wp_matrimony');
+	_e($value, 'genie-wp-matrimony');
 }
 
 function gwpm_get_display_name($pid = null) {

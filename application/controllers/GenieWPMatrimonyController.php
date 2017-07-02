@@ -148,7 +148,7 @@ class GenieWPMatrimonyController {
 	
 	function gwpm_avatar_defaults($avatar_defaults) {
 		$new_avatar_url = GWPM_PUBLIC_IMG_URL . URL_S . 'gwpm_avatar.png'  ;
-		$avatar_defaults[$new_avatar_url] = __('Genie WP Matrimony Avatar');
+		$avatar_defaults[$new_avatar_url] = __('Genie WP Matrimony Avatar', 'genie-wp-matrimony');
 		appendLog(print_r($avatar_defaults, true)) ;
 		return $avatar_defaults;
 	}

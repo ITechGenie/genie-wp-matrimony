@@ -8,6 +8,7 @@ Version: 0.9
 Author: prakashm88
 Author URI: http://www.itechgenie.com
 License: GPLv2
+Text Domain: genie-wp-matrimony
 */
 
 /*  Copyright 2012-2017  prakashm88
@@ -51,7 +52,7 @@ if (!defined('GWPM_CONTENT_URL'))
 if (!defined('GWPM_ROOT'))
 	define('GWPM_ROOT', dirname (__FILE__));
 
-load_plugin_textdomain( 'genie_wp_matrimony', false, basename( dirname( __FILE__ ) ) . '/languages' );
+load_plugin_textdomain( 'genie-wp-matrimony', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
 /** Common configs are loaded from gwpm_config.php */
 

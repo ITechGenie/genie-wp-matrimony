@@ -13,7 +13,7 @@
 </script>
 <?php
 
-echo "<h2>" . __('Matrimonial Profile OAuth1.0a Config', 'genie_wp_matrimony') .
+echo "<h2>" . __('Matrimonial Profile OAuth1.0a Config', 'genie-wp-matrimony') .
          "</h2>";
 
 $removeConfig = $_GET['removeToken'];

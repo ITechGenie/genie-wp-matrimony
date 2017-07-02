@@ -8,6 +8,7 @@ Tested up to: 4.7.4
 Stable tag: 0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: genie-wp-matrimony
 
 Genie WP Matrimony plugin is Wordpress plugin which help in converting your Wordpress blog into a complete matrimonial website.
 

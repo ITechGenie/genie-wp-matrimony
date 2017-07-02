@@ -5,7 +5,7 @@ if (! function_exists ( 'is_admin' )) {
 	exit ();
 }
 
-echo "<h3>" . __ ( 'Application OAuth 1.0a Credentials', 'genie_wp_matrimony' ) . "</h3>";
+echo "<h3>" . __( 'Application OAuth 1.0a Credentials', 'genie-wp-matrimony' ) . "</h3>";
 
 $formSubmitted = $_POST ['formSubmitted'];
 if ($formSubmitted != null) {
@@ -56,7 +56,7 @@ if (isset ( $existingRecords )) {
 	<table class='widefat gwpm-search-result'>
 		<tr>
 			<td width="260px;">
-				<p><?php _e("Steps to obtain OAuth1.0a Credentials: " ); ?></p>
+				<p><?php _e("Steps to obtain OAuth1.0a Credentials: " , 'genie-wp-matrimony'); ?></p>
 			</td>
 			<td>
 			<p>
@@ -74,56 +74,56 @@ if (isset ( $existingRecords )) {
 		</tr>
 		<tr>
 			<td>
-				<p><?php _e("Client Key: " ); ?></p>
+				<p><?php _e("Client Key: ", 'genie-wp-matrimony'); ?></p>
 			</td>
 			<td><input type="text" name="oauth10aClientKey" style="width: 200px;"
 				value="<?php echo $gwpmOauth10aClientKey; ?>" /></td>
 		</tr>
 		<tr>
 			<td>
-				<p><?php _e("Client Secret: " ); ?></p>
+				<p><?php _e("Client Secret: ", 'genie-wp-matrimony'); ?></p>
 			</td>
 			<td ><input type="text" name="oauth10aClientSecret"style="width: 200px;"
 				value="<?php echo $gwpmOauth10aClientSecret; ?>" /></td>
 		</tr>
 		<tr>
 			<td>
-				<p><?php _e("Rest API Domain: " ); ?></p>
+				<p><?php _e("Rest API Domain: ", 'genie-wp-matrimony'); ?></p>
 			</td>
 			<td><input type="text" name="oauth10aDomain" style="width: 200px;"
 				value="<?php echo get_site_url(); ?>"   /></td>
 		</tr>
 		<tr>
 			<td>
-				<p><?php _e("Rest API Path: " ); ?></p>
+				<p><?php _e("Rest API Path: ", 'genie-wp-matrimony'); ?></p>
 			</td>
 			<td><input type="text" name="oauth10aRestApiPath" style="width: 200px;"
 				value="/wp-json/wp/v2"   /></td>
 		</tr>
 		<tr>
 			<td>
-				<p><?php _e("Temp Token Request API: " ); ?></p>
+				<p><?php _e("Temp Token Request API: ", 'genie-wp-matrimony'); ?></p>
 			</td>
 			<td><input type="text" name="oauth10aTokenRequestAPI" style="width: 300px;"
 				value="<?php echo get_site_url() . '/oauth1/request' ; ?>"  /></td>
 		</tr>
 		<tr>
 			<td>
-				<p><?php _e("Temp Token Authorize API: " ); ?></p>
+				<p><?php _e("Temp Token Authorize API: ", 'genie-wp-matrimony'); ?></p>
 			</td>
 			<td><input type="text" name="oauth10aTokenAuthorizeAPI" style="width: 300px;"
 				value="<?php echo get_site_url() . '/oauth1/authorize' ; ?>"   /></td>
 		</tr>
 		<tr>
 			<td>
-				<p><?php _e("Temp Token Access API: " ); ?></p>
+				<p><?php _e("Temp Token Access API: ", 'genie-wp-matrimony'); ?></p>
 			</td>
 			<td><input type="text" name="oauth10aTokenAccessAPI" style="width: 300px;"
 				value="<?php echo get_site_url() . '/oauth1/access' ; ?>"   /></td>
 		</tr>
 		<tr>
 			<td>
-				<p><?php _e("Callback URL: " ); ?></p>
+				<p><?php _e("Callback URL: ", 'genie-wp-matrimony'); ?></p>
 			</td>
 			<td><input type="text" name="oauth10aCallBackURI" style="width: 300px;"
 				value="<?php echo get_admin_url() . 'admin.php?page=gpwmp_oauth10a'; ?>"   /></td>
@@ -131,10 +131,10 @@ if (isset ( $existingRecords )) {
 	</table>
 	<p class="submit">
 		<input type="submit" name="SubmitForm"
-			value="<?php _e('Update Options', 'genie_wp_matrimony' ) ?>" />
+			value="<?php _e('Update Options', 'genie-wp-matrimony' ) ?>" />
 			<?php 
 			if (isset($result)) {
-				_e($result, 'genie_wp_matrimony');
+				_e($result, 'genie-wp-matrimony');
 			}
 			?>
 	</p>
