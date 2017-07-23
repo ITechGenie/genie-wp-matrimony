@@ -41,10 +41,10 @@ if (!function_exists('is_admin')) {
 	<li><?php _e("Search result not displaying user picture?", 'genie-wp-matrimony'); ?><br /> <a target="_blank" href="<?php echo get_admin_url() . 'options-discussion.php#show_avatars' ?>"><?php _e("Click here to check Default Avatar Options", 'genie-wp-matrimony'); ?></a></li>
 	<li><?php _e("Matrimonial menu not found?", 'genie-wp-matrimony'); ?><br /> <a target="_blank" href="<?php echo get_admin_url() . 'nav-menus.php' ?>"><?php _e("Click here to Manage your Menu items", 'genie-wp-matrimony'); ?></a></li>
 	<li><?php 
-	__("Matrimonial pages display data more than once?", 'genie-wp-matrimony'); 
+	_e("Matrimonial pages display data more than once?", 'genie-wp-matrimony'); 
 	echo "<br /> "; 
-	__("The problem might be because of the theme used. ", 'genie-wp-matrimony');
-	__("Try to change the theme to Wordpress default and verify", 'genie-wp-matrimony'); 
+	_e("The problem might be because of the theme used. ", 'genie-wp-matrimony');
+	_e("Try to change the theme to Wordpress default and verify", 'genie-wp-matrimony'); 
 	?> </li>
 	</ol> </td></tr>
 	</table>

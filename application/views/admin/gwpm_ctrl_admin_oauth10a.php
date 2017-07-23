@@ -60,7 +60,7 @@ if (isset ( $existingRecords )) {
 			</td>
 			<td>
 			<p>
-				1. Install the <a href="https://wordpress.org/plugins/rest-api-oauth1/">WordPress REST API - OAuth 1.0a Server</a> Plugin from Wordpress Plugins<br />
+				1. Install the <a target="_blank" href="https://wordpress.org/plugins/rest-api-oauth1/">WordPress REST API - OAuth 1.0a Server</a> Plugin from Wordpress Plugins<br />
 				2. Activate the plugin after installations <br />
 				3. Go to Wordpress Admin Dashboard -> Users -> Applications <br />
 				4. Add "New Application" with Consumer Name "Genie WP Matrimony Authorizer", provide your own Description <br />

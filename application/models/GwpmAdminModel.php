@@ -167,6 +167,83 @@ class GwpmAdminModel {
 		echo json_encode( $resultObj ) ;
 	}
 	
+	function getMigratingDynaFields() {
+	    
+	    global $wpdb ;
+	    $dynaFields = get_option('gwpm_dyna_mig_opts_field') ;
+	    
+	    $newFieldKeys = '' ;
+	    
+	    $keycnt = 0;
+	    foreach($dynaFields as $key => $value) {
+	        if ($keycnt > 0)
+	            $newFieldKeys .= "," ;
+	        $newFieldKeys .= "'" . $value . "'" ;
+	        $keycnt++ ;
+	    }
+	    
+	    $usermeta_table_name = $wpdb->prefix . "usermeta";
+	    
+	    $queryString = "  SELECT $wpdb->usermeta.user_id, $wpdb->usermeta.meta_key, $wpdb->usermeta.meta_value " .
+	               "  FROM " . $usermeta_table_name. " WHERE $wpdb->usermeta.meta_key IN (  'gwpm_starsign',  " . 
+                       "   'gwpm_zodiac',  " . 
+                       "   'gwpm_sevvai_dosham', " . 
+                       "   'gwpm_martial_status', " . 
+                       "   'gwpm_caste', " . 
+                       "   'gwpm_religion') AND $wpdb->usermeta.user_id NOT IN (SELECT distinct $wpdb->usermeta.user_id FROM " . $usermeta_table_name .
+                       "   WHERE $wpdb->usermeta.meta_key IN ( " . $newFieldKeys . 
+                       "   ) AND $wpdb->usermeta.meta_value <> '' AND $wpdb->usermeta.meta_value IS NOT NULL  ) " .
+                       "   ORDER BY $wpdb->usermeta.user_id ASC " ;
+	    
+	    print_r($dynaFields) ;
+	    
+	    appendLog( ' New query: ' .  $queryString   ) ;
+	    
+	    $preparedSql = $wpdb->prepare($queryString,  $wpdb->prefix . 'usermeta' );
+	    $result = $wpdb->get_results($preparedSql) ;
+	    
+	    $resultList = array ();
+	    
+	    $processCount = 0 ;
+	    
+	    foreach ($result as $metaObj) {
+	        $userId = $metaObj->user_id ;
+	        $metaOriginalKey = $metaObj->meta_key;
+	        
+	        $metaKey = $dynaFields[$metaOriginalKey] ;
+	        
+	        $metaValue = $metaObj->meta_value;
+	        echo $processCount . ' - ' . $userId . ' - ' . $metaKey. ' - ' . $metaValue . '<br />';
+	        
+	        if (isset($metaValue) && $metaValue != '') {
+    	        if ($metaOriginalKey == 'gwpm_martial_status' || $metaOriginalKey == 'gwpm_zodiac' || $metaOriginalKey == 'gwpm_starsign' ) {
+    	            $tempVal = (int) $metaValue ; 
+    	            $metaValue = $tempVal - 1 ;
+    	        }
+    	        
+    	        $addMeta = add_user_meta($userId, $metaKey, $metaValue, true);
+    	        appendLog("Added meta for user: " . $userId . ' - ' . $metaKey) ;
+    	        appendLog ($addMeta);
+    	        
+    	        // Need to uncomment only if there is an exception - helps in updating existing unsynced data
+    	        /*$hasData = get_user_meta($userId, $metaKey);
+    	        appendLog($hasData) ;
+    	        if (isset ($hasData) && sizeof($hasData) > 0) {
+    	            $updateMeta = update_user_meta($userId, $metaKey, $metaValue);
+    	            appendLog("Updated meta for user: " . $userId . ' - ' . $metaKey) ;
+    	            appendLog($updateMeta) ;
+    	        } else {
+    	            $addMeta = add_user_meta($userId, $metaKey, $metaValue, true);
+    	            appendLog("Added meta for user: " . $userId . ' - ' . $metaKey) ;
+    	            appendLog ($addMeta);
+    	        } */
+	        }
+	        $processCount++ ;
+	    }
+	    
+	    return $resultList;	    
+	}
+	
 	function saveOAuth10aFields($gwpmOauth10aConfig) {
 		
 		global $wpdb ;

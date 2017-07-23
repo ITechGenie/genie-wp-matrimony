@@ -2,8 +2,8 @@
 
 /** Configuration Variables **/
 
-define('DEVELOPMENT_ENVIRONMENT', true);
-define('GWPM_ENABLE_DEBUGGING', true);
+define('DEVELOPMENT_ENVIRONMENT', false);
+define('GWPM_ENABLE_DEBUGGING', false);
 
 define('GWPM_APPLICATION_URL', GWPM_ROOT . DS . 'application');
 define('GWPM_LIBRARY_URL', GWPM_ROOT . DS . 'library');

@@ -24,8 +24,11 @@ if (!isset($dynaMigOpts) || $dynaMigOpts == false) {
         
         $migObjects = [] ;
         
+        $migrationKeys = [] ;
+        
         // Caste
         $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_caste'] = $nextKey; 
         $migObject = [];
         
         $migObject['gwpm_dyna_field_label'] = 'Caste';
@@ -35,6 +38,7 @@ if (!isset($dynaMigOpts) || $dynaMigOpts == false) {
         
         // Religion
         $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_religion'] = $nextKey; 
         $migObject = [];
         
         $migObject['gwpm_dyna_field_label'] = 'Religion';
@@ -44,6 +48,7 @@ if (!isset($dynaMigOpts) || $dynaMigOpts == false) {
         
         // Sevai Dosham
         $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_sevvai_dosham'] = $nextKey; 
         $migObject = [];
         
         $migObject['gwpm_dyna_field_label'] = 'Sevai Dosham';
@@ -53,6 +58,7 @@ if (!isset($dynaMigOpts) || $dynaMigOpts == false) {
         
         // Marital Status
         $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_martial_status'] = $nextKey; 
         $migObject = [];
         
         $migObject['gwpm_dyna_field_label'] = 'Marital Status';
@@ -66,6 +72,7 @@ if (!isset($dynaMigOpts) || $dynaMigOpts == false) {
         
         // Star Sign (Nakshatram)
         $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_starsign'] = $nextKey; 
         $migObject = [];
         
         $migObject['gwpm_dyna_field_label'] = 'Star Sign';
@@ -76,6 +83,7 @@ if (!isset($dynaMigOpts) || $dynaMigOpts == false) {
         
         // Zodiac Sign (Raasi)
         $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_zodiac'] = $nextKey; 
         $migObject = [];
         
         $migObject['gwpm_dyna_field_label'] = 'Zodiac Sign';
@@ -97,11 +105,18 @@ if (!isset($dynaMigOpts) || $dynaMigOpts == false) {
         }
         
         update_option (GWPM_DYNA_FIELD_COUNT, ($totalFields-1)) ;
-        update_option(GWPM_DYNA_FIELD_MIG_OPTS, $dynaMigOpts );
+        update_option(GWPM_DYNA_FIELD_MIG_OPTS, $migrationKeys);
+        
+        echo "Created new fields for migration <br /><br />" ;
+        
+        print_r($migrationKeys) ;
     
 } else {
     
-    // delete_option(GWPM_DYNA_FIELD_MIG_OPTS);
-    print_r($dynaMigOpts ) ;
+    $adminModel = new GwpmAdminModel() ;
+    $dynaNewFields = $adminModel->getMigratingDynaFields() ;
+    print_r($dynaNewFields) ;
+    appendLog("New dyna field: ") ;
+    appendLog( $dynaNewFields) ;
     
 }
