@@ -26,6 +26,16 @@ if (!isset($dynaMigOpts) || $dynaMigOpts == false) {
         
         $migrationKeys = [] ;
         
+        // Mobile
+        $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_contact_no'] = $nextKey;
+        $migObject = [];
+        
+        $migObject['gwpm_dyna_field_label'] = 'Contact No';
+        $migObject['gwpm_dyna_field_type'] = 'text';
+        
+        $migObjects[$nextKey] = $migObject;
+        
         // Caste
         $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
         $migrationKeys['gwpm_caste'] = $nextKey; 
@@ -63,9 +73,6 @@ if (!isset($dynaMigOpts) || $dynaMigOpts == false) {
         
         $migObject['gwpm_dyna_field_label'] = 'Marital Status';
         $migObject['gwpm_dyna_field_type'] = 'select';
-        $migObjectSelects[0] = "Single" ;
-        $migObjectSelects[1] = "Married" ;
-        $migObjectSelects[2] = "Divorsed" ;
         $migObject['gwpm_dyna_field_values'] = getMaritalOptions() ;
         
         $migObjects[$nextKey] = $migObject;
@@ -114,7 +121,7 @@ if (!isset($dynaMigOpts) || $dynaMigOpts == false) {
 } else {
     
     $adminModel = new GwpmAdminModel() ;
-    $dynaNewFields = $adminModel->getMigratingDynaFields() ;
+    $dynaNewFields = $adminModel->migrateToDynamicFieldData() ;
     print_r($dynaNewFields) ;
     appendLog("New dyna field: ") ;
     appendLog( $dynaNewFields) ;

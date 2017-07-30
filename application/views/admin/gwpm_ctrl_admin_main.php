@@ -40,11 +40,20 @@ if (!function_exists('is_admin')) {
 	<li><?php _e("Register option not found?", 'genie-wp-matrimony'); ?><br /> <a target="_blank" href="<?php echo get_admin_url() . 'options-general.php#users_can_register' ?>"><?php _e("Click here to enable Registration", 'genie-wp-matrimony'); ?></a></li>
 	<li><?php _e("Search result not displaying user picture?", 'genie-wp-matrimony'); ?><br /> <a target="_blank" href="<?php echo get_admin_url() . 'options-discussion.php#show_avatars' ?>"><?php _e("Click here to check Default Avatar Options", 'genie-wp-matrimony'); ?></a></li>
 	<li><?php _e("Matrimonial menu not found?", 'genie-wp-matrimony'); ?><br /> <a target="_blank" href="<?php echo get_admin_url() . 'nav-menus.php' ?>"><?php _e("Click here to Manage your Menu items", 'genie-wp-matrimony'); ?></a></li>
+	<li><?php _e("User not found in search?", 'genie-wp-matrimony'); ?><br /> 
+	<?php 
+	_e("Administrators wont be shown in search results");
+	echo "<br /> "; 
+	_e("Create a new profile with Role 'Matrimony User' and try searching.", 'genie-wp-matrimony'); ?>
+	</li>
 	<li><?php 
 	_e("Matrimonial pages display data more than once?", 'genie-wp-matrimony'); 
 	echo "<br /> "; 
-	_e("The problem might be because of the theme used. ", 'genie-wp-matrimony');
-	_e("Try to change the theme to Wordpress default and verify", 'genie-wp-matrimony'); 
+	_e("The problem might be because of the theme used or a conflicting plugin", 'genie-wp-matrimony');
+	echo "<br /> "; 
+	_e("Try to change the theme to Wordpress default or disable other plugins and verify", 'genie-wp-matrimony'); 
+	echo "<br /> "; 
+	_e("Please report back with the incompatible theme/plugin for fixes", 'genie-wp-matrimony'); 
 	?> </li>
 	</ol> </td></tr>
 	</table>

@@ -2,7 +2,7 @@
 
 /** Configuration Variables **/
 
-define('DEVELOPMENT_ENVIRONMENT', false);
+define('DEVELOPMENT_ENVIRONMENT', true);
 define('GWPM_ENABLE_DEBUGGING', false);
 
 define('GWPM_APPLICATION_URL', GWPM_ROOT . DS . 'application');
@@ -26,6 +26,7 @@ define("GWPM_ACTIVITY_MAX_NOS", "10");
 define("GWPM_DYNA_KEY_PREFIX", "gwpm_dyna_field_");
 define("GWPM_DYNA_FIELD_COUNT", "gwpm_dyna_field_count");
 define("GWPM_DYNA_FIELD_MIG_OPTS", "gwpm_dyna_mig_opts_field");
+define("GWPM_DYNA_FIELD_MIG_COMPLETE", "gwpm_dyna_mig_complete");
 define("GWPM_AVATAR", "gwpm_avatar");
 define("GWPM_MAX_USER_MESSAGES", 5);
 
@@ -39,6 +40,8 @@ define ('GWPM_REST_GET_INFO' , 'GWPM_REST_GET_INFO' );
 define ('GWPM_REST_SEARCH_USERS' , 'GWPM_REST_SEARCH_USERS' );
 define ('GWPM_REST_GET_USER' , 'GWPM_REST_GET_USER' );
 define ('GWPM_REST_GET_MY_DETAILS' , 'GWPM_REST_GET_MY_DETAILS' );
+
+define ('GWPM_MAX_DYNA_MIGRATE_USER_COUNT' , 50 );
 
 $gwpm_db_version = 0.1;
 

@@ -100,7 +100,8 @@ class GwpmProfileModel {
 		if (isset ($isGwpmUser) && sizeof($isGwpmUser) > 0) {
 
 		} else {
-			appendLog (add_user_meta($userObj->userId, 'gwpm_user', true, true));
+		    $updMeta = add_user_meta($userObj->userId, 'gwpm_user', true, true) ;
+		    appendLog ($updMeta);
 		}
 
 		$processKeys = array_keys(get_class_vars(get_class($userObj))) ;

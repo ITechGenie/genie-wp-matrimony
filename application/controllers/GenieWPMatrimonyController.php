@@ -408,7 +408,7 @@ class GenieWPMatrimonyController {
 								ob_end_clean();
 								return $content;
 							}
-						} elseif ($controller == 'test') {
+						} elseif ($controller == 'test' && current_user_can('level_10') ) {
 							include (GWPM_APPLICATION_URL . DS . 'views' . DS . 'gwpm_pg_test.php');
 							$content = ob_get_contents();
 							ob_end_clean();

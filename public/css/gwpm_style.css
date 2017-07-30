@@ -28,10 +28,31 @@
 	width: 14em;
 }
 
+.gwpm_profile_pic {
+	width: 150px;
+    border-radius:25px;
+    overflow:hidden;
+}
+
 .gwpm_profile_pic_holder {
 	text-align: center;
 	vertical-align: top;
 	margin-top: 12px;
+}
+
+.gwpm_profile_pic_div {
+	width: 150px;
+	align: center;
+	text-align: center;
+	vertical-align: top;
+	float: center;	
+	margin: 0 auto;
+	position: relative; 
+}
+
+.gwpm_about_you {
+	text-align: center;
+	min-width: 200px;
 }
 
 .gwpm-table input {
