@@ -3,6 +3,7 @@ class GenieWPMatrimonyController {
 
 	protected $_matrimonyPageId;
 	protected $_userLoginPreference;
+	protected $_isDynaMigrated;
 	protected $links;
 
 	function GenieWPMatrimonyController() {
@@ -58,6 +59,10 @@ class GenieWPMatrimonyController {
 			& $this,
 			'load_scripts'
 		), 0);
+		add_action('admin_enqueue_scripts', array (
+		        & $this,
+		        'load_admin_scripts'
+		), 0);
 		add_action('wp_ajax_gwpm_ajax_call', array (
 			& $this,
 			'gwpm_ajax_call_bootstrap'
@@ -89,6 +94,11 @@ class GenieWPMatrimonyController {
 	    global $wpdb;
 	    $this->_matrimonyPageId = $wpdb->get_var($wpdb->prepare("select post_id from $wpdb->postmeta where meta_key = '%s'", GWPM_META_KEY));
 	    $this->_userLoginPreference = get_option( GWPM_USER_LOGIN_PREF );
+	    $this->$_isDynaMigrated = get_option( GWPM_DYNA_FIELD_MIG_COMPLETE );
+	    if (!isset($this->$_isDynaMigrated) || $this->$_isDynaMigrated == null) {
+	        $this->$_isDynaMigrated = false; 
+	    }
+	    $this->$_isDynaMigrated = false;
 	}
 	
 	function gwpm_admin_header() {
@@ -298,7 +308,11 @@ class GenieWPMatrimonyController {
 	}
 
 	function gwpm_admin_page_profiles() {
-		include (GWPM_APPLICATION_URL . DS . 'views' . DS . 'gwpm_ctrl_profile.php');
+	    if ( $this->$_isDynaMigrated ) {
+	        include (GWPM_APPLICATION_URL . DS . 'views' . DS . 'gwpm_ctrl_profile_new.php');
+	    } else {
+	        include (GWPM_APPLICATION_URL . DS . 'views' . DS . 'gwpm_ctrl_profile.php');
+	    }
 	}
 	
 	function gwpm_admin_page_oauth10a() {
@@ -325,6 +339,20 @@ class GenieWPMatrimonyController {
 	    if ($role == 'matrimony_user') {
 	        global $gwpm_setup_model ;
 	        $gwpm_setup_model->sendRoleChangeMail($userId, $role ) ;
+	    }
+	}
+	
+	function load_admin_scripts($hook) {
+	    if ('toplevel_page_gpwmp' == $hook) {
+	        appendLog('Hosted hook: ' . $hook ) ;
+	        wp_enqueue_style('jquery-ui-all', GWPM_PUBLIC_CSS_URL . URL_S . 'jquery' . URL_S . 'ui.all.css', false, null, false);
+	        wp_enqueue_script( 'jquery-ui-core' );
+	        wp_enqueue_script( 'jquery-ui-widget' );
+	        wp_enqueue_script( 'jquery-ui-slider' );
+	        wp_enqueue_script( 'jquery-ui-datepicker' );
+	        wp_register_script( 'jquery-ui-timepicker', GWPM_PUBLIC_JS_URL . URL_S . 'jquery-ui-timepicker.js', array('jquery-ui-datepicker'));
+	        wp_register_script( 'jquery-ui-lightbox', GWPM_PUBLIC_JS_URL . URL_S . 'jquery.lightbox-0.5.min.js');
+	        wp_enqueue_script('jquery-ui-timepicker', null, null, true);
 	    }
 	}
 

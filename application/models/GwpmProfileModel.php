@@ -119,11 +119,13 @@ class GwpmProfileModel {
 					$gwpm_activity_model->addActivityLog("profile", "Updated Profile Image", $userObj->userId);
 				} else
 				continue;
+			} elseif (!is_array($userObj-> $key)) {
+			    $value = trim($userObj-> $key);
+			} else {
+			    $value = $userObj-> $key;
 			}
-			elseif (!is_array($userObj-> $key)) $value = trim($userObj-> $key);
-			else
-			$value = $userObj-> $key;
 			if ($key != 'userId' && $key != 'dynamicFields' && $key != 'dynamicFieldsValidation') {
+			    	gwpmValidateLength($value) ;
 				update_user_meta($userObj->userId, $key, $value);
 			}
 		}

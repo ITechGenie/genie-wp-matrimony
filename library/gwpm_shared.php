@@ -478,6 +478,11 @@ function appendLog($message) {
 	}
 }
 
+function gwpmValidateLength($input) {
+   if ( strlen(serialize ( $input )) > 2000 )
+       throw new GwpmCommonException("Given input is greater than 2000 characters") ;
+}
+
 function gwpmSendEmail ($email, $subject, $msg, $headers ){
     appendLog($email . ' - ' . $subject . ' - ' . $msg . ' - ' . $headers ) ;
     try {

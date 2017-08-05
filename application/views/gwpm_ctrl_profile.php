@@ -5,6 +5,11 @@
  * To change the template for this generated file go to
  * Window - Preferences - PHPeclipse - PHP - Code Templates
  */
+if (!function_exists('is_admin')) {
+    header('Status: 403 Forbidden');
+    header('HTTP/1.1 403 Forbidden');
+    exit ();
+}
 ?>
 
 <div class="wrap">
@@ -49,13 +54,27 @@ try {
 		$modelObj = $profileObj ;
 	}
 } catch(Exception $e) {
-	echo $e;
+    appendLog($e) ;
+    if(DEVELOPMENT_ENVIRONMENT == true) {
+        echo $e ;
+    } else {
+        echo $e->getMessage();
+    }
 }
 
 ?> 
 <form name="gwpm-profile-form" action="<?php echo $_SERVER['REQUEST_URI'] ?>"
 	method="post" enctype="multipart/form-data">
 	<div id="gwpm_accordion">
+		<?php 
+		if( current_user_can('level_10') ) {
+		    echo "<h3>" ;
+		    _e("Note: You are an Admin user, This is just a test page that shows how Matrimonial users view it. ", 'genie-wp-matrimony');
+		    echo "<br />" ;
+		    _e("Also your profile information won't be visible to other users in search.", 'genie-wp-matrimony');
+		    echo "</h3>" ;
+		}
+		?>
 		<h3>
 			<a href="#">Basic Information</a>
 		</h3>
@@ -110,19 +129,18 @@ try {
 					</tr>
 					<tr>
 						<td valign="top">State:</td>
-						<td valign="top">
-							<?php $templateObj->getSelectItem(getStateOptions(), 'gwpm_address[state]', ($modelObj->gwpm_address['state'])) ; 	?>
-						</td>
+						<td valign="top"><input name="gwpm_address[state]" id="gwpm_address[state]"
+							value="<?php echo ( $modelObj->gwpm_address['state'] ) ; ?>" maxLength="25" /></td>
 					</tr>
-					<tr class="gwpm_hidden_fields">
+					<tr class="">
 						<td valign="top">Country:</td>
 						<td valign="top"><input name="gwpm_address[country]" id="gwpm_address[country]"
-							value="India" /></td>
+							value="<?php echo ( $modelObj->gwpm_address['country'] ) ; ?>" maxLength="25" /></td>
 					</tr>
-					<tr class="gwpm_hidden_fields">
+					<tr class="">
 						<td valign="top">Zip / Postal Code:</td>
 						<td valign="top"><input name="gwpm_address[pin]" id="gwpm_address[pin]"
-							value="000000" /></td>
+							value="<?php echo ( $modelObj->gwpm_address['pin'] ) ; ?>" maxLength="7" /></td>
 					</tr>
 					<tr>
 						<td valign="top">About You:</td>
@@ -192,7 +210,7 @@ try {
 			</table>
 		</div>
 		<h3>
-			<a href="#">Education & Work Information</a>
+			<a href="#">Education &amp; Work Information</a>
 		</h3>
 		<div>
 			<table class='gwpm-table'>
@@ -279,7 +297,7 @@ try {
 			if(sizeof($dyna_field_item) > 0) {
 				?>
 				<h3>
-					<a href="#">Other Information</a>
+					<a href="#">Other Information</a> (Enter 'NA' if Not Applicable)
 				</h3>
 				<div>
 					<table class='gwpm-table'>
@@ -322,7 +340,7 @@ try {
 					<tr>
 						<td valign="top">Profile Photo:</td>
 						<td valign="top">
-						<input type="file" name="gwpm_profile_photo" id="gwpm_profile_photo" /> </ br>
+						<input type="file" name="gwpm_profile_photo" id="gwpm_profile_photo" /> <br />
 						<span class="gwpm-help" >Image maximum size <b>500</b> kb </span>
 					</tr>
 				</tbody>
@@ -341,6 +359,7 @@ try {
 		</tbody>
 	</table>
 </form>
+</div>
 <script type="text/javascript">
              
 	 jQuery(document).ready(function() {
