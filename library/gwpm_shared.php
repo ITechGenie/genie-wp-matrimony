@@ -434,8 +434,10 @@ function getLoaderImg($dimensions = null, $class_name = 'gwpm_loader' ) {
 }
 
 function getStrippedUserId($id) {
-	$id = explode(GWPM_USER_PREFIX, $id ) ;
-	return (trim($id[1])) ;
+    $id =  str_replace(GWPM_USER_PREFIX, '', $id ) ;
+    return trim($id) ;
+	// $id = explode(GWPM_USER_PREFIX, $id ) ;
+	// return (trim($id[1])) ;
 }
 
 function addMenuItem($menu_id, $pageTitle, $pageId, $parentId, $menuOrder) {
@@ -478,6 +480,7 @@ function appendLog($message) {
 	}
 }
 
+// @TODO Change to dynamic config
 function gwpmValidateLength($input) {
    if ( strlen(serialize ( $input )) > 2000 )
        throw new GwpmCommonException("Given input is greater than 2000 characters") ;

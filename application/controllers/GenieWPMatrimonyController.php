@@ -381,6 +381,7 @@ class GenieWPMatrimonyController {
 
 	function gwpm_ajax_call_bootstrap() {
 		appendLog("Inside the AJAX Controller hook") ;
+		$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 		if (!wp_verify_nonce($_POST['gwpm_nounce'], 'gwpm'))
 			die('Busted!');
 		if (current_user_can('matrimony_user') || current_user_can('level_10')) {
@@ -440,33 +441,33 @@ class GenieWPMatrimonyController {
 							ob_end_clean();
 							return $content;
 						} else {
-    						if (isset ($_GET['action'])) {
-    							$action = $_GET['action'];
-    						}
-    						$controllerName = 'Gwpm' . ucwords($controller) . 'Controller';
-    						$modelName = 'Gwpm' . ucwords($controller) . 'Model';
-    						$controllerURL = GWPM_APPLICATION_URL . DS . 'controllers' . DS . $controllerName . '.php';
-    						$modelURL = GWPM_APPLICATION_URL . DS . 'models' . DS . $modelName . '.php';
-    						if (!file_exists($controllerURL)) {
-    							$controller = 'index';
-    							$controllerName = 'Gwpm' . ucwords($controller) . 'Controller';
-    							$modelName = 'Gwpm' . ucwords($controller) . 'Model';
-    							$controllerURL = GWPM_APPLICATION_URL . DS . 'controllers' . DS . $controllerName . '.php';
-    							$modelURL = GWPM_APPLICATION_URL . DS . 'models' . DS . $modelName . '.php';
-    						}
-    						require_once ($controllerURL);
-    						require_once ($modelURL);
-    						if ($action == null || $action == '') {
-    							$action = 'view';
-    						}
-    						$queryVariables = $this->get_query_string_values($_SERVER['REQUEST_URI']);
-    						$dispatch = new $controllerName ($controller, $action, $queryVariables, $modelName);
+	    						if (isset ($_GET['action'])) {
+	    							$action = $_GET['action'];
+	    						}
+	    						$controllerName = 'Gwpm' . ucwords($controller) . 'Controller';
+	    						$modelName = 'Gwpm' . ucwords($controller) . 'Model';
+	    						$controllerURL = GWPM_APPLICATION_URL . DS . 'controllers' . DS . $controllerName . '.php';
+	    						$modelURL = GWPM_APPLICATION_URL . DS . 'models' . DS . $modelName . '.php';
+	    						if (!file_exists($controllerURL)) {
+	    							$controller = 'index';
+	    							$controllerName = 'Gwpm' . ucwords($controller) . 'Controller';
+	    							$modelName = 'Gwpm' . ucwords($controller) . 'Model';
+	    							$controllerURL = GWPM_APPLICATION_URL . DS . 'controllers' . DS . $controllerName . '.php';
+	    							$modelURL = GWPM_APPLICATION_URL . DS . 'models' . DS . $modelName . '.php';
+	    						}
+	    						require_once ($controllerURL);
+	    						require_once ($modelURL);
+	    						if ($action == null || $action == '') {
+	    							$action = 'view';
+	    						}
+	    						$queryVariables = $this->get_query_string_values($_SERVER['REQUEST_URI']);
+	    						$dispatch = new $controllerName ($controller, $action, $queryVariables, $modelName);
     
-    						if ((int) method_exists($controllerName, $action)) {
-    							call_user_func_array(array ($dispatch, $action ), $queryVariables);
-    						} else {
-    							throw new GwpmCommonException("Method " . $action . ' not found in class ' . $controllerName);
-    						}
+	    						if ((int) method_exists($controllerName, $action)) {
+	    							call_user_func_array(array ($dispatch, $action ), $queryVariables);
+	    						} else {
+	    							throw new GwpmCommonException("Method " . $action . ' not found in class ' . $controllerName);
+	    						}
 						}
 
 					} else {
