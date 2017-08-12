@@ -395,7 +395,7 @@ class GenieWPMatrimonyController {
 
 	function page_route($content) {
 		global $post;		
-		if ($post->ID == $this->_matrimonyPageId) {
+		if ($post->ID == $this->_matrimonyPageId && in_the_loop()) {
 			$content = "" ;
 			ob_start();
 			appendLog('this->_userLoginPreference: ' . $this->_userLoginPreference . '-' . is_user_logged_in() . '-' . current_user_can('level_1') . '-' . current_user_can('level_0')) ;
@@ -423,8 +423,6 @@ class GenieWPMatrimonyController {
 				appendLog('Preference for page show: ' . $pages_to_view ) ;
 
 				if ($pages_to_view == 'ALL'  or  $pages_to_view == 'SEARCH_VIEW'  ) {
-					//wp_register_style('GWPM_CSS', GWPM_PUBLIC_CSS_URL . URL_S . 'gwpm_style.css');
-					//wp_enqueue_style('GWPM_CSS', null, null, true);
 						
 					$action = null ;
 						// && $profile_id != null
@@ -441,33 +439,34 @@ class GenieWPMatrimonyController {
 							$content = ob_get_contents();
 							ob_end_clean();
 							return $content;
-						}
-						if (isset ($_GET['action'])) {
-							$action = $_GET['action'];
-						}
-						$controllerName = 'Gwpm' . ucwords($controller) . 'Controller';
-						$modelName = 'Gwpm' . ucwords($controller) . 'Model';
-						$controllerURL = GWPM_APPLICATION_URL . DS . 'controllers' . DS . $controllerName . '.php';
-						$modelURL = GWPM_APPLICATION_URL . DS . 'models' . DS . $modelName . '.php';
-						if (!file_exists($controllerURL)) {
-							$controller = 'index';
-							$controllerName = 'Gwpm' . ucwords($controller) . 'Controller';
-							$modelName = 'Gwpm' . ucwords($controller) . 'Model';
-							$controllerURL = GWPM_APPLICATION_URL . DS . 'controllers' . DS . $controllerName . '.php';
-							$modelURL = GWPM_APPLICATION_URL . DS . 'models' . DS . $modelName . '.php';
-						}
-						require_once ($controllerURL);
-						require_once ($modelURL);
-						if ($action == null || $action == '') {
-							$action = 'view';
-						}
-						$queryVariables = $this->get_query_string_values($_SERVER['REQUEST_URI']);
-						$dispatch = new $controllerName ($controller, $action, $queryVariables, $modelName);
-
-						if ((int) method_exists($controllerName, $action)) {
-							call_user_func_array(array ($dispatch, $action ), $queryVariables);
 						} else {
-							throw new GwpmCommonException("Method " . $action . ' not found in class ' . $controllerName);
+    						if (isset ($_GET['action'])) {
+    							$action = $_GET['action'];
+    						}
+    						$controllerName = 'Gwpm' . ucwords($controller) . 'Controller';
+    						$modelName = 'Gwpm' . ucwords($controller) . 'Model';
+    						$controllerURL = GWPM_APPLICATION_URL . DS . 'controllers' . DS . $controllerName . '.php';
+    						$modelURL = GWPM_APPLICATION_URL . DS . 'models' . DS . $modelName . '.php';
+    						if (!file_exists($controllerURL)) {
+    							$controller = 'index';
+    							$controllerName = 'Gwpm' . ucwords($controller) . 'Controller';
+    							$modelName = 'Gwpm' . ucwords($controller) . 'Model';
+    							$controllerURL = GWPM_APPLICATION_URL . DS . 'controllers' . DS . $controllerName . '.php';
+    							$modelURL = GWPM_APPLICATION_URL . DS . 'models' . DS . $modelName . '.php';
+    						}
+    						require_once ($controllerURL);
+    						require_once ($modelURL);
+    						if ($action == null || $action == '') {
+    							$action = 'view';
+    						}
+    						$queryVariables = $this->get_query_string_values($_SERVER['REQUEST_URI']);
+    						$dispatch = new $controllerName ($controller, $action, $queryVariables, $modelName);
+    
+    						if ((int) method_exists($controllerName, $action)) {
+    							call_user_func_array(array ($dispatch, $action ), $queryVariables);
+    						} else {
+    							throw new GwpmCommonException("Method " . $action . ' not found in class ' . $controllerName);
+    						}
 						}
 
 					} else {
@@ -484,6 +483,8 @@ class GenieWPMatrimonyController {
 				appendLog("Exception in Handling !!! ") ;
 				appendLog($e) ;
 				if(DEVELOPMENT_ENVIRONMENT == true) {
+				    $content = ob_get_contents();
+				    ob_end_clean();
 					throw $e;
 				}
 			}
