@@ -18,6 +18,7 @@ if($formSubmitted != null) {
 	$earlierCount = $_POST['earlierCount'] ;
 
 	if(isset($gwpmFieldLabels) && $gwpmFieldLabels != null ) {
+	    appendLog( print_r($earlierCount)) ;
 		appendLog( print_r($gwpmFieldLabels, true)) ;
 		appendLog( print_r($gwpmFieldTypes, true)) ;
 		appendLog( print_r($gwpmFieldValue, true)) ;
@@ -31,8 +32,9 @@ $existingRecords = get_option(GWPM_DYNA_FIELD_COUNT);
 if(!isset($existingRecords) || $existingRecords == null || $existingRecords == false)
 $existingRecords = 0;
 
+echo "<h2>" . __( 'Note: Deleting a field will delete all the existing user data and is not recoverable. Excercise caution while deleting fields.', 'genie-wp-matrimony' ) . "</h2>";
+
 ?>
-<br />
 <div id="gwpm_resultBox"
 	class="gwpm_message_box"></div>
 

@@ -41,8 +41,25 @@ class GwpmProfileModel {
 			$userObj = new GwpmProfileVO($userMeta, $_keys);
 			$userObj->userId = $user->ID;
 			$userObj->user_email = $user->user_email;
-			$userObj->gender = 'Male';
-			$userObj->gwpm_physical = unserialize($userObj->gwpm_physical[0]);
+			$userObj->user_login = $user->user_login;
+			
+			$userObj->first_name = $this->_getValue( $userObj->first_name) ;
+			$userObj->last_name= $this->_getValue( $userObj->last_name) ;
+			$userObj->gwpm_gender= $this->_getValue( $userObj->gwpm_gender) ;
+			
+			$userObj->gender = getGenderOptions($userObj->gwpm_gender) ;
+			
+			$userObj->gwpm_dob= $this->_getValue( $userObj->gwpm_dob) ;
+			$userObj->description= $this->_getValue( $userObj->description) ;
+			$userObj->gwpm_contact_no= $this->_getValue( $userObj->gwpm_contact_no) ;
+			$userObj->gwpm_martial_status= $this->_getValue( $userObj->gwpm_martial_status) ;
+			$userObj->gwpm_zodiac= $this->_getValue( $userObj->gwpm_zodiac) ;
+			$userObj->gwpm_starsign= $this->_getValue( $userObj->gwpm_starsign) ;
+			$userObj->gwpm_sevvai_dosham= $this->_getValue( $userObj->gwpm_sevvai_dosham) ;
+			$userObj->gwpm_caste= $this->_getValue( $userObj->gwpm_caste) ;
+			$userObj->gwpm_religion= $this->_getValue( $userObj->gwpm_religion) ;
+			
+			$userObj->gwpm_physical = $this->sanitizeResponse ( $userObj->gwpm_physical ) ;
 			$userObj->gwpm_address = unserialize($userObj->gwpm_address[0]);
 			$userObj->gwpm_education = unserialize($userObj->gwpm_education[0]);
 			$userObj->gwpm_work = unserialize($userObj->gwpm_work[0]);
@@ -80,7 +97,8 @@ class GwpmProfileModel {
 		if (isset ($isGwpmUser) && sizeof($isGwpmUser) > 0) {
 
 		} else {
-			appendLog (add_user_meta($userObj->userId, 'gwpm_user', true, true));
+		    $updMeta = add_user_meta($userObj->userId, 'gwpm_user', true, true) ;
+		    appendLog ($updMeta);
 		}
 
 		$processKeys = array_keys(get_class_vars(get_class($userObj))) ;
@@ -98,15 +116,32 @@ class GwpmProfileModel {
 					$gwpm_activity_model->addActivityLog("profile", "Updated Profile Image", $userObj->userId);
 				} else
 				continue;
+			} elseif (!is_array($userObj-> $key)) {
+			    $value = trim($userObj-> $key);
+			} else {
+			    $value = $userObj-> $key;
 			}
-			elseif (!is_array($userObj-> $key)) $value = trim($userObj-> $key);
-			else
-			$value = $userObj-> $key;
 			if ($key != 'userId' && $key != 'dynamicFields' && $key != 'dynamicFieldsValidation') {
+			    	gwpmValidateLength($value) ;
 				update_user_meta($userObj->userId, $key, $value);
 			}
 		}
 		$gwpm_activity_model->addActivityLog("profile", "Updated Profile", $userObj->userId);
+	}
+	
+	function sanitizeResponse ($input) {
+	    if ( is_array($input) ) {
+	        return unserialize($input[0]) ;
+	    } else {
+	        return  $input ;
+	    }
+	}
+	
+	function  _getValue ($input) {
+	    if ( is_array($input) ) {
+	        return $input[0] ;
+	    }
+	    return $input ;
 	}
 
 	/*

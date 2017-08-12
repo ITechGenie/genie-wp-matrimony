@@ -48,7 +48,7 @@ function gwpm_echo($value) {
 	if (is_array($value)) {
 		$value = implode($value);
 	}
-	_e($value, 'genie_wp_matrimony');
+	_e($value, 'genie-wp-matrimony');
 }
 
 function gwpm_get_display_name($pid = null) {
@@ -434,8 +434,10 @@ function getLoaderImg($dimensions = null, $class_name = 'gwpm_loader' ) {
 }
 
 function getStrippedUserId($id) {
-	$id = explode(GWPM_USER_PREFIX, $id ) ;
-	return (trim($id[1])) ;
+    $id =  str_replace(GWPM_USER_PREFIX, '', $id ) ;
+    return trim($id) ;
+	// $id = explode(GWPM_USER_PREFIX, $id ) ;
+	// return (trim($id[1])) ;
 }
 
 function addMenuItem($menu_id, $pageTitle, $pageId, $parentId, $menuOrder) {
@@ -453,6 +455,12 @@ function addMenuItem($menu_id, $pageTitle, $pageId, $parentId, $menuOrder) {
 	return wp_update_nav_menu_item ($menu_id, 0, $args ) ;
 }
 
+function getLogDir() {
+	$logDir = ini_get('upload_tmp_dir');
+	$logDir = $logDir ? $logDir : sys_get_temp_dir();
+	return $logDir ;
+}
+
 function appendLog($message) {
 	if(GWPM_ENABLE_DEBUGGING == true) {
 		$trace = debug_backtrace();
@@ -461,9 +469,8 @@ function appendLog($message) {
 		$functionName = $trace[1]['function'];
 		if (is_object($callerName)) { $callerName = get_class($callerName); }
 		else { $callerName = "ANON"; }
-		$logDir = ini_get('upload_tmp_dir');
-		$logDir = $logDir ? $logDir : sys_get_temp_dir();
-		$file =  $logDir . DS . 'gwpm_error.log' ;
+		
+		$file =  getLogDir() . DS . 'gwpm_error.log' ;
 
 		if(is_array($message) || is_object($message)) {
 			$message = print_r($message, true) ;
@@ -471,6 +478,22 @@ function appendLog($message) {
 		// file_put_contents($file, "\r\n" . date("Y-m-d H:i:s") . ": " . print_r($trace, true) , FILE_APPEND );
 		file_put_contents($file, "\r\n" . date("Y-m-d H:i:s") . ": " . $callerName . "." . $functionName . "():" . $line . ": " . $message , FILE_APPEND );
 	}
+}
+
+// @TODO Change to dynamic config
+function gwpmValidateLength($input) {
+   if ( strlen(serialize ( $input )) > 2000 )
+       throw new GwpmCommonException("Given input is greater than 2000 characters") ;
+}
+
+function gwpmSendEmail ($email, $subject, $msg, $headers ){
+    appendLog($email . ' - ' . $subject . ' - ' . $msg . ' - ' . $headers ) ;
+    try {
+        $rep = wp_mail( $email, $subject, $msg, $headers );
+        appendLog(' WpMailResp: ' . $rep) ;
+    } catch (Exception $e) {
+        appendLog($e) ;
+    }
 }
 
 //setReporting();

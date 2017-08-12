@@ -9,15 +9,21 @@ if (!function_exists('is_admin')) {
 global $wpdb;
 global $matrimonyPostId;
 screen_icon();
-echo "<h2>" . __('Genie WP Matrimony Configuration', 'genie_wp_matrimony') . "</h2>";
+echo "<h2>" . __('Genie WP Matrimony Configuration', 'genie-wp-matrimony') . "</h2>";
 
 if( isset( $_GET[ 'tab' ] ) ) {
 	$active_tab = $_GET[ 'tab' ];  
+	if ($active_tab != 'main_options' && $active_tab != 'dyna_options' 
+	        && $active_tab != 'oauth10a_options' && $active_tab != 'stat_to_dyna_options' ) {
+		$active_tab = "main_options" ;
+	}
 } else {
 	$active_tab = "main_options" ;
 }
 
-$dynaTabUrl = "?page=gpwma&tab=dyna_options" ;
+$dynaTabUrl = "?page=gwpma&tab=dyna_options" ;
+$statToDynaUrl = "?page=gwpma&tab=stat_to_dyna_options" ;
+$mobileTabUrl = "?page=gwpma&tab=oauth10a_options" ;
 
 if($active_tab == "main_options") {
 	$gwpmSetupModel = new GwpmSetupModel();
@@ -60,8 +66,10 @@ if($active_tab == "main_options") {
 ?>
 <div id="icon-themes" class="icon32"></div>         
 <h2 class="nav-tab-wrapper">  
-	<a href="?page=gpwma&tab=main_options" class="nav-tab <?php echo $active_tab == 'main_options' ? 'nav-tab-active' : ''; ?>" >General Options</a>  
-	<a href="<?php echo $dynaTabUrl ; ?>" class="nav-tab <?php echo $active_tab == 'dyna_options' ? 'nav-tab-active' : ''; ?>" >Dynamic Fields</a>  
+	<a href="?page=gwpma&tab=main_options" class="nav-tab <?php echo $active_tab == 'main_options' ? 'nav-tab-active' : ''; ?>" >General Options</a>  
+	<a href="<?php echo $dynaTabUrl ; ?>" class="nav-tab <?php echo $active_tab == 'dyna_options' ? 'nav-tab-active' : ''; ?>" >Dynamic Fields</a> 
+	<a href="<?php echo $statToDynaUrl; ?>" class="nav-tab <?php echo $active_tab == 'stat_to_dyna_options' ? 'nav-tab-active' : ''; ?>" >Static to Dynamic Fields</a>
+<!--	<a href="<?php echo $mobileTabUrl ; ?>" class="nav-tab <?php echo $active_tab == 'oauth10a_options' ? 'nav-tab-active' : ''; ?>" >Mobile Integration</a>   -->
 </h2>
 
 <div class="current-theme-new">
@@ -70,8 +78,12 @@ if($active_tab == "main_options") {
 
 if($active_tab == "main_options") {
 	require_once 'admin/gwpm_ctrl_admin_main.php';
-} else {
+} elseif($active_tab == "dyna_options") {
 	require_once 'admin/gwpm_ctrl_admin_dyna_fields.php';
+} elseif($active_tab == "oauth10a_options") {
+	require_once 'admin/gwpm_ctrl_admin_oauth10a.php';
+} elseif($active_tab == "stat_to_dyna_options") {
+    require_once 'admin/gwpm_ctrl_admin_statdyna.php';
 }
 ?>
 </div>

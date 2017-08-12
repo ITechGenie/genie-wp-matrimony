@@ -1,5 +1,11 @@
 <?php
 
+if (!function_exists('is_admin')) {
+    header('Status: 403 Forbidden');
+    header('HTTP/1.1 403 Forbidden');
+    exit ();
+}
+
 function createDateRangeArray($strDateFrom,$strDateTo)
 {
     // takes two dates formatted as YYYY-MM-DD and creates an
@@ -42,10 +48,10 @@ if(!isNull($user_key)) {
 		$user_id = username_exists( $user_name );
 		if ( !$user_id and email_exists($user_email) == false ) {
 			$user_id = wp_create_user( $user_name, $random_password, $user_email );
-			echo __("User created: " . $user_id . '<br />') ;
+			echo __("User created: " . $user_id . '<br />', 'genie-wp-matrimony') ;
 			array_push($userIdList, $user_id) ;
 		} else {
-			echo __('User already exists.  Password inherited.' . '<br />');
+		    echo __('User already exists.  Password inherited.' . '<br />', 'genie-wp-matrimony');
 		}
 		
 		$_POST['userId'] = $user_id ;
@@ -90,11 +96,12 @@ if(!isNull($user_key)) {
 		
 		if (sizeof($validateObj) == 0) {
 			$mymodel->updateUser($profileObj);
-			echo __('success_message', 'Profile updated successfully!!' . '<br />' );
+			echo __('success_message', 'Profile updated successfully!!' , 'genie-wp-matrimony');
+			echo ('<br />') ;
 		} else {
-			echo __('Please correct the below fields: ' . '<br />');
+		    echo __('Please correct the below fields: ' , 'genie-wp-matrimony');
 			print_r($validateObj) ;
-			echo "<>br />" ;
+			echo "<br />" ;
 		}
 	}
 	

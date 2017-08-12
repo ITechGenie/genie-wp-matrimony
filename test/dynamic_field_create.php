@@ -1,4 +1,12 @@
-<h2>Dynamic Fields </h2>
+<?php 
+
+if (!function_exists('is_admin')) {
+    header('Status: 403 Forbidden');
+    header('HTTP/1.1 403 Forbidden');
+    exit ();
+}
+
+?><h2>Dynamic Fields </h2>
 <input type="button" name="addNewRow" id="addNewRow" value="Add new field" /> <br /><br />
 <form method="post" >
 	<div id="dynamicFieldHolder">		

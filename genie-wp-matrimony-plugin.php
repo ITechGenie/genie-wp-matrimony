@@ -4,13 +4,14 @@
 Plugin Name: Genie WP Matrimony
 Plugin URI: http://www.itechgenie.com/myblog/genie-wp-matrimony
 Description: Genie WP Matrimony is Wordpress plugin which help in converting your Wordpress blog into a complete matrimonial website. This plugin uses the information of the default Wordpress users which makes it very easier and faster integration with existing Wordpress setup. 
-Version: 0.8.1
+Version: 0.8.5
 Author: prakashm88
 Author URI: http://www.itechgenie.com
 License: GPLv2
+Text Domain: genie-wp-matrimony
 */
 
-/*  Copyright 2012-2015  prakashm88
+/*  Copyright 2012-2017  prakashm88
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -51,7 +52,7 @@ if (!defined('GWPM_CONTENT_URL'))
 if (!defined('GWPM_ROOT'))
 	define('GWPM_ROOT', dirname (__FILE__));
 
-load_plugin_textdomain( 'genie_wp_matrimony', false, basename( dirname( __FILE__ ) ) . '/languages' );
+load_plugin_textdomain( 'genie-wp-matrimony', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
 /** Common configs are loaded from gwpm_config.php */
 
@@ -67,6 +68,7 @@ require_once (GWPM_LIBRARY_URL . DS . 'gwpm_template.class.php');
 require_once (GWPM_LIBRARY_URL . DS . 'gwpm_controller.class.php');
 require_once (GWPM_LIBRARY_URL . DS . 'gwpm_command.class.php');
 require_once (GWPM_LIBRARY_URL . DS . 'gwpm_exception.class.php');
+require_once (GWPM_LIBRARY_URL . DS . 'phpqrcode' . DS . 'phpqrcode.php');
 require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GenieWPMatrimonyController.php');
 require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GwpmActivityController.php');
 require_once (GWPM_APPLICATION_URL . DS . 'controllers' . DS . 'GwpmGalleryController.php');
@@ -77,6 +79,7 @@ require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmSetupModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmActivityModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmProfileModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmGalleryModel.php');
+require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmSearchModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'models' . DS . 'GwpmMessagesModel.php');
 require_once (GWPM_APPLICATION_URL . DS . 'vos' . DS . 'GwpmProfileVO.php');
 require_once (GWPM_APPLICATION_URL . DS . 'vos' . DS . 'GwpmActivityVO.php');
