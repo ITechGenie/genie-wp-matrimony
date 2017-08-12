@@ -52,9 +52,9 @@ class GwpmTemplate {
 	function get_gwpm_edit_link() {
 		if (!$this->isEditMode()) {
 			if ($this->isUpdateMode()) {
-				echo str_replace('&action=update', '', $_SERVER['REQUEST_URI']) . '&action=edit';
+				echo str_replace('&action=update', '', $_SERVER['REQUEST_URI']) . '&action=edit'; 
 			} else  {
-				echo str_replace('&action=view', '', $_SERVER['REQUEST_URI']) . '&action=edit';
+				echo str_replace('&action=view', '', $_SERVER['REQUEST_URI']) . '&action=edit'; 
 			}
 		}
 	}
@@ -65,13 +65,13 @@ class GwpmTemplate {
 		}
 		return false;
 	}
-
+	
 	function isUpdateMode() {
 		if ($this->get('action') == 'update')
 			return true;
 		return false;
 	}
-
+	
 	function isOwnPage() {
 		if(isset($_GET['pid']) && $_GET['pid'] != "") {
 			if($_GET['pid'] != get_current_user_id() ) {
@@ -96,7 +96,7 @@ class GwpmTemplate {
 		if(isset($value) && $value !=  '' && is_array($value)) {
 			$value = implode($value) ;
 		}
-		$selectObj = '<select class="form-control" name=' . $name . ' id=' . $name . ' >';
+		$selectObj = '<select name=' . $name . ' id=' . $name . ' >';
 		$selectObj .= '<option value="">Select</option>';
 		$counter = 0;
 		foreach ($options as $option) {
@@ -110,14 +110,14 @@ class GwpmTemplate {
 		$selectObj .= "</select>";
 		echo $selectObj;
 	}
-
+	
 	function getUserImageURL($userId, $imageName, $gender = null) {
 		if(!isset($imageName)) {
 			if($gender == "Male")
 				return GWPM_PUBLIC_IMG_URL . URL_S . 'male.jpg' ;
 			elseif($gender == "Female")
 				return GWPM_PUBLIC_IMG_URL . URL_S . 'female.jpg' ;
-			else
+			else 
 				return GWPM_PUBLIC_IMG_URL . URL_S . 'gwpm_icon.png' ;
 		} else {
 			// added time to the image url to get image from url without using the cache - helpful while updating the image
@@ -136,10 +136,9 @@ class GwpmTemplate {
 		$url = str_replace('&action=edit', '', $_SERVER['REQUEST_URI']);
 		$url = str_replace('&action=update', '', $url);
 		$url .= '&action=view';
-		$url = '/matrimony/';
-		$url = '<a href="' . $url . '" rel="prev"><h4 class="gwpm-content-title" >';
+		$url = '<a href="' . $url . '" rel="prev">';
 		$url .= 'Go to Home page';
-		$url .= '</h4></a>';
+		$url .= '</a>';
 		return $url ;
 	}
 

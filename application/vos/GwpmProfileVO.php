@@ -44,21 +44,9 @@ class GwpmProfileVO extends GwpmCommand {
 	var $gwpm_contact_no;
 	/** 
 	 * @mandatory
-	 * @message="Invalid value for Marital Status" 
-	 */
-
-	var $gwpm_expectation;
-	/** 
-	 * @mandatory
-	 * @message="Invalid value for Marriage Location Preference" 
+	 * @message="Invalid value for Martial Status" 
 	 */
 	var $gwpm_martial_status;
-	/** 
-	 * @mandatory
-	 * @message="Invalid value for Horoscope matching" 
-	 */
-	var $gwpm_horoscope_matching;
-	
 	/** 
 	 * @mandatory
 	 * @message="Invalid value for Zodiac Sign (Rassi)" 
@@ -74,11 +62,6 @@ class GwpmProfileVO extends GwpmCommand {
 	 * @message="Invalid value for Sevvai Dosham" 
 	 */
 	var $gwpm_sevvai_dosham ;
-	/** 
-	 * @mandatory
-	 * @message="Invalid value for Horoscope Dosha" 
-	 */
-	var $gwpm_horoscope_dosha ;
 	/** 
 	 * @mandatory
 	 * @message="Invalid value for Caste" 

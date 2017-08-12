@@ -40,7 +40,7 @@ abstract class GwpmCommand {
 		} else {
 			$this-> containsDynamicField = false;
 		}
-		//print_r ($this-> containsDynamicField) ;	
+		print_r ($this-> containsDynamicField) ;	
 	}
 
 	/**
@@ -60,7 +60,7 @@ abstract class GwpmCommand {
 				}
 			}
 		}
-		//print_r($this->containsDynamicField) ;
+		print_r($this->containsDynamicField) ;
 		if($this->containsDynamicField) {
 			foreach ($this->dynamicFields as $key) {
 				$value = $this-> $key;
@@ -123,33 +123,6 @@ abstract class GwpmCommand {
 	 * If null or empty returns false, else true 
 	 */
 	function checkIfNull($value, $key) {
-	
-		if($key == 'gwpm_expectation' ||
-		$key == 'gwpm_hobbies_activities' ||
-		$key == 'description' ||
-		$key == 'gwpm_workplace_address' ||
-		$key == 'gwpm_father_occupation' ||
-		$key == 'gwpm_mother_occupation' ||
-		$key == 'gwpm_siblings' ||
-		$key == 'gwpm_mosal' ||
-		$key == 'gwpm_caste' ||
-		$key == 'gwpm_family_address' ||
-		$key == 'gwpm_other_info' ||
-		//$key == 'gwpm_pob' ||
-		$key == 'gwpm_horoscope_dosha' ||
-		$key == 'gwpm_horoscope_matching' ||
-		$key == 'gwpm_genie_wp_matrimony' ||
-		$key == 'gwpm_education' ||
-		$key == 'gwpm_religion' || 
-		$key == 'gwpm_starsign' ||
-		$key == 'gwpm_zodiac' ||
-		$key == 'first_name' ||
-		$key == 'last_name' ||
-		strpos($key,'gwpm_user_sub')!==false ||
-		$key == 'gwpm_sevvai_dosham' //||
-		//$key == 'gwpm_contact_no'
-)
-			return true;
 		if (is_array($value) && sizeof($value) > 1) {
 			foreach ($value as $key => $itrVal) {
 				if (isNull($itrVal)) {

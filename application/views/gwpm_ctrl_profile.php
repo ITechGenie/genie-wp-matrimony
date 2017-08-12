@@ -198,7 +198,7 @@ try {
 			<table class='gwpm-table'>
 				<tbody>
 					<tr>
-						<td valign="top">Qualification Degree:</td>
+						<td valign="top">Qualification:</td>
 						<td valign="top">
 							<?php $templateObj->getSelectItem(getQualificationOptions(), 'gwpm_education[qualification]', ($modelObj->gwpm_education['qualification'])) ; ?>
 							<span class="gwpm-mandatory">*</span><br />
@@ -211,9 +211,9 @@ try {
 						</td>
 					</tr>
 					<tr>
-						<td valign="top">Qualification Details:</td>
+						<td valign="top">Specialization / Major:</td>
 						<td valign="top"><input name="gwpm_education[specialization]" id="gwpm_education[specialization]"
-							value="<?php gwpm_echo ( $modelObj->gwpm_education['specialization'] ); ?>" maxLength="250" />
+							value="<?php gwpm_echo ( $modelObj->gwpm_education['specialization'] ); ?>" maxLength="50" />
 							<span class="gwpm-mandatory">*</span></td>
 					</tr>
 					<tr>
