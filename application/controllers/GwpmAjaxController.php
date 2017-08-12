@@ -15,8 +15,11 @@ class GwpmAjaxController {
 			case "dynafield_delete":
 				$this->dynafield_delete($controlObj) ;
 				break;
+			case "dynafield_update":
+				$this->dynafield_update($controlObj) ;
+				break;
 			default:
-				appendLog ( "Invalid Ajax request." );
+				echo "Invalid Ajax request." ;
 		}
 	}
 
@@ -29,18 +32,9 @@ class GwpmAjaxController {
 		$adminModel = new GwpmAdminModel() ;
 		$adminModel-> deleteDynamicField($controlObj["val"]) ;
 	}
-	
-	function openSearch($controlObj) {
-		$searchModel = new GwpmSearchModel() ;
-		$searchModel->openSearch($controlObj) ;
-	}
 
-	function processOpenRequest($controlObj){
-		$model = $controlObj["model"] ;
-		if ($model == "open_search" ) {
-			$val = $controlObj["val"] ;
-			$this->openSearch($val);
-		}
+	function dynafield_update($controlObj) {
+		$adminModel = new GwpmAdminModel() ;
+		$adminModel-> updateDynamicField($controlObj["val"]) ;
 	}
-
 }

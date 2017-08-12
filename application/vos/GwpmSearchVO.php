@@ -24,5 +24,6 @@ class GwpmSearchVO extends GwpmCommand {
 	var $gwpm_address;
 	var $gwpm_education;
 	var $gwpm_has_photo;
+	var $search_filter_option;
 
 }

@@ -11,132 +11,251 @@ class GwpmSearchModel {
 
 	function getUserById($userId) {
 		$userObj = get_userdata($userId);
-		if (isset ($userObj) && isset ($userObj->ID) && !user_can($userObj->ID, 'level_10') && user_can($userObj->ID, 'matrimony_user')) {
+		$is_open_search = get_option( GWPM_USER_LOGIN_PREF );
+		if (!isset($is_open_search))
+			$is_open_search = 1 ; 
+		if (isset ($userObj) && isset ($userObj->ID) && !user_can($userObj->ID, 'level_10') && ( $is_open_search != 1 || user_can($userObj->ID, 'matrimony_user'))) {
 			return $userObj;
 		}
 		return null;
 	}
-
+	
 	function getDynamicFieldData() {
-		return getDynamicFieldData() ;
-	}
-
-	private function getSearchFields($vars) {
-		$queryStrings = array ();
-		$qStrs = explode('&', $vars);
-		foreach ($qStrs as $qStr) {
-			appendLog( $qStr );
-			$pairs = explode('=', $qStr);
-			$queryStrings[$pairs[0]] = $pairs[1];
-		}
-		return $queryStrings;
-	}
-
-	private function changeDateformat($dob)
-	{
-		$dob = explode(" ",$dob);
-		$dob[0] = explode("/",$dob[0]);
-		$dob[0] = $dob[0][1]."/".date('F', mktime(0, 0, 0, $dob[0][0], 10))."/".$dob[0][2];
-		return " ".join(" ",$dob);
-	}
-
-	private function refineSearchData($resultList) {
-		$allUsers = array();
-		$count = 0;
-		foreach($resultList as $userObj) {
-			$respData = Array() ;
-			$userid = $userObj->ID ;
-			$respData['display_name'] = $userObj->gwpm_full_name ;
-			$respData['gwpm_gender'] = $userObj->gwpm_gender ;
-			// $respData['gwpm_gender'] = $userObj->gwpm_gender ;
-			$respData['gwpm_id'] = $userid ;
-			$respData['gwpm_dob'] = $this->changeDateformat ( $userObj->gwpm_dob );
-			$respData['gwpm_martial_status'] = $userObj->gwpm_martial_status ;
-			$respData['user_email'] = $userObj->user_email ;
-			$respData['gwpm_profile_url'] =   wp_nonce_url('' , 'gwpm') . '&page=profile&action=view&pid=' . $userid ;
-			$respData['gwpm_image_url'] = getGravatarImageSrc($userid) ;
-			$allUsers[$count++] =  $respData ;
-		}
-		return $allUsers ;
-	}
-
-	function openSearch($searchString ) {
-		global $wpdb;
-		$resultList = array ();
-
-		$searchObj = $this->getSearchFields ( $searchString ) ;
-
-		// print_r($searchObj) ;
-
-		$l_gender = $searchObj['gwpm_gender'] ;
-		$l_age_from = $searchObj['gwpm_age_from'] ;
-		$l_age_to = $searchObj['gwpm_age_to'] ;
-		$l_m_status = $searchObj['gwpm_martial_status'] ;
-		$l_page_no = $searchObj['gwpm_page_no'] ;
-
-		appendLog( $l_gender . ' - ' . $l_age_from . ' - ' . $l_age_to . ' - ' . $l_m_status . ' - ' . $l_page_no) ;
-
-		$queryString = "SELECT DISTINCT $wpdb->usermeta.user_id FROM $wpdb->usermeta ";
-		$counter = 0 ;
-
-		if (!isNull($l_gender)) {
-			$queryString .= $this->appendWhereAnd("meta_value = '%s' AND meta_key = 'gwpm_gender' ORDER BY $wpdb->usermeta.user_id DESC ", $counter);
-			$args[$counter] = $l_gender;
-			$counter++;
-		}
-
-		if (!isNull($l_m_status)) {
-			if ($counter == 0) {
-				$queryString .= $this->appendWhereAnd("meta_value = '%s' AND meta_key = 'gwpm_martial_status' ORDER BY $wpdb->usermeta.user_id DESC ", $counter);
-			} else {
-				$queryString = " SELECT DISTINCT $wpdb->usermeta.user_id FROM $wpdb->usermeta WHERE ($wpdb->usermeta.user_id) in ( " . $queryString . " ) and meta_value = '%s' AND meta_key = 'gwpm_martial_status' ORDER BY $wpdb->usermeta.user_id DESC ";
-			}
-			$args[$counter] = $l_m_status;
-			$counter++;
-		}
-			
-		if (!isNull($l_age_from) && !isNull($l_age_to)) {
-
-			if ($counter == 0) {
-				$queryString .= $this->appendWhereAnd("meta_key = 'gwpm_dob' AND STR_TO_DATE(meta_value, '%s') BETWEEN ( CURDATE() - INTERVAL %d YEAR ) AND ( CURDATE() - INTERVAL %d YEAR) ORDER BY $wpdb->usermeta.user_id DESC ", $counter);
-			} else {
-				$queryString = " SELECT DISTINCT $wpdb->usermeta.user_id FROM $wpdb->usermeta WHERE ($wpdb->usermeta.user_id) in ( " . $queryString . " ) ";
-				$queryString .= " and meta_key = 'gwpm_dob' AND STR_TO_DATE(meta_value, '%s') BETWEEN ( CURDATE() - INTERVAL %d YEAR ) AND ( CURDATE() - INTERVAL %d YEAR) ORDER BY $wpdb->usermeta.user_id DESC " ;
-			}
-
-			$args[$counter] = "%m/%d/%Y %l:%i %p";
-			$counter++;
-			$args[$counter] = $l_age_to;
-			$counter++;
-			$args[$counter] = $l_age_from;
-			$counter++;
-		}
-			
-		if ($counter > 0 ) {
-
-			$pageNo = 1 ;
-			if (isset ($l_page_no) && $l_page_no > 0) {
-				$pageNo = $l_page_no ;
-			}
-			$responseCount = ( $pageNo * GWPM_PAGINATION_PAGE_SIZE ) - GWPM_PAGINATION_PAGE_SIZE;
-			$queryString = $queryString . " LIMIT %d, " . GWPM_PAGINATION_PAGE_SIZE  ;
-			$args[$counter] = $responseCount;
-
-			appendLog('$queryString: ' . $queryString ) ;
-
-			$preparedSql = $wpdb->prepare($queryString, $args);
-			$result = $wpdb->get_results($preparedSql);
-			foreach($result as $obj) {
-				$tempObj = $this->getUserById( $obj->user_id );
-				if (isset ($tempObj) && $tempObj != null)
-				array_push($resultList, $tempObj);
-			}
-		}
-		echo json_encode( $this->refineSearchData( $resultList ) ) ;
+		return getDynamicFieldData() ; ;
 	}
 
 	function searchUsers($searchObj) {
-		return $searchObj ;
+		global $wpdb;
+		$resultList = array ();
+		if (!isNull($searchObj->userId)) {
+			$tempObj = $this->getUserById(getStrippedUserId($searchObj->userId));
+			if (isset ($tempObj) && $tempObj != null)
+				array_push($resultList, $tempObj);
+		} else if (true) {
+			$counter = 0;
+			$args = array ();
+			$userLists = null ;
+			$searchFilterOption = $searchObj->search_filter_option ;
+			
+			if (!isNull($searchObj->username)) {
+				$args = array ();
+				$filter = "( meta_key = 'first_name' OR meta_key='last_name' ) AND meta_value LIKE '%s'" ;
+				$args[0] = like_escape($searchObj->username) . '%';
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;				
+			}
+			
+			if (!isNull($searchObj->gwpm_address)) {
+				$args = array ();
+				$filter = "meta_key = 'gwpm_address' AND meta_value = '%s' " ;
+				$args[0] = '%' . like_escape($searchObj->gwpm_address) . '%';
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;	
+			}
+					
+			if (!isNull($searchObj->gwpm_gender)) {
+				$args = array ();
+				$filter = "meta_key = 'gwpm_gender' AND meta_value = '%s' " ;
+				$args[0] = $searchObj->gwpm_gender;
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;	
+			}
+			
+			if (!isNull($searchObj->gwpm_martial_status)) {
+				$args = array ();
+				$filter = "meta_key = 'gwpm_martial_status' AND meta_value = '%s' " ;
+				$args[0] = $searchObj->gwpm_martial_status;
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
+			}
+			
+			if (!isNull($searchObj->gwpm_zodiac)) {
+				$args = array ();
+				$filter = "meta_key = 'gwpm_zodiac' AND meta_value = '%s' " ;
+				$args[0] = $searchObj->gwpm_zodiac;
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
+			}
+			
+			if (!isNull($searchObj->gwpm_starsign)) {
+				$args = array ();
+				$filter = "meta_key = 'gwpm_starsign' AND meta_value = '%s' " ;
+				$args[0] = $searchObj->gwpm_starsign;
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
+			}
+			
+			if (!isNull($searchObj->gwpm_sevvai_dosham)) {
+				$args = array ();
+				$filter = "meta_key = 'gwpm_sevvai_dosham' AND meta_value = '%s' " ;
+				$args[0] = $searchObj->gwpm_sevvai_dosham;
+				$userLists = $this->getUserIds($searchFilterOption,  $filter, $args, $userLists, $wpdb) ;
+			}
+			
+			if (!isNull($searchObj->gwpm_caste)) {
+				$args = array ();
+				$filter = "meta_key = 'gwpm_caste' AND meta_value = '%s' " ;
+				$args[0] = $searchObj->gwpm_caste;
+				$userLists = $this->getUserIds($searchFilterOption,  $filter, $args, $userLists, $wpdb) ;
+			}
+			
+			if (!isNull($searchObj->gwpm_religion)) {
+				$args = array ();
+				$filter = "meta_key = 'gwpm_religion' AND meta_value = '%s' " ;
+				$args[0] = $searchObj->gwpm_religion;
+				$userLists = $this->getUserIds($searchFilterOption,  $filter, $args, $userLists, $wpdb) ;
+			}
+			
+			if (!isNull($searchObj->gwpm_has_photo)) {
+				$args = array ();
+				$filter = "(meta_key = 'gwpm_profile_photo' OR meta_key = 'gwpm_gallery_img' ) " .
+						" AND (meta_value IS NOT NULL and meta_value != '%s' )" ;
+				$args[0] = 'a:0:{}';
+				$userLists = $this->getUserIds($searchFilterOption,  $filter, $args, $userLists, $wpdb) ;
+			}
+			
+			if (!isNull($searchObj->gwpm_age_from) && !isNull($searchObj->gwpm_age_to)) {
+				$args = array ();
+				$filter = "meta_key = 'gwpm_dob' AND STR_TO_DATE(meta_value, '%s') BETWEEN CURDATE() - INTERVAL %d YEAR AND CURDATE() - INTERVAL %d YEAR " ;
+				$args[0] = "%m/%d/%Y %l:%i %p";
+				$args[1] = $searchObj->gwpm_age_to;
+				$args[2] = $searchObj->gwpm_age_from;
+				$userLists = $this->getUserIds($searchFilterOption,  $filter, $args, $userLists, $wpdb) ;
+			}
+			
+			if (!isNull($searchObj->gwpm_dob)) {
+				$args = array ();
+				$filter = "meta_key = 'gwpm_dob' AND STR_TO_DATE(meta_value, '%s') < '%s' " ;
+				$args[0] = "%m/%d/%Y %l:%i %p";
+				$dt = new DateTime($searchObj->gwpm_dob);   				
+				$args[1] = $dt->format('Y-m-d H:i:s'); 
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
+			}
+			
+			if(isset($searchObj->gwpm_education)) {
+				$gwpm_education = $searchObj->gwpm_education ;
+				if ( !isNull($gwpm_education[qualification] )) {
+					$args = array ();
+					$filter = "meta_key = 'gwpm_education' AND meta_value LIKE %s" ;
+					$args[0] = '%s:13:"qualification";s:1:"' . like_escape($gwpm_education[qualification]) . '"%' ;
+					$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
+				}
+				if ( !isNull($gwpm_education[status] )) {
+					$args = array ();
+					$filter = "meta_key = 'gwpm_education' AND meta_value LIKE %s" ;
+					$args[0] = '%s:6:"status";s:1:"' . like_escape($gwpm_education[status]) . '"%' ;
+					$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
+				}
+			}
+			
+			$dynaData = getDynamicFieldData() ;
+			$totalDynamicFields = $dynaData['gwpm_dynamic_field_count'] ;
+			if($totalDynamicFields > 0) {
+				$dyna_field_item = $dynaData['dyna_field_item'] ;
+				if($dyna_field_item != null && sizeof($dyna_field_item) > 0) {
+					$keys = array_keys($dyna_field_item)  ;
+					foreach ($keys as $vkey) {
+						if (!isNull($searchObj-> $vkey)) {
+							appendLog( $vkey . ' - ' . $searchObj-> $vkey . ' * ' );
+							$args = array ();
+							$filter = "meta_value = '%s' AND meta_key = '" . $vkey . "' " ;
+							$args[0] = like_escape( $searchObj-> $vkey );
+							$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;	
+						}
+					}
+				}
+			}
+			
+			appendLog( " Final List <br />" );
+			
+			if(isset($userLists) && $userLists!= null ) {
+				foreach($userLists as $obj) {
+					appendLog(  $obj );
+					$tempObj = $this->getUserById( $obj );
+					if (isset ($tempObj) && $tempObj != null)
+						array_push($resultList, $tempObj);
+				}
+			}
+			
+		} else {
+			$counter = 0;
+			$args = array ();
+			$queryString = "SELECT DISTINCT ($wpdb->usermeta.user_id) FROM $wpdb->usermeta ";
+			if (!isNull($searchObj->username)) {
+				$queryString .= $this->appendWhereOr("meta_value LIKE '%s' AND ( meta_key = 'first_name' OR meta_key='last_name' )", $counter);
+				$args[$counter] = $searchObj->username . '%';
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_address)) {
+				$queryString .= $this->appendWhereOr("meta_value = '%s' AND meta_key = 'gwpm_address' ", $counter);
+				$args[$counter] = $searchObj->gwpm_address;
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_gender)) {
+				$queryString .= $this->appendWhereOr("meta_value = '%s' AND meta_key = 'gwpm_gender' ", $counter);
+				$args[$counter] = $searchObj->gwpm_gender;
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_martial_status)) {
+				$queryString .= $this->appendWhereOr("meta_value = '%s' AND meta_key = 'gwpm_martial_status' ", $counter);
+				$args[$counter] = $searchObj->gwpm_martial_status;
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_zodiac)) {
+				$queryString .= $this->appendWhereOr("meta_value = '%s' AND meta_key = 'gwpm_zodiac' ", $counter);
+				$args[$counter] = $searchObj->gwpm_zodiac;
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_starsign)) {
+				$queryString .= $this->appendWhereOr("meta_value = '%s' AND meta_key = 'gwpm_starsign' ", $counter);
+				$args[$counter] = $searchObj->gwpm_starsign;
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_sevvai_dosham)) {
+				$queryString .= $this->appendWhereOr("meta_value = '%s' AND meta_key = 'gwpm_sevvai_dosham' ", $counter);
+				$args[$counter] = $searchObj->gwpm_sevvai_dosham;
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_caste)) {
+				$queryString .= $this->appendWhereOr("meta_value = '%s' AND meta_key = 'gwpm_caste' ", $counter);
+				$args[$counter] = $searchObj->gwpm_caste;
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_religion)) {
+				$queryString .= $this->appendWhereOr("meta_value = '%s' AND meta_key = 'gwpm_religion' ", $counter);
+				$args[$counter] = $searchObj->gwpm_religion;
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_age_from) && !isNull($searchObj->gwpm_age_to)) {
+				$queryString .= $this->appendWhereOr("meta_key = 'gwpm_dob' AND STR_TO_DATE(meta_value, '%s') BETWEEN CURDATE() - INTERVAL %d YEAR AND CURDATE() - INTERVAL %d YEAR ", $counter);
+				$args[$counter] = "%m/%d/%Y %l:%i %p"; 
+				$counter++;
+				$args[$counter] = $searchObj->gwpm_age_to;
+				$counter++;
+				$args[$counter] = $searchObj->gwpm_age_from;
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_dob)) {
+				$queryString .= $this->appendWhereOr("meta_key = 'gwpm_dob' AND STR_TO_DATE(meta_value, '%s') < '%s' ", $counter);
+				$args[$counter] = "%m/%d/%Y %l:%i %p"; 
+				$counter++;
+				$dt = new DateTime($searchObj->gwpm_dob);   				
+				$args[$counter] = $dt->format('Y-m-d H:i:s'); 
+				$counter++;
+			}
+			if (!isNull($searchObj->gwpm_has_photo)) {
+				$queryString .= $this->appendWhereOr("(meta_key = 'gwpm_profile_photo' OR meta_key = 'gwpm_gallery_img' ) " .
+						" AND (meta_value IS NOT NULL and meta_value != 'a:0:{}' )", $counter);
+				$counter++;
+			}
+			
+			appendLog( " Final Query " . $queryString );
+			
+			if ($counter > 0 ) {
+				$preparedSql = $wpdb->prepare($queryString, $args);
+				$result = $wpdb->get_results($preparedSql);
+				foreach($result as $obj) {
+					$tempObj = $this->getUserById( $obj->user_id );
+					if (isset ($tempObj) && $tempObj != null)
+						array_push($resultList, $tempObj);
+				}
+			}
+		}
+		return $resultList;
 	}
 
 	private function appendWhereOr($str, $counter) {
@@ -147,51 +266,48 @@ class GwpmSearchModel {
 		}
 		return $str;
 	}
-
+	
 	private function appendWhereAnd($str, $counter) {
 		if ($counter == 0) {
-			$str = " WHERE  " . $str . "  ";
+			$str = " WHERE ( " . $str . " ) ";
 		} else {
 			$str = " AND ( " . $str . " ) ";
 		}
 		return $str;
 	}
-
-	private function appendForQuickSearch($qString, $str, $counter) {
-		if ($counter == 0) {
-			$str = " SELECT DISTINCT ($wpdb->usermeta.user_id) FROM WHERE ( " . $str . " ) ";
-		} else {
-			$str = " AND $wpdb->usermeta.user_id in ( select $wpdb->usermeta.user_id from ($wpdb->usermeta.user_id) where " . $str . " ) ";
-		}
-		return $str;
-	}
-
+	
 	private function appendQuery($str, $queryString) {
 		return $queryString . $str  ;
 	}
-
-	private function getUserIds($filters, $args, $userList, $wpdb) {
+	
+	private function getUserIds($searchOption, $filters, $args, $userList, $wpdb) {
 		$resultList = array() ;
-		$query = "SELECT DISTINCT a.user_id FROM $wpdb->usermeta a where " . $filters . ' order by  a.user_id asc' ;
+		$query = "SELECT DISTINCT $wpdb->usermeta.user_id FROM $wpdb->usermeta WHERE " . $filters ;
+		appendLog('-----------' );
+		appendLog( print_r($userList, true) );
 		if($userList != null ) {
 			if(sizeof($userList) > 0) {
 				$userList = esc_sql( $userList );
 				$userList = implode( ', ', $userList );
-				$query .= " AND " . user_id . " IN ( {$userList} )";
+				if ($searchOption == '1')
+					$query .= " AND " . user_id . " IN ( {$userList} ) ";
+				else 
+					$query .= " OR " . user_id . " IN ( {$userList} ) ";
 			} else {
-				// $query .= "AND " . user_id . " IN ( ) ";
+				if ($searchOption == '1')
+					$query .= " AND " . user_id . " IN ( '' ) ";
 			}
 		}
 		appendLog( $query );
-		//  appendLog( print_r($args, true)) ;
+		appendLog( print_r($args, true)) ;
 		$preparedSql = $wpdb->prepare($query, $args);
 		$result = $wpdb->get_results($preparedSql);
 		$fetchedList = array() ;
 		foreach($result as $obj) {
-			// appendLog ( $obj->user_id );
+			appendLog ( $obj->user_id );
 			$tempObj = $obj->user_id ;
 			if (isset ($tempObj) && $tempObj != null)
-			array_push($fetchedList, $tempObj);
+				array_push($fetchedList, $tempObj);
 		}
 		return $fetchedList ;
 	}

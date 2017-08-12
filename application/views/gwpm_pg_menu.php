@@ -1,5 +1,5 @@
-<?php if( !$this->isOwnPage() ) { ?>
-<div class="gwpm-menu" style="display:none">
+<?php if( is_user_logged_in() && !$this->isOwnPage() ) { ?>
+<div class="gwpm-menu">
 	<ul >
 	<li ><a href='<?php $this->get_gwpm_formated_url('page=profile&action=view') ?>' >Account</a></li>
 	<li ><a href='<?php $this->get_gwpm_formated_url('page=activity&action=view') ?>' >Activity</a></li>
