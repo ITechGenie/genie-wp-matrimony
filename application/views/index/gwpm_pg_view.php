@@ -13,7 +13,7 @@
 				<td>View your Search other users at <a href='<?php $this->get_gwpm_formated_url('page=search&action=view') ?>' >Search</a></td></tr><tr>
 				<?php 
 				
-				if(DEVELOPMENT_ENVIRONMENT == false) {
+				if(DEVELOPMENT_ENVIRONMENT == true) {
 					?>
 					<td>View Developer Test Page <a href='<?php $this->get_gwpm_formated_url('page=admin') ?>'>Admin</a></td></tr><tr>
 					<td>View Developer Test Page <a href='<?php $this->get_gwpm_formated_url('page=test') ?>'>Test Page</a></td></tr><tr>

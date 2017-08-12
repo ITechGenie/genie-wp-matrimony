@@ -11,7 +11,10 @@ class GwpmSearchModel {
 
 	function getUserById($userId) {
 		$userObj = get_userdata($userId);
-		if (isset ($userObj) && isset ($userObj->ID) && !user_can($userObj->ID, 'level_10') && user_can($userObj->ID, 'matrimony_user')) {
+		$is_open_search = get_option( GWPM_USER_LOGIN_PREF );
+		if (!isset($is_open_search))
+			$is_open_search = 1 ; 
+		if (isset ($userObj) && isset ($userObj->ID) && !user_can($userObj->ID, 'level_10') && ( $is_open_search != 1 || user_can($userObj->ID, 'matrimony_user'))) {
 			return $userObj;
 		}
 		return null;
@@ -32,68 +35,69 @@ class GwpmSearchModel {
 			$counter = 0;
 			$args = array ();
 			$userLists = null ;
+			$searchFilterOption = $searchObj->search_filter_option ;
 			
 			if (!isNull($searchObj->username)) {
 				$args = array ();
 				$filter = "( meta_key = 'first_name' OR meta_key='last_name' ) AND meta_value LIKE '%s'" ;
 				$args[0] = like_escape($searchObj->username) . '%';
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;				
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;				
 			}
 			
 			if (!isNull($searchObj->gwpm_address)) {
 				$args = array ();
 				$filter = "meta_key = 'gwpm_address' AND meta_value = '%s' " ;
 				$args[0] = '%' . like_escape($searchObj->gwpm_address) . '%';
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;	
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;	
 			}
 					
 			if (!isNull($searchObj->gwpm_gender)) {
 				$args = array ();
 				$filter = "meta_key = 'gwpm_gender' AND meta_value = '%s' " ;
 				$args[0] = $searchObj->gwpm_gender;
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;	
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;	
 			}
 			
 			if (!isNull($searchObj->gwpm_martial_status)) {
 				$args = array ();
 				$filter = "meta_key = 'gwpm_martial_status' AND meta_value = '%s' " ;
 				$args[0] = $searchObj->gwpm_martial_status;
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
 			}
 			
 			if (!isNull($searchObj->gwpm_zodiac)) {
 				$args = array ();
 				$filter = "meta_key = 'gwpm_zodiac' AND meta_value = '%s' " ;
 				$args[0] = $searchObj->gwpm_zodiac;
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
 			}
 			
 			if (!isNull($searchObj->gwpm_starsign)) {
 				$args = array ();
 				$filter = "meta_key = 'gwpm_starsign' AND meta_value = '%s' " ;
 				$args[0] = $searchObj->gwpm_starsign;
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
 			}
 			
 			if (!isNull($searchObj->gwpm_sevvai_dosham)) {
 				$args = array ();
 				$filter = "meta_key = 'gwpm_sevvai_dosham' AND meta_value = '%s' " ;
 				$args[0] = $searchObj->gwpm_sevvai_dosham;
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+				$userLists = $this->getUserIds($searchFilterOption,  $filter, $args, $userLists, $wpdb) ;
 			}
 			
 			if (!isNull($searchObj->gwpm_caste)) {
 				$args = array ();
 				$filter = "meta_key = 'gwpm_caste' AND meta_value = '%s' " ;
 				$args[0] = $searchObj->gwpm_caste;
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+				$userLists = $this->getUserIds($searchFilterOption,  $filter, $args, $userLists, $wpdb) ;
 			}
 			
 			if (!isNull($searchObj->gwpm_religion)) {
 				$args = array ();
 				$filter = "meta_key = 'gwpm_religion' AND meta_value = '%s' " ;
 				$args[0] = $searchObj->gwpm_religion;
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+				$userLists = $this->getUserIds($searchFilterOption,  $filter, $args, $userLists, $wpdb) ;
 			}
 			
 			if (!isNull($searchObj->gwpm_has_photo)) {
@@ -101,7 +105,7 @@ class GwpmSearchModel {
 				$filter = "(meta_key = 'gwpm_profile_photo' OR meta_key = 'gwpm_gallery_img' ) " .
 						" AND (meta_value IS NOT NULL and meta_value != '%s' )" ;
 				$args[0] = 'a:0:{}';
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+				$userLists = $this->getUserIds($searchFilterOption,  $filter, $args, $userLists, $wpdb) ;
 			}
 			
 			if (!isNull($searchObj->gwpm_age_from) && !isNull($searchObj->gwpm_age_to)) {
@@ -110,7 +114,7 @@ class GwpmSearchModel {
 				$args[0] = "%m/%d/%Y %l:%i %p";
 				$args[1] = $searchObj->gwpm_age_to;
 				$args[2] = $searchObj->gwpm_age_from;
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+				$userLists = $this->getUserIds($searchFilterOption,  $filter, $args, $userLists, $wpdb) ;
 			}
 			
 			if (!isNull($searchObj->gwpm_dob)) {
@@ -119,7 +123,7 @@ class GwpmSearchModel {
 				$args[0] = "%m/%d/%Y %l:%i %p";
 				$dt = new DateTime($searchObj->gwpm_dob);   				
 				$args[1] = $dt->format('Y-m-d H:i:s'); 
-				$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+				$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
 			}
 			
 			if(isset($searchObj->gwpm_education)) {
@@ -128,13 +132,13 @@ class GwpmSearchModel {
 					$args = array ();
 					$filter = "meta_key = 'gwpm_education' AND meta_value LIKE %s" ;
 					$args[0] = '%s:13:"qualification";s:1:"' . like_escape($gwpm_education[qualification]) . '"%' ;
-					$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+					$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
 				}
 				if ( !isNull($gwpm_education[status] )) {
 					$args = array ();
 					$filter = "meta_key = 'gwpm_education' AND meta_value LIKE %s" ;
 					$args[0] = '%s:6:"status";s:1:"' . like_escape($gwpm_education[status]) . '"%' ;
-					$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;
+					$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
 				}
 			}
 			
@@ -150,7 +154,7 @@ class GwpmSearchModel {
 							$args = array ();
 							$filter = "meta_value = '%s' AND meta_key = '" . $vkey . "' " ;
 							$args[0] = like_escape( $searchObj-> $vkey );
-							$userLists = $this->getUserIds($filter, $args, $userLists, $wpdb) ;	
+							$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;	
 						}
 					}
 				}
@@ -238,6 +242,9 @@ class GwpmSearchModel {
 						" AND (meta_value IS NOT NULL and meta_value != 'a:0:{}' )", $counter);
 				$counter++;
 			}
+			
+			appendLog( " Final Query " . $queryString );
+			
 			if ($counter > 0 ) {
 				$preparedSql = $wpdb->prepare($queryString, $args);
 				$result = $wpdb->get_results($preparedSql);
@@ -273,7 +280,7 @@ class GwpmSearchModel {
 		return $queryString . $str  ;
 	}
 	
-	private function getUserIds($filters, $args, $userList, $wpdb) {
+	private function getUserIds($searchOption, $filters, $args, $userList, $wpdb) {
 		$resultList = array() ;
 		$query = "SELECT DISTINCT $wpdb->usermeta.user_id FROM $wpdb->usermeta WHERE " . $filters ;
 		appendLog('-----------' );
@@ -282,9 +289,13 @@ class GwpmSearchModel {
 			if(sizeof($userList) > 0) {
 				$userList = esc_sql( $userList );
 				$userList = implode( ', ', $userList );
-				$query .= "OR " . user_id . " IN ( {$userList} ) ";
+				if ($searchOption == '1')
+					$query .= " AND " . user_id . " IN ( {$userList} ) ";
+				else 
+					$query .= " OR " . user_id . " IN ( {$userList} ) ";
 			} else {
-				// $query .= "AND " . user_id . " IN ( ) ";
+				if ($searchOption == '1')
+					$query .= " AND " . user_id . " IN ( '' ) ";
 			}
 		}
 		appendLog( $query );
