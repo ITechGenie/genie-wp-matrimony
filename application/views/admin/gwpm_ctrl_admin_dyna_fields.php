@@ -7,7 +7,10 @@ if (!function_exists('is_admin')) {
 }
 
 $deletedItems = "" ;
-$formSubmitted = $_POST['formSubmitted'] ;
+$formSubmitted = null ; 
+if (isset($_POST['formSubmitted'] )) {
+    $formSubmitted = $_POST['formSubmitted'] ;
+}
 
 if($formSubmitted != null) {
 
@@ -48,10 +51,11 @@ var selectBoxCounts = [] ;
 	method="post">
 	<div id="oldDynamicFieldHolder">
 	<?php
-	$totalFields = $existingRecords ;
+	$itrTotalFields = $existingRecords ;
 	$displayText = "" ;
 	$alternateClass = "" ;
-	for(;$totalFields > 0; $totalFields-- ) {
+	//for(;$totalFields > 0; $totalFields-- ) {
+	for ($totalFields =1; $totalFields <= $itrTotalFields ; $totalFields++ ) {
 		$fetched_options = get_option(GWPM_DYNA_KEY_PREFIX . $totalFields) ;
 		if(isset($fetched_options) && $fetched_options != null ) {
 

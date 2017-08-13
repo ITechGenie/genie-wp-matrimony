@@ -102,8 +102,11 @@ function savePhotoToUploadFolder($photo, $userId, $photoId=null) {
 		$photoEXT = ".png";
 		$pType = 2;
 	}
+	
+	appendLog("Size of photo: " . $photo["size"] . ' - ' . gwpmGetFormattedSize($photo["size"])) ;
 
-	if (isset ($pType) && ($photo["size"] < (GWPM_IMAGE_MAX_SIZE * 1024))) {
+	//if (isset ($pType) && ($photo["size"] < (GWPM_IMAGE_MAX_SIZE * 1024))) {
+	if (isset ($pType) && ($photo["size"] < gwpmGetMaxFileUploadBytes() )) {
 		if ($photo["error"] > 0) {
 			throw GwpmCommonException("Upload of profile photo failed. Error Code: " . $photo["error"]);
 		} else {
@@ -161,7 +164,7 @@ function savePhotoToUploadFolder($photo, $userId, $photoId=null) {
 			unset ($photo["tmp_name"]);
 		}
 	} else {
-		throw new GwpmCommonException("Upload of profile photo failed. Invalid photo type (" . $pType . " - " . $photo["type"] . ") or Size greater than " . GWPM_IMAGE_MAX_SIZE . " KB");
+		throw new GwpmCommonException("Upload of profile photo failed. Invalid photo type (" . $pType . " - " . $photo["type"] . ") or Size greater than " . gwpmGetMaxFileUploadSize());
 	}
 	return $photo;
 }
@@ -286,7 +289,7 @@ function getMaritalOptions($id = 'all') {
 		'Single',
 		'Married',
 		'Divorsed',
-
+	    'Widow',
 
 	);
 	return validateOptionsId($opts, $id);
@@ -451,7 +454,8 @@ function addMenuItem($menu_id, $pageTitle, $pageId, $parentId, $menuOrder) {
 	        'menu-item-position' => $menuOrder
 	);
 		
-	appendLog('createMenuItems : ' . $menu_id . ' - ' . $args) ;
+	appendLog('createMenuItems : ' . $menu_id . ' - ' ) ;
+	appendLog($args) ;
 	return wp_update_nav_menu_item ($menu_id, 0, $args ) ;
 }
 
@@ -463,21 +467,38 @@ function getLogDir() {
 
 function appendLog($message) {
 	if(GWPM_ENABLE_DEBUGGING == true) {
-		$trace = debug_backtrace();
-		$line   = $trace[0]['line'];
-		$callerName = $trace[1]['object'];
-		$functionName = $trace[1]['function'];
-		if (is_object($callerName)) { $callerName = get_class($callerName); }
-		else { $callerName = "ANON"; }
-		
-		$file =  getLogDir() . DS . 'gwpm_error.log' ;
-
-		if(is_array($message) || is_object($message)) {
-			$message = print_r($message, true) ;
-		}
-		// file_put_contents($file, "\r\n" . date("Y-m-d H:i:s") . ": " . print_r($trace, true) , FILE_APPEND );
-		file_put_contents($file, "\r\n" . date("Y-m-d H:i:s") . ": " . $callerName . "." . $functionName . "():" . $line . ": " . $message , FILE_APPEND );
-	}
+        $trace = debug_backtrace();
+        $line = "NOLINE";
+        $callerName = "ANONCLS";
+        $functionName = "ANONFUN";
+        if (isset($trace)) {
+            if (isset($trace[0]['line'])) {
+                $line = $trace[0]['line'];
+            }
+            if (isset($trace[1]['object'])) {
+                $callerName = $trace[1]['object'];
+            }
+            if (isset($trace[1]['function'])) {
+                $functionName = $trace[1]['function'];
+            }
+        } 
+        if (is_object($callerName)) {
+            $callerName = get_class($callerName);
+        } else {
+            $callerName = "ANON";
+        }
+        
+        $file = getLogDir() . DS . 'gwpm_error.log';
+        
+        if (is_array($message) || is_object($message)) {
+            $message = print_r($message, true);
+        }
+        // file_put_contents($file, "\r\n" . date("Y-m-d H:i:s") . ": " .
+        // print_r($trace, true) , FILE_APPEND );
+        file_put_contents($file, 
+                "\r\n" . date("Y-m-d H:i:s") . ": " . $callerName . "." . $functionName . "():" . $line . ": " . $message, 
+                FILE_APPEND);
+    }
 }
 
 // @TODO Change to dynamic config
@@ -496,4 +517,80 @@ function gwpmSendEmail ($email, $subject, $msg, $headers ){
     }
 }
 
-//setReporting();
+function gwpm_return_bytes($val) {
+    appendLog($val) ;
+    $val = trim($val);
+    $last = strtolower($val[strlen($val)-1]);
+    $val= preg_replace('/[^0-9\.]/', '', $val);
+    appendLog($val . ' - ' . $last) ;
+    switch($last)
+    {
+        case 'g':
+            $val *= (1024 * 1024 * 1024); //1073741824
+            break;
+        case 'm':
+            $val *= (1024 * 1024); //1048576
+            break;
+        case 'k':
+            $val *= 1024;
+            break;
+    }
+    return $val;
+}
+
+function gwpmGetFormattedSize($bytes) {
+    
+    appendLog($bytes) ;
+    
+    if ($bytes >= 1073741824)
+    {
+        $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+    }
+    elseif ($bytes >= 1048576)
+    {
+        $bytes = number_format($bytes / 1048576, 2) . ' MB';
+    }
+    elseif ($bytes >= 1024)
+    {
+        $bytes = number_format($bytes / 1024, 2) . ' KB';
+    }
+    elseif ($bytes > 1)
+    {
+        $bytes = $bytes . ' bytes';
+    }
+    elseif ($bytes == 1)
+    {
+        $bytes = $bytes . ' byte';
+    }
+    else
+    {
+        $bytes = '0 bytes';
+    }
+    
+    appendLog($bytes) ;
+    
+    return $bytes;
+}
+
+function gwpmGetMaxFileUploadSize()
+{
+    
+    $bytes = gwpmGetMaxFileUploadBytes() ;
+    return gwpmGetFormattedSize($bytes) ;
+    
+}
+
+function gwpmGetMaxFileUploadBytes() {
+    //select maximum upload size
+    $max_upload = gwpm_return_bytes(ini_get('upload_max_filesize'));
+    //select post limit
+    $max_post = gwpm_return_bytes(ini_get('post_max_size'));
+    //select memory limit
+    $memory_limit = gwpm_return_bytes(ini_get('memory_limit'));
+    // return the smallest of them, this defines the real limit
+     $val =  min($max_upload, $max_post, $memory_limit);
+     appendLog($val) ;
+     return $val ;
+}
+
+// setReporting();

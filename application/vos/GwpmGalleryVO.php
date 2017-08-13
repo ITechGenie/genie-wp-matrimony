@@ -14,7 +14,7 @@ class GwpmGalleryVO extends GwpmCommand {
 	var $gwpm_gallery_img;
 	var $max_id ;
 	
-	function GwpmGalleryVO(){
+	function __construct(){
 		
 	}
 }

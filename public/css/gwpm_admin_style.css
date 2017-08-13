@@ -125,3 +125,29 @@
 	font-weight: bold;
 	color: red;
 }
+
+.gwpm-expander-header {
+	width: 100%;
+	margin: 0;
+	padding: 12px 5px 10px 10px;
+	border: none;
+	outline: 0;
+	background: 0 0;
+	line-height: 19px;
+	text-align: left;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.gwpm-faqs-container {
+	background: white ;
+	margin: 0px;
+	padding: 8px;
+	border-color: #cecece;
+}
+
+.gwpm-seperator {
+	width: 100%;
+	border-top: 1px solid #ccc;
+	margin: 0px;
+}

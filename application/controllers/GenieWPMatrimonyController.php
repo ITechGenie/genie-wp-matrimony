@@ -6,7 +6,7 @@ class GenieWPMatrimonyController {
 	protected $_isDynaMigrated;
 	protected $links;
 
-	function GenieWPMatrimonyController() {
+	function __construct() {
 		add_action('init', array (
 			& $this,
 			'gwpm_init'
@@ -85,9 +85,9 @@ class GenieWPMatrimonyController {
 	    global $wpdb;
 	    $this->_matrimonyPageId = $wpdb->get_var($wpdb->prepare("select post_id from $wpdb->postmeta where meta_key = '%s'", GWPM_META_KEY));
 	    $this->_userLoginPreference = get_option( GWPM_USER_LOGIN_PREF );
-	    $this->$_isDynaMigrated = get_option( GWPM_DYNA_FIELD_MIG_COMPLETE );
-	    if (!isset($this->$_isDynaMigrated) || $this->$_isDynaMigrated == null) {
-	        $this->$_isDynaMigrated = false; 
+	    $this->_isDynaMigrated = get_option( GWPM_DYNA_FIELD_MIG_COMPLETE );
+	    if (!isset($this->_isDynaMigrated) || $this->_isDynaMigrated == null) {
+	        $this->_isDynaMigrated = false; 
 	    }
 	    // $this->$_isDynaMigrated = false;
 	}

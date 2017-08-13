@@ -220,7 +220,7 @@ if ( $modelObj != null) {
 						<td valign="top"><?php _e('Profile Photo', 'genie-wp-matrimony') ?>:</td>
 						<td valign="top">
 						<input type="file" name="gwpm_profile_photo" id="gwpm_profile_photo" /> <br />
-						<span class="gwpm-help" >Image maximum size <b>500</b> kb </span>
+						<span class="gwpm-help" >Image maximum size <?php echo gwpmGetMaxFileUploadSize(); ?></span>
 					</tr>
 				</tbody>
 			</table>

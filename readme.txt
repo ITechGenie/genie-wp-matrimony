@@ -4,8 +4,8 @@ Contributors: prakashm88
 Donate link: http://www.itechgenie.com/
 Tags: matrimony, India matrimony, marriage, brides, grooms, matrimonial, dating
 Requires at least: 3.0
-Tested up to: 4.8
-Stable tag: 0.8.5
+Tested up to: 4.8.1
+Stable tag: 0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: genie-wp-matrimony
@@ -70,21 +70,52 @@ with existing Wordpress setup.</li>
 11. Dynamic fields in User profile edit page
 12. Admin dashboard page
 13. Menu Options
+14. Staic fields to dynamic field migration - step 1
+15. Staic fields to dynamic field migration - step 2
+16. Staic fields to dynamic field migration - step 3
+17. Staic fields to dynamic field migration - step 4
+18. Staic fields to dynamic field migration - step 5
+19. Confirmation on migration
+20. Staic fields are shown as Dynamic field after migrations
+21. New FAQ section in Plugin Admin section
+
 
 == Upgrade Notice ==
 
-1. Options to enable guest users to search and view registered users
-2. Parent menu item enabling for new themes
-3. Dynamic fields edit and update options added in admin screen
-4. Search optimized to better results
-5. jQuery deprecated APIs updated with new APIs
-6. PHP deprecated APIs updated with new APIs
-7. Contact No field made non mandatory field
-8. Test framework updated with Dynamic field support
-9. Code cleanup
-10. Minor bug fixes
+1. Move the static fields to Dynamic fields and configure as needed
+2. Workaround to fix content being displayed twice when used with some incompatible plugins and themes
+3. Added restrcition for test pages - only admins can view
+4. Some XSS attach vulnarability fixes
+5. File upload size defaulted to php.ini
+6. Added QR code base files for future support
+7. Lot of bug fixes
+8. UI optimizations
+9. Remove unwanted logs
+10. Updated the text-domain for the plugin and updated POT files
+11. Added customized email method to track email notification failures
+12. New design for Edit profile and Update profile screens - only if static filed are migrated 
+13. Email notifiation on Role change
+14. removed Deprecated PHP methods
+
 
 == Changelog ==
+
+= 0.9 =
+
+Move the static fields to Dynamic fields and configure as needed
+Workaround to fix content being displayed twice when used with some incompatible plugins and themes
+Added restrcition for test pages - only admins can view
+Some XSS attach vulnarability fixes
+File upload size defaulted to php.ini
+Added QR code base files for future support
+Lot of bug fixes
+UI optimizations
+Remove unwanted logs
+Updated the text-domain for the plugin and updated POT files
+Added customized email method to track email notification failures
+New design for Edit profile and Update profile screens - only if static filed are migrated 
+Email notifiation on Role change
+removed Deprecated PHP methods
 
 = 0.8.1 =
 

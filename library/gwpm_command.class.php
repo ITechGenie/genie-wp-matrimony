@@ -16,7 +16,7 @@ abstract class GwpmCommand {
 	/*
 	 * Constructor for the command object
 	 */
-	function GwpmCommand($records, $dynamicFields = null, $dynamicFieldsValidation = null) {
+	function __construct($records, $dynamicFields = null, $dynamicFieldsValidation = null) {
 		/*
 		 * Fetch values from $_POST or $_GET and set in value object
 		 */
@@ -51,7 +51,7 @@ abstract class GwpmCommand {
 	function validate() {
 		$invalidProperties = array ();
 		foreach (array_keys(get_class_vars(get_class($this))) as $key) {
-			 $value = $this-> $key;
+			$value = $this-> $key;
 			$ref = new ReflectionProperty(get_class($this), $key);
 			$docTagValue = $ref->getDocComment();
 			if (strpos($docTagValue, 'mandatory') != false) {
@@ -63,7 +63,7 @@ abstract class GwpmCommand {
 		//print_r($this->containsDynamicField) ;
 		if($this->containsDynamicField) {
 			foreach ($this->dynamicFields as $key) {
-			     $value = $this-> $key;
+				$value = $this-> $key;
 				if(!$this->checkIfNull($value, $key)) {
 					$messageValue = $this->dynamicFieldsValidation[$key] ;
 					if(!isset($messageValue) || $messageValue == null) {
