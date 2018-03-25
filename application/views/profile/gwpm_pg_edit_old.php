@@ -230,7 +230,7 @@ if ( $modelObj != null) {
 			$totalDynamicFields = $dynaData['gwpm_dynamic_field_count'] ;
 			$dyna_field_item = $dynaData['dyna_field_item'] ;
 			
-			if(sizeof($dyna_field_item) > 0) {
+			if(isset($dyna_field_item) && sizeof($dyna_field_item) > 0) {
 				?>
 				<h3>
 					<a href="#"><?php _e('Other Information', 'genie-wp-matrimony') ?></a> <?php _e("(Enter 'NA' if Not Applicable)", 'genie-wp-matrimony') ?>
@@ -305,7 +305,7 @@ if ( $modelObj != null) {
 		var month = today.getMonth() ;
 		jQuery("#gwpm_dob").datetimepicker({ ampm: true, maxDate: new Date(year, month, 1) });
 		// jQuery("#gwpm_tmasvs_reg_date").datepicker({ dateFormat: 'MM d, yy', changeMonth: true, changeYear: true, firstDay: 0, monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'], monthNamesShort: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'], dayNames: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], dayNamesShort: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], dayNamesMin: ['Su','Mo','Tu','We','Th','Fr','Sa'], isRTL: false, minDate: '-100y', maxDate: '+5y', yearRange: '-100y:+5y' });
-		jQuery("#gwpm_accordion").accordion({ autoHeight: false, collapsible: true, active: -1 });
+		// jQuery("#gwpm_accordion").accordion({ autoHeight: false, collapsible: true, active: -1 });
 		jQuery("select").change(function(obj){
 			if(obj.currentTarget.id == "gwpm_education[qualification]" && obj.currentTarget.value == 7) {
 				jQuery("#gwpm_education_other").removeClass("gwpm_hidden_fields"); 

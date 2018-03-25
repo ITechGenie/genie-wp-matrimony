@@ -18,7 +18,7 @@ function gwpm_admin_dasboard_page_all_users() {
 ?>
 <div id="gwpm_admin_dashboard" class="wrap">
 	<?php
-		screen_icon('options-general'); 
+		//screen_icon('options-general'); 
 		echo "<h2>" . __( 'Admin Dashboard', 'genie-wp-matrimony' ) . "</h2>" ;
 	?>
 <div id="poststuff" class="metabox-holder">

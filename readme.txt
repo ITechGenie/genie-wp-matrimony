@@ -1,11 +1,11 @@
 === Genie WP Matrimony ===
 
 Contributors: prakashm88
-Donate link: http://www.itechgenie.com/
+Donate link: https://itechgenie.com/myblog/genie-wp-matrimony/
 Tags: matrimony, India matrimony, marriage, brides, grooms, matrimonial, dating
-Requires at least: 3.0
-Tested up to: 4.8.1
-Stable tag: 0.9
+Requires at least: 4.0
+Tested up to: 4.9.4
+Stable tag: 0.9.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: genie-wp-matrimony
@@ -34,26 +34,20 @@ with existing Wordpress setup.</li>
 6. There should be an additional 'Genie WP Matrimony' sub-menu under the Settings option of your dashboard to setup the plugin.
 7. Clicking on the 'Matrimony' menu in the dashboard helps the user to update the user profile details. 
 8. Access the complete Matrimonial options under pages Matrimony, Account, Gallery, Activity, Messages, Search.
+9. If you wish to remove certain default fields or modify them, you can use the 'Static to Dynamic Fields options'. Read FAQ for more information.
 
 == Frequently Asked Questions ==
 
 <strong>Frequently Asked Questions</strong>
-<ul>
-<li><strong>Q:</strong>Does the plugin support Network Site installation? <br />
-<strong>A:</strong>Yes, you can choose for your self in which network site this has to be enabled and restrict other from seeing them.
-</li><li><strong>Q:</strong>Do I need separate user registration?
-<br />
-<strong>A:</strong>No, Usual Wordpress registration will be enough. Please read http://wp.me/p2HHtz-86 for more info. 
-</li><li><strong>Q:</strong>Is this theme compatible?
-<br />
-<strong>A:</strong>Yes, The plugin is not theme dependable so you can use any theme.
-</li><li><strong>Q:</strong>How do I approve the matrimonial users
-<br />
-<strong>A:</strong>All Administrators will be receiving mails on who to approve a users. Another way is to Login to the Wordpress dashboard -> Matrimony -> Admin Dashboard, click on the "Change Role" and update the users roel to "Matrimonial Role"
-</li><li><strong>Q:</strong>Matrimonial pages are not displayed in Menu automatically. 
-<br />
-<strong>A:</strong>Different themes might have different Top level parent menus. To add the pages in menu, Login to the Wordpress dashboard -> Appearance -> Menus -> Create a new Menu and add the pages. </li>
-</ul>
+<ul><li><strong>Q:</strong>Does the plugin support Network Site installation ?<br /><strong>A:</strong>Yes, you can choose for your self in which network site this has to be enabled and restrict other from seeing them.
+</li><li><strong>Q:</strong>Do I need separate user registration ?<br /><strong>A:</strong>No, Usual Wordpress registration will be enough. Please read http://wp.me/p2HHtz-86 for more info. 
+</li><li><strong>Q:</strong>What themes are compatible for the plugin ?<br /><strong>A:</strong>The plugin is not theme dependable. As it follows the standard guidlines it should be pretty much compatible with most of the themes.
+</li><li><strong>Q:</strong>How do I approve the matrimonial users ?<br /><strong>A:</strong>All Administrators will be receiving mails on who to approve a users. Another way is to Login to the Wordpress dashboard -> Matrimony -> Admin Dashboard, click on the "Change Role" and update the users roel to "Matrimonial Role"
+</li><li><strong>Q:</strong>Matrimonial pages are not displayed in Menu automatically ?<br /><strong>A:</strong>Different themes might have different Top level parent menus. To add the pages in menu, Login to the Wordpress dashboard -> Appearance -> Menus -> Create a new Menu and add the pages. 
+</li><li><strong>Q:</strong>What is the "Static to Dynamic Fields" options in settings ?<br /><strong>A:</strong>Many a times, the default fields provided in user profile are not appropriate for all audiences. These static fields can now be converted to dynamic ones for customization purposes. This options was added to support the backward compatibility.
+</li><li><strong>Q:</strong>Can I change the file upload size restrcition ?<br /><strong>A:</strong>File upload size is defaulted to the minimum of these PHP.ini configurations: upload_max_filesize, post_max_size, memory_limit and plugin has no control over these configurations.
+</li><li><strong>Q:</strong>Email notifications are not sent to users ?<br /><strong>A:</strong>Plugin uses the wordpress function wp_mail(). Reason for failure of notifications can be with 1. Wordpress configuration, 2. Hosting provider with blacklisted email domains. 
+</li></ul>
 
 == Screenshots ==
 
@@ -82,23 +76,24 @@ with existing Wordpress setup.</li>
 
 == Upgrade Notice ==
 
-1. Move the static fields to Dynamic fields and configure as needed
-2. Workaround to fix content being displayed twice when used with some incompatible plugins and themes
-3. Added restrcition for test pages - only admins can view
-4. Some XSS attach vulnarability fixes
-5. File upload size defaulted to php.ini
-6. Added QR code base files for future support
-7. Lot of bug fixes
-8. UI optimizations
-9. Remove unwanted logs
-10. Updated the text-domain for the plugin and updated POT files
-11. Added customized email method to track email notification failures
-12. New design for Edit profile and Update profile screens - only if static filed are migrated 
-13. Email notifiation on Role change
-14. removed Deprecated PHP methods
+1. Removed Deprecated PHP methods
+2. Removed Deprecated Wordpress methods
+3. Verified compatibility with latest version
+4. Other bug fixes
 
 
 == Changelog ==
+
+= 0.9.1.1 =
+
+Added Telungana state
+
+= 0.9.1 =
+
+Removed Deprecated PHP methods
+Removed Deprecated Wordpress methods
+Verified compatibility with latest version
+Other bug fixes
 
 = 0.9 =
 

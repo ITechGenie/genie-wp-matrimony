@@ -291,7 +291,7 @@ class GenieWPMatrimonyController {
 	}
 
 	function gwpm_admin_page_profiles() {
-	    if ( $this->$_isDynaMigrated ) {
+	    if ( $this->_isDynaMigrated ) {
 	        include (GWPM_APPLICATION_URL . DS . 'views' . DS . 'gwpm_ctrl_profile_new.php');
 	    } else {
 	        include (GWPM_APPLICATION_URL . DS . 'views' . DS . 'gwpm_ctrl_profile.php');

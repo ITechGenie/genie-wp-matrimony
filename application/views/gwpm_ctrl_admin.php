@@ -8,7 +8,7 @@ if (!function_exists('is_admin')) {
 
 global $wpdb;
 global $matrimonyPostId;
-screen_icon();
+//screen_icon();
 echo "<h2>" . __('Genie WP Matrimony Configuration', 'genie-wp-matrimony') . "</h2>";
 
 if( isset( $_GET[ 'tab' ] ) ) {

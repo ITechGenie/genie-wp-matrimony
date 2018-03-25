@@ -32,7 +32,11 @@ abstract class GwpmCommand {
 		 */
 		if ($dynamicFields != null && is_array($dynamicFields) ) {
 			foreach ($dynamicFields as $key) {
-				$this -> $key = $records[$key] ;
+			    if(isset($records[$key])) {
+				    $this -> $key = $records[$key] ;
+			    } else  {
+			        $this -> $key = null ;
+			    }
 			}
 			$this-> containsDynamicField = true ;
 			$this-> dynamicFields = $dynamicFields ;

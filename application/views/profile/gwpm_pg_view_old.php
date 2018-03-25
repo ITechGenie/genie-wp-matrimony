@@ -212,7 +212,7 @@ if ($modelObj != null) {
 			$totalDynamicFields = $dynaData['gwpm_dynamic_field_count'] ;
 			$dyna_field_item = $dynaData['dyna_field_item'] ;
 			
-			if(sizeof($dyna_field_item) > 0) {
+			if(isset($dyna_field_item) && sizeof($dyna_field_item) > 0) {
 				?>
 				<tr>
 					<td colspan="2">  

@@ -133,7 +133,7 @@ if(!isNull($user_key)) {
 <form method="post" >
 <div style='width: 200px;'>User Key: </div><input type="text" name="user_key" ><br />
 <div style='width: 200px;'>No of users: </div><input type="text" name="noOfUsers" ><br />
-<div style='width: 200px;'>gender: </div><input type="text" name="gender" ><br />
+<div style='width: 200px;'>gender (1-Male or 2-Female): </div><input type="text" name="gender" ><br />
 <input type="submit" value="createUser"><br />
 </form>
 <?php 

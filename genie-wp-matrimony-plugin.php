@@ -4,10 +4,10 @@
 Plugin Name: Genie WP Matrimony
 Plugin URI: http://www.itechgenie.com/myblog/genie-wp-matrimony
 Description: Genie WP Matrimony is Wordpress plugin which help in converting your Wordpress blog into a complete matrimonial website. This plugin uses the information of the default Wordpress users which makes it very easier and faster integration with existing Wordpress setup. 
-Version: 0.9
+Version: 0.9.1.1
 Author: prakashm88
 Author URI: http://www.itechgenie.com
-License: GPLv2
+License: GPLv2 or later
 Text Domain: genie-wp-matrimony
 */
 

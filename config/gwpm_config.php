@@ -32,7 +32,7 @@ define("GWPM_MAX_USER_MESSAGES", 5);
 
 define('GWPM_USER_LOGIN_PREF', 'gwpm_user_login_pref');
 
-define('GWPM_INTERNAL_VERSION', 'gwpm_0.8.5');
+define('GWPM_INTERNAL_VERSION', 'gwpm_0.9.1');
 define ('GWPM_MAX_DYNA_MIGRATE_USER_COUNT' , 50 );
 
 $gwpm_db_version = 0.1;
