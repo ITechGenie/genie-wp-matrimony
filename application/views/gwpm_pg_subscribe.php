@@ -18,7 +18,7 @@ if(current_user_can('matrimony_user')) {
         $subject = "Registration successful"; 
         $msg = "Subscription request made by user : " . GWPM_USER_PREFIX . $uid . ". Change the user role to 'Matrimonial User' to approve. \n"  ;
         $msg .= get_option("siteurl") . '/' .  'wp-admin/user-edit.php?user_id=' . $uid . '#role' ;
-        wp_mail( $to, $subject, $msg, $headers );  
+        gwpmSendEmail( $to, $subject, $msg, $headers );  
 		echo "Your request has been submitted to Moderators. You will be notified once your request is accepted." ;
 		
 	} else {
@@ -30,7 +30,7 @@ if(current_user_can('matrimony_user')) {
 			<div id="subscribeDIV">
 			<form action="" method="post">  
 			<label>Click 'SUBMIT' to request for subscription &nbsp;&nbsp;</label>  
-			<input type="input" name="doSubscribe" value="1" class="gwpm_hidden_fields"  />   
+			<input type="text" name="doSubscribe" value="1" class="gwpm_hidden_fields"  />   
 			<input type="submit" id="submitbtn" name="submitbtn" value="SUBMIT" />  
 			</form> 
 			</div>

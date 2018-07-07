@@ -18,6 +18,9 @@ class GwpmAjaxController {
 			case "dynafield_update":
 				$this->dynafield_update($controlObj) ;
 				break;
+			case "search":
+			    $this->search($controlObj) ;
+			    break;
 			default:
 				echo "Invalid Ajax request." ;
 		}
@@ -36,5 +39,13 @@ class GwpmAjaxController {
 	function dynafield_update($controlObj) {
 		$adminModel = new GwpmAdminModel() ;
 		$adminModel-> updateDynamicField($controlObj["val"]) ;
+	}
+	
+	function search($controlObj) {
+	    $searchModel = new GwpmSearchModel() ;
+	    $resp = $searchModel-> searchUsersAjax($controlObj["val"]) ;
+	    appendLog($resp) ;
+	    header('Content-Type: application/json');
+	    echo json_encode($resp, JSON_PRETTY_PRINT) ;
 	}
 }

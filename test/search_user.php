@@ -1,5 +1,11 @@
 <?php
 
+if (!function_exists('is_admin')) {
+    header('Status: 403 Forbidden');
+    header('HTTP/1.1 403 Forbidden');
+    exit ();
+}
+
 $user_key = $_POST['user_key'] ;
 
 $queryString = "SELECT DISTINCT (wp_usermeta.user_id) FROM wp_usermeta WHERE ( meta_value LIKE '%s' AND ( meta_key = 'first_name' OR meta_key='last_name' ) ) " ;

@@ -7,7 +7,10 @@ if (!function_exists('is_admin')) {
 }
 
 $deletedItems = "" ;
-$formSubmitted = $_POST['formSubmitted'] ;
+$formSubmitted = null ; 
+if (isset($_POST['formSubmitted'] )) {
+    $formSubmitted = $_POST['formSubmitted'] ;
+}
 
 if($formSubmitted != null) {
 
@@ -18,6 +21,7 @@ if($formSubmitted != null) {
 	$earlierCount = $_POST['earlierCount'] ;
 
 	if(isset($gwpmFieldLabels) && $gwpmFieldLabels != null ) {
+	    appendLog( print_r($earlierCount)) ;
 		appendLog( print_r($gwpmFieldLabels, true)) ;
 		appendLog( print_r($gwpmFieldTypes, true)) ;
 		appendLog( print_r($gwpmFieldValue, true)) ;
@@ -31,8 +35,9 @@ $existingRecords = get_option(GWPM_DYNA_FIELD_COUNT);
 if(!isset($existingRecords) || $existingRecords == null || $existingRecords == false)
 $existingRecords = 0;
 
+echo "<h2>" . __( 'Note: Deleting a field will delete all the existing user data and is not recoverable. Excercise caution while deleting fields.', 'genie-wp-matrimony' ) . "</h2>";
+
 ?>
-<br />
 <div id="gwpm_resultBox"
 	class="gwpm_message_box"></div>
 
@@ -46,10 +51,11 @@ var selectBoxCounts = [] ;
 	method="post">
 	<div id="oldDynamicFieldHolder">
 	<?php
-	$totalFields = $existingRecords ;
+	$itrTotalFields = $existingRecords ;
 	$displayText = "" ;
 	$alternateClass = "" ;
-	for(;$totalFields > 0; $totalFields-- ) {
+	//for(;$totalFields > 0; $totalFields-- ) {
+	for ($totalFields =1; $totalFields <= $itrTotalFields ; $totalFields++ ) {
 		$fetched_options = get_option(GWPM_DYNA_KEY_PREFIX . $totalFields) ;
 		if(isset($fetched_options) && $fetched_options != null ) {
 

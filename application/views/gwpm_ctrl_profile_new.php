@@ -54,12 +54,12 @@ try {
 		$modelObj = $profileObj ;
 	}
 } catch(Exception $e) {
-    appendLog($e) ;
-    if(DEVELOPMENT_ENVIRONMENT == true) {
-        echo $e ;
-    } else {
-        echo $e->getMessage();
-    }
+	appendLog($e) ;
+	if(DEVELOPMENT_ENVIRONMENT == true) {
+	    echo $e ;
+	} else {
+	    echo $e->getMessage();
+	}
 }
 
 ?> 
@@ -96,21 +96,23 @@ try {
 						<td valign="top"><input name="last_name" id="last_name"
 							value="<?php echo gwpm_echo ( $modelObj->last_name ); ?>" /><span class="gwpm-mandatory">*</span></td>
 					</tr>
-					<tr class="gwpm_hidden_fields">
-						<td valign="top">Email ID:</td>
-						<td valign="top"><input name="user_email" id="user_email"
-							value="<?php gwpm_echo ( $modelObj->user_email ) ; ?>" /><span class="gwpm-mandatory">*</span></td>
-					</tr>
-					<tr>
-						<td valign="top">Contact No:</td>
-						<td valign="top"><input name="gwpm_contact_no" id="gwpm_contact_no"
-							value="<?php gwpm_echo ( $modelObj->gwpm_contact_no ) ; ?>" maxLength="15" /></td>
-					</tr>
 					<tr>
 						<td valign="top">Gender:</td>
 						<td valign="top">
 							<?php $templateObj->getSelectItem(getGenderOptions(), 'gwpm_gender', ($modelObj->gwpm_gender)) ; 	?><span class="gwpm-mandatory">*</span>
 						</td>
+					</tr>
+					<tr>
+						<td valign="top">Date of Birth:</td>
+						<td valign="top"><input name="gwpm_dob" id="gwpm_dob"
+							class="gwpm-datepicker"
+							value="<?php gwpm_echo ( $modelObj->gwpm_dob ); ?>" maxLength="25" />
+							<span class="gwpm-mandatory">*</span></td>
+					</tr>
+					<tr class="gwpm_hidden_fields">
+						<td valign="top">Email ID:</td>
+						<td valign="top"><input name="user_email" id="user_email"
+							value="<?php gwpm_echo ( $modelObj->user_email ) ; ?>" /><span class="gwpm-mandatory">*</span></td>
 					</tr>
 					<tr>
 						<td valign="top">Address Line 1:</td>
@@ -145,67 +147,9 @@ try {
 					<tr>
 						<td valign="top">About You:</td>
 						<td valign="top">
-							<textarea name="description" id="description" maxLength="200" ><?php gwpm_echo( $modelObj->description ); ?></textarea>
+							<textarea name="description" id="description" maxLength="200" ><?php echo( stripslashes_deep($modelObj->description )); ?></textarea>
 						</td>
 					</tr>
-				</tbody>
-			</table>
-		</div>
-		<h3>
-			<a href="#">Horoscope Information</a>
-		</h3>
-		<div>
-			<table class='gwpm-table'>
-				<tbody>
-					<tr>
-						<td valign="top">Date of Birth:</td>
-						<td valign="top"><input name="gwpm_dob" id="gwpm_dob"
-							class="gwpm-datepicker"
-							value="<?php gwpm_echo ( $modelObj->gwpm_dob ); ?>" maxLength="25" />
-							<span class="gwpm-mandatory">*</span> (DD/MM/YYYY)</td>
-					</tr>
-					<tr>
-						<td valign="top">Marital Status:</td>
-						<td valign="top">
-							<?php $templateObj->getSelectItem(getMaritalOptions(), 'gwpm_martial_status', ($modelObj->gwpm_martial_status)) ; 	?>
-							<span class="gwpm-mandatory">*</span>
-						</td>
-					</tr>
-					<tr>
-						<td valign="top">Star Sign (Nakshatram):</td>
-						<td valign="top">
-							<?php $templateObj->getSelectItem(getStarSignOptions(), 'gwpm_starsign', ($modelObj->gwpm_starsign)) ; 	?>
-							<span class="gwpm-mandatory">*</span>
-						</td>
-					</tr>
-					<tr>
-						<td valign="top">Zodiac Sign (Raasi):</td>
-						<td valign="top">
-							<?php $templateObj->getSelectItem(getZodiacOptions(), 'gwpm_zodiac', ($modelObj->gwpm_zodiac)) ; 	?>
-							<span class="gwpm-mandatory">*</span>
-						</td>
-					</tr>
-					<tr>
-						<td valign="top">Sevvai Dosham:</td>
-						<td valign="top">
-							<?php $templateObj->getSelectItem(getYesNoOptions(), 'gwpm_sevvai_dosham', ($modelObj->gwpm_sevvai_dosham)) ; 	?>
-							<span class="gwpm-mandatory">*</span>
-						</td>
-					</tr>
-					<tr>
-			        	<td valign="top">Caste:</td>
-			       		<td valign="top">
-			       			<input name="gwpm_caste" id="gwpm_caste" value="<?php gwpm_echo ( $modelObj->gwpm_caste ) ; ?>" />
-							<span class="gwpm-mandatory">*</span> 
-						</td>
-			      	</tr>
-		      		<tr>
-			        	<td valign="top">Religion:</td>
-			       		<td valign="top">
-			       			<input name="gwpm_religion" id="gwpm_religion" value="<?php gwpm_echo ( $modelObj->gwpm_religion ) ; ?>" />
-							<span class="gwpm-mandatory">*</span> 
-						</td>
-		      		</tr>
 				</tbody>
 			</table>
 		</div>
@@ -268,7 +212,7 @@ try {
 					<tr>
 						<td valign="top">Height (CMS):</td>
 						<td valign="top"><input name="gwpm_physical[height]" id="gwpm_physical[height]"
-							value="<?php gwpm_echo ( $modelObj->gwpm_physical['height'] ); ?>" maxLength="5" /></td>
+							value="<?php echo stripslashes_deep( $modelObj->gwpm_physical['height'] ); ?>" maxLength="6" /></td>
 					</tr>
 					<tr>
 						<td valign="top">Weight (KGS):</td>
@@ -340,7 +284,7 @@ try {
 					<tr>
 						<td valign="top">Profile Photo:</td>
 						<td valign="top">
-						<input type="file" name="gwpm_profile_photo" id="gwpm_profile_photo" /> <br />
+						<input type="file" name="gwpm_profile_photo" id="gwpm_profile_photo" /> </ br>
 						<span class="gwpm-help" >Image maximum size <b>500</b> kb </span>
 					</tr>
 				</tbody>
@@ -363,6 +307,10 @@ try {
 <script type="text/javascript">
              
 	 jQuery(document).ready(function() {
+		var today = new Date();
+		var year = today.getFullYear() - 18 ;
+		var month = today.getMonth() ;
+		jQuery("#gwpm_dob").datetimepicker({ ampm: true, maxDate: new Date(year, month, 1) });
 		jQuery("select").change(function(obj){
 			if(obj.currentTarget.id == "gwpm_education[qualification]" && obj.currentTarget.value == 7) {
 				jQuery("#gwpm_education_other").removeClass("gwpm_hidden_fields"); 

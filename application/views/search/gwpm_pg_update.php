@@ -12,9 +12,9 @@ $resultCount = sizeof($resultObj);
 				$counter = 1;
 					?> 
 					<tr>
-						<th valign="top">S.No. </th>
-						<th valign="top">Image</th>
-				        <th valign="top">User Id</th>
+						<th valign="top" style="width: 20px;">S.No. </th>
+						<th valign="top" style="min-width: 60px;">Image</th>
+				        <th valign="top" style="width: 20px;">User Id</th>
 				        <th valign="top">Name</th>
 				        <th valign="top">Email Id</th>
 		      		</tr>

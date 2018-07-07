@@ -1,5 +1,11 @@
 <?php
 
+if (!function_exists('is_admin')) {
+    header('Status: 403 Forbidden');
+    header('HTTP/1.1 403 Forbidden');
+    exit ();
+}
+
 $fieldCounts = $_POST['gwpm_dyna_field_count'] ;
 
 // while($fieldCounts-- == 0) {
