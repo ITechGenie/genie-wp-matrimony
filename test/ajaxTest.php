@@ -5,7 +5,7 @@ if (!function_exists('is_admin')) {
     exit ();
 }
 ?>
-form name="gwpm_qsearch_form" id="gwpm_qsearch_form" action="#" ><table><tbody>
+<form name="gwpm_qsearch_form" id="gwpm_qsearch_form" action="#" ><table><tbody>
 	<tr>
 		<td>Gender:<select class="form-control" name="gwpm_gender"
 			id="gwpm_gender"><option value="">Select</option>
