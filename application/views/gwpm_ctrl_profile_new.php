@@ -15,7 +15,7 @@ if (!function_exists('is_admin')) {
 <div class="wrap">
 <?php
 
-screen_icon('options-general'); 
+//screen_icon('options-general'); 
 echo "<h2>" . __( 'Matrimonial Profile', 'genie-wp-matrimony' ) . "</h2>" ;
 try {
 	$profileModel = new GwpmProfileModel() ;

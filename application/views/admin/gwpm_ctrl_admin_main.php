@@ -32,10 +32,10 @@ if (!function_exists('is_admin')) {
 	<tr><td>
 	<?php if(GWPM_ENABLE_DEBUGGING == true) {?>
 	<p><?php _e("Developer mode enabled: ", 'genie-wp-matrimony'); ?></p></td><td>
-		Logger Location: <?php echo  getLogDir(); ?>
+		Logger Location: <?php echo  getLogDir()  . '<br />' . 'Max file upload allowed: '. gwpmGetMaxFileUploadSize(); ?>
 	</td></tr>
 	<?php } ?>
-	<tr><td><p><?php _e("Frequently Asked Questions (FAQs)", 'genie-wp-matrimony'); ?></p></td><td>
+	<!-- <tr><td><p><?php _e("Frequently Asked Questions (FAQs)", 'genie-wp-matrimony'); ?></p></td><td>
 	<ol>
 	<li><?php _e("Register option not found?", 'genie-wp-matrimony'); ?><br /> <a target="_blank" href="<?php echo get_admin_url() . 'options-general.php#users_can_register' ?>"><?php _e("Click here to enable Registration", 'genie-wp-matrimony'); ?></a></li>
 	<li><?php _e("Search result not displaying user picture?", 'genie-wp-matrimony'); ?><br /> <a target="_blank" href="<?php echo get_admin_url() . 'options-discussion.php#show_avatars' ?>"><?php _e("Click here to check Default Avatar Options", 'genie-wp-matrimony'); ?></a></li>
@@ -55,7 +55,7 @@ if (!function_exists('is_admin')) {
 	echo "<br /> "; 
 	_e("Please report back with the incompatible theme/plugin for fixes", 'genie-wp-matrimony'); 
 	?> </li>
-	</ol> </td></tr>
+	</ol> </td></tr>  -->
 	</table>
 	<?php
 		if(isset($urlId)) {

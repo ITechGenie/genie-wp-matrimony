@@ -19,7 +19,7 @@ define('GWPM_USER_ROLE', 'matrimony_user');
 define('GWPM_USER_PREFIX', 'gwpm_');
 define('GWPM_GALLERY_DIR', WP_CONTENT_DIR . URL_S . 'uploads' . URL_S . 'gwpm_gallery');
 define('GWPM_GALLERY_URL', WP_CONTENT_URL . URL_S . 'uploads' . URL_S . 'gwpm_gallery');
-define("GWPM_IMAGE_MAX_SIZE", "2048");  // In KBs
+// define("GWPM_IMAGE_MAX_SIZE", "2048");  // In KBs
 define("GWPM_GALLERY_MAX_IMAGES", "12");
 define("GWPM_CONVERSE_MAX_NOS", "10");
 define("GWPM_ACTIVITY_MAX_NOS", "10");

@@ -171,6 +171,8 @@ class GwpmAdminModel {
 	    
 	    global $wpdb ;
 	    
+	    $resultList = array ();
+	    
 	    echo "<br /><br />Starting Process <br />" ;
 	    $dynaFields = get_option('gwpm_dyna_mig_opts_field') ;
 	    
@@ -205,7 +207,6 @@ class GwpmAdminModel {
 	    $result = $wpdb->get_results($preparedSql) ;
 	    
 	    if (isset ($result) && $result != null && sizeof($result) != 0 ) {
-    	    $resultList = array ();
     	    
     	    $processCount = 0 ;
     	    

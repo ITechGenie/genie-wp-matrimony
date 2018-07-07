@@ -196,16 +196,16 @@ class GwpmSearchModel {
 			
 			if(isset($searchObj->gwpm_education)) {
 				$gwpm_education = $searchObj->gwpm_education ;
-				if ( !isNull($gwpm_education[qualification] )) {
+				if ( isset($gwpm_education['qualification']) && !isNull($gwpm_education['qualification'] )) {
 					$args = array ();
 					$filter = "meta_key = 'gwpm_education' AND meta_value LIKE %s" ;
-					$args[0] = '%s:13:"qualification";s:1:"' . like_escape($gwpm_education[qualification]) . '"%' ;
+					$args[0] = '%s:13:"qualification";s:1:"' . like_escape($gwpm_education['qualification']) . '"%' ;
 					$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
 				}
-				if ( !isNull($gwpm_education[status] )) {
+				if (  isset($gwpm_education['status']) && !isNull($gwpm_education['status'] )) {
 					$args = array ();
 					$filter = "meta_key = 'gwpm_education' AND meta_value LIKE %s" ;
-					$args[0] = '%s:6:"status";s:1:"' . like_escape($gwpm_education[status]) . '"%' ;
+					$args[0] = '%s:6:"status";s:1:"' . like_escape($gwpm_education['status']) . '"%' ;
 					$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
 				}
 			}

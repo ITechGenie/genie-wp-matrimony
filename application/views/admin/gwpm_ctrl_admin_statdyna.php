@@ -20,7 +20,10 @@ if (isset($dynaMigComplete) && $dynaMigComplete != null ) {
     _e("Migration of fields already done !", 'genie-wp-matrimony') ;
     echo "<br /><br />" ;
 } else {
-    $formSubmitted = $_POST['formSubmitted'];
+    $formSubmitted = null ;
+    if (isset($_POST['formSubmitted'] )) {
+        $formSubmitted = $_POST['formSubmitted'] ;
+    }
 ?>
 
 <form name="gwpm_form" method="post"
@@ -30,8 +33,16 @@ if (isset($dynaMigComplete) && $dynaMigComplete != null ) {
 <?php
 if (isset($formSubmitted) && $formSubmitted != null) {
     
-    $createFields  = $_POST['createFields'];
-    $migrateFields = $_POST['migrateFields'];
+    $createFields = null ;
+    $migrateFields = null ;
+    
+    if (isset($_POST['createFields'] )) {
+        $createFields= $_POST['createFields'] ;
+    }
+    
+    if (isset($_POST['migrateFields'] )) {
+        $migrateFields= $_POST['migrateFields'] ;
+    }
     
     if (isset($createFields) && $createFields != null) {
         

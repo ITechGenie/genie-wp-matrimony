@@ -7,7 +7,7 @@ Description: Genie WP Matrimony is Wordpress plugin which help in converting you
 Version: 0.9
 Author: prakashm88
 Author URI: http://www.itechgenie.com
-License: GPLv2
+License: GPLv2 or later
 Text Domain: genie-wp-matrimony
 */
 
@@ -97,7 +97,7 @@ if (class_exists('GwpmRestController') && !$genieWPRestController) {
 }
 
 if (class_exists('GenieWPMatrimonyController') && !$genieWPMatrimonyController) {
-    $genieWPMatrimonyController = new GenieWPMatrimonyController();
+	$genieWPMatrimonyController = new GenieWPMatrimonyController();
 }
 
 if(class_exists('GwpmActivityModel') && !$gwpm_activity_model) {

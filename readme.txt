@@ -1,7 +1,7 @@
 === Genie WP Matrimony ===
 
 Contributors: prakashm88
-Donate link: http://www.itechgenie.com/
+Donate link: https://itechgenie.com/myblog/genie-wp-matrimony/
 Tags: matrimony, India matrimony, marriage, brides, grooms, matrimonial, dating
 Requires at least: 4.7
 Tested up to: 4.7.4
