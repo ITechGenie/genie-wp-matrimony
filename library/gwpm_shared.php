@@ -278,7 +278,7 @@ function getStateOptions($id = 'all') {
 		'Lakshadweep',
 		'National Capital Territory of Delhi',
 		'Puducherry',
-	    'Telungana',
+	    'Telangana',
 
 
 	);

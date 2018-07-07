@@ -86,7 +86,7 @@ with existing Wordpress setup.</li>
 
 = 0.9.1.1 =
 
-Added Telungana state
+Added Telangana state
 
 = 0.9.1 =
 
