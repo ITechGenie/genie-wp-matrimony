@@ -22,6 +22,7 @@ wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 php wp-cli.phar --info
 chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
+chmod +x ./install-wp-tests.sh
 echo "================================="
 echo "Downloading tools completed, not run the following command to install test scripts"
 echo "./install-wp-tests.sh gwpmdb gwpmuser gwpmpass localhost latest true"
