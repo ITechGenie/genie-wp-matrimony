@@ -23,5 +23,6 @@ php wp-cli.phar --info
 chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 echo "================================="
-echo "Downloading tools completed !"
+echo "Downloading tools completed, not run the following command to install test scripts"
+echo "./install-wp-tests.sh gwpmdb gwpmuser gwpmpass localhost latest true"
 echo "================================="
