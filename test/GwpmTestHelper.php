@@ -1,6 +1,11 @@
 <?php
 class GwpmTestHelper {
 
+	function setupMatrimony() {
+		$init_request[GWPM_USER_LOGIN_PREF] = '1' ;
+		$gwpm_setup_model->setupGWPMDetails($init_request) ;
+	}
+
 	function createUsers($user_key, $noOfUsers, $gender) {
 	
 		$mymodel = new GwpmProfileModel() ;
