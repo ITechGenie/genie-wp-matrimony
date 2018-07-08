@@ -52,7 +52,7 @@ class GwpmTestHelper {
 				$_POST[$__keys] = "" . rand ( 1 , 3) ; 
 			}
 		
-			$abt = createDateRangeArray( '1980-10-01', '1985-10-05') ;
+			$abt = $this->createDateRangeArray( '1980-10-01', '1985-10-05') ;
 			$newdata =  $abt[0] ;
 			echo $newdata . "<br />";
 		
