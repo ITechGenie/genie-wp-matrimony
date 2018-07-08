@@ -16,7 +16,7 @@ abstract class GwpmCommand {
 	/*
 	 * Constructor for the command object
 	 */
-	function GwpmCommand($records, $dynamicFields = null, $dynamicFieldsValidation = null) {
+	function __construct($records, $dynamicFields = null, $dynamicFieldsValidation = null) {
 		/*
 		 * Fetch values from $_POST or $_GET and set in value object
 		 */
@@ -32,7 +32,11 @@ abstract class GwpmCommand {
 		 */
 		if ($dynamicFields != null && is_array($dynamicFields) ) {
 			foreach ($dynamicFields as $key) {
-				$this -> $key = $records[$key] ;
+			    if(isset($records[$key])) {
+				    $this -> $key = $records[$key] ;
+			    } else  {
+			        $this -> $key = null ;
+			    }
 			}
 			$this-> containsDynamicField = true ;
 			$this-> dynamicFields = $dynamicFields ;
@@ -40,7 +44,7 @@ abstract class GwpmCommand {
 		} else {
 			$this-> containsDynamicField = false;
 		}
-		print_r ($this-> containsDynamicField) ;	
+		//print_r ($this-> containsDynamicField) ;	
 	}
 
 	/**
@@ -60,7 +64,7 @@ abstract class GwpmCommand {
 				}
 			}
 		}
-		print_r($this->containsDynamicField) ;
+		//print_r($this->containsDynamicField) ;
 		if($this->containsDynamicField) {
 			foreach ($this->dynamicFields as $key) {
 				$value = $this-> $key;

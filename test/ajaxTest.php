@@ -1,3 +1,10 @@
+<?php 
+if (!function_exists('is_admin')) {
+    header('Status: 403 Forbidden');
+    header('HTTP/1.1 403 Forbidden');
+    exit ();
+}
+?>
 <form name="gwpm_qsearch_form" id="gwpm_qsearch_form" action="#" ><table><tbody>
 	<tr>
 		<td>Gender:<select class="form-control" name="gwpm_gender"
@@ -42,7 +49,7 @@
 
 function fetchResults() {
 	var req_data = jQuery("#gwpm_qsearch_form").serialize();
-	var mtData = getAjaxRequestorObj ("open_search", req_data) ;	
+	var mtData = getAjaxRequestorObj ("search", req_data) ;	
 	
 	jQuery.post(MyAjax.ajaxurl, mtData, function(response) {
 		// var resObj = jQuery.parseJSON( response ) ;

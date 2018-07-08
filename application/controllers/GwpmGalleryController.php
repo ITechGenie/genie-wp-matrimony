@@ -2,6 +2,7 @@
 class GwpmGalleryController extends GwpmMainController {
 
 	function view() {
+	    $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
 		if(isset($_GET['pid'])) $pid = $_GET['pid'] ;
 		else $pid = null ;
 		$this->set('model', $this->_model->getGalleryImages($pid));
@@ -12,7 +13,7 @@ class GwpmGalleryController extends GwpmMainController {
 	}
 	
 	function update() {
-		
+	     $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 		 $user = wp_get_current_user();
 		 $galleryObj = new GwpmGalleryVO() ;
 		 $galleryObj->gwpm_gallery_img = $this->rearrange($_FILES['gwpm_gallery_img']) ;

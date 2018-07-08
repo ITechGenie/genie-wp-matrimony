@@ -1,2 +1,6 @@
 .project
-/.vs
+/.settings/
+/.project
+/.vs/*
+/.vs/slnx.sqlite
+/.vs/genie-wp-matrimony/v15/.suo

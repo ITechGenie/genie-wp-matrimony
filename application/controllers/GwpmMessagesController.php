@@ -10,6 +10,7 @@
  	
  	function view() {
 		$f = 0;
+		$_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
 		if(isset($_GET['f']) && !isNull($_GET['f'])) {
 			$f = intval($_GET['f']);
 		}
@@ -18,6 +19,7 @@
 	}
 
 	function update() {
+	    $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
 		$user = wp_get_current_user();
 		$userId = $user->ID ;	
 		$itrId = $_GET['pid'] ;

@@ -43,32 +43,26 @@ class GwpmProfileVO extends GwpmCommand {
 
 	var $gwpm_contact_no;
 	/** 
-	 * @mandatory
-	 * @message="Invalid value for Martial Status" 
+	 * @message="Invalid value for Marital Status" 
 	 */
 	var $gwpm_martial_status;
 	/** 
-	 * @mandatory
 	 * @message="Invalid value for Zodiac Sign (Rassi)" 
 	 */
 	var $gwpm_zodiac;
 	/** 
-	 * @mandatory
 	 * @message="Invalid value for Star Sign (Nakshatram)" 
 	 */
 	var $gwpm_starsign;
 	/** 
-	 * @mandatory
 	 * @message="Invalid value for Sevvai Dosham" 
 	 */
 	var $gwpm_sevvai_dosham ;
 	/** 
-	 * @mandatory
 	 * @message="Invalid value for Caste" 
 	 */
 	var $gwpm_caste;
 	/** 
-	 * @mandatory
 	 * @message="Invalid value for Religion" 
 	 */
 	var $gwpm_religion;

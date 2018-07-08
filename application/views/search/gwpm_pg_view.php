@@ -4,15 +4,15 @@
 $this->set('action', 'edit') ;
 $modelObj = $this->get('model');
 ?>
-<form name="gwpm-profile-form" action="<?php $this->getActionURL(); ?>"
+<form name="gwpm-profile-form" id="gwpm-profile-form" action="<?php $this->getActionURL(); ?>"
 	method="post" >
 <table class='gwpm-table'>
 		<tbody>
 			<tr>
 		        <td valign="top">Search Filter:</td>
 		        <td valign="top">
-		        	<span style="text-align: left;"><input type="radio" name="search_filter_option" value="1" style="width: 5px;" checked="checked"> &nbsp; <?php _e('Use "AND" criteria (Match all filters)', 'genie_wp_matrimony'); ?><br />
-		        	<input type="radio" name="search_filter_option" value="2" style="width: 5px;"> &nbsp; <?php _e('Use "OR" criteria (Match any filter)', 'genie_wp_matrimony'); ?></span>
+		        	<span style="text-align: left;"><input type="radio" name="search_filter_option" value="1" style="width: 5px;" checked="checked"> &nbsp; <?php _e('Use "AND" criteria (Match all filters)', 'genie-wp-matrimony'); ?><br />
+		        	<input type="radio" name="search_filter_option" value="2" style="width: 5px;"> &nbsp; <?php _e('Use "OR" criteria (Match any filter)', 'genie-wp-matrimony'); ?></span>
 		        </td>
       		</tr>
 			<tr>
@@ -120,7 +120,8 @@ $modelObj = $this->get('model');
 		<tbody>
 			<tr>
 				<td><input type="submit" value="Search" class="gwpm-button"
-					name="search"></td>
+					name="search"><!-- <input type="button" value="Create JSON" class="gwpm-button"
+					name="createJson" id="createJson"> --></td>
 				<td><input type="reset" value="Clear"
 					 class="gwpm-button"
 					name="cancel"></td>
@@ -149,6 +150,12 @@ jQuery(document).ready(function() {
 //	    jQuery( "#gwpm_age" ).val( "18 to 60 Yrs" );
 //	    jQuery( "#gwpm_age_from" ).val("18") ;
 //	    jQuery( "#gwpm_age_to" ).val("60") ;
+
+		jQuery("#createJson").click(function(){
+			var data = JSON.stringify( jQuery("#gwpm-profile-form").serializeArray() );
+			console.log( data );
+		});
+
 });
 
 </script>

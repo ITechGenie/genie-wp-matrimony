@@ -216,9 +216,23 @@ class GwpmSetupModel {
 		$msg = "Thanks for registering with " . get_option('blogname') . ". \n\nIf you wish to convert your account to " .
         		"matrimonial account click the following link and make a request.\n\n"  ;
 		$msg .= "Request for Matrimonial account: " . get_option("siteurl") . '/?page_id=' . $this->getMatrimonialId() . '&page=subscribe' ;
-		$msg .= "\n\nRegards\n\nAdmin." ;
-		wp_mail( $email, $subject, $msg, $headers );
+		$msg .= "\n\nRegards,\nAdmin." ;
+		gwpmSendEmail ($email, $subject, $msg, $headers ) ; 
 		$gwpm_activity_model->addActivityLog("register", "Joined " . get_option('blogname'), $user_id) ;
+	}
+	
+	function sendRoleChangeMail($user_id, $role) {
+	    global $wpdb;
+	    global $gwpm_activity_model ;
+	    $email = $wpdb->get_var($wpdb->prepare("select user_email from $wpdb->users where ID = '%d'", $user_id));
+	    $from = get_option('admin_email');
+	    $headers = 'From: '.$from . "\r\n";
+	    $subject = "User Role Changed";
+	    $msg = "Hello, \n\nYour Role at " . get_option('blogname') . " is changed to " . $role ;
+	    $msg .= "\nYou can now access all Matrimonial pages" ;
+	    $msg .= "\n\nRegards,\nAdmin." ;
+	    gwpmSendEmail ($email, $subject, $msg, $headers ) ;
+	    $gwpm_activity_model->addActivityLog("role_change", "Role changed to ". $role , $user_id) ;
 	}
 
 	function getMatrimonialId(){

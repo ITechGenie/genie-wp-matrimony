@@ -10,24 +10,89 @@
 class GwpmSearchModel {
 
 	function getUserById($userId) {
+	    appendLog('Searching user ' . $userId ) ;
 		$userObj = get_userdata($userId);
-		$is_open_search = get_option( GWPM_USER_LOGIN_PREF );
-		if (!isset($is_open_search))
-			$is_open_search = 1 ; 
-		if (isset ($userObj) && isset ($userObj->ID) && !user_can($userObj->ID, 'level_10') && ( $is_open_search != 1 || user_can($userObj->ID, 'matrimony_user'))) {
+		appendLog($userObj) ;
+		if (isset ($userObj) && isset ($userObj->ID) ) {
 			return $userObj;
 		}
 		return null;
 	}
 	
+	// Assuming the controllers take care of the authentications, planning to remove this part of code
+	function ___getUserById($userId) {
+	    $userObj = get_userdata($userId);
+	    $is_open_search = get_option( GWPM_USER_LOGIN_PREF );
+	    if (!isset($is_open_search))
+	        $is_open_search = 1 ;
+	        if (isset ($userObj) && isset ($userObj->ID) && !user_can($userObj->ID, 'level_10') && ( $is_open_search != 1 || user_can($userObj->ID, 'matrimony_user'))) {
+	            return $userObj;
+	        }
+	        return null;
+	}
+	
 	function getDynamicFieldData() {
 		return getDynamicFieldData() ; ;
+	}
+	
+	function searchUsersAjax($searchObj) {
+	    $inputs = explode('&', $searchObj);
+	    appendLog($inputs) ;
+	    $keys = array_values($inputs)  ;
+	    foreach ($keys as $vkey) {
+	        appendLog($vkey) ;
+	        $obj = explode('=', $vkey); 
+	        appendLog($obj) ;
+	        $searchInput[$obj[0]] = $obj[1] ;
+	    }
+	    appendLog('final object: ') ;
+	    $o = new GwpmSearchVO($searchInput);
+	    $o->search_filter_option = 2 ;
+	    appendLog($searchInput->gwpm_gender . ' - ' . $o->gwpm_gender) ;
+	    $responseObj =  $this->searchFactMtd ($o) ;
+	    return $responseObj;
+	}
+	
+	function searchUsersRest ($searchInput) {
+	    
+	    $_keys = getDynamicFieldKeys() ;
+	    $o = new GwpmSearchVO($searchInput, $_keys);
+	    $responseObj =  $this->searchFactMtd ($o) ; 
+	    return $responseObj;
+	    
+	}
+	
+	function searchFactMtd($searchObj) { 
+	    $responseObj = array () ;
+	    try {
+	        appendLog($searchObj) ;
+	        $result = $this->searchUsers ($searchObj) ;
+	        appendLog('Response obtained: ') ; appendLog($result) ;
+	        $resArray = array_values($result) ;
+	        appendLog($resArray) ;
+	        foreach ($resArray as $vkey) {
+	            appendLog('Vley object ini array ') ; appendLog($vkey) ;
+	            $inObj = $vkey->data ;
+	            unset($inObj->user_pass);
+	            unset($inObj->user_activation_key);
+	            $profileImgName = get_user_meta($inObj->ID, "gwpm_profile_photo", true);
+	            $inObj->gwpm_profile_photo =  (object)  array() ;
+	            if (isset( $profileImgName ) && '' != $profileImgName)
+	                $inObj->gwpm_profile_photo = $profileImgName ;
+	            array_push($responseObj, $inObj);
+	        }
+	    } catch (Exception $e) {
+	        appendLog($e ) ;
+	    }
+	    return $responseObj;
 	}
 
 	function searchUsers($searchObj) {
 		global $wpdb;
 		$resultList = array ();
+		appendLog($searchObj) ;
 		if (!isNull($searchObj->userId)) {
+		    appendLog('Search based on user_id ') ;
 			$tempObj = $this->getUserById(getStrippedUserId($searchObj->userId));
 			if (isset ($tempObj) && $tempObj != null)
 				array_push($resultList, $tempObj);
@@ -36,6 +101,9 @@ class GwpmSearchModel {
 			$args = array ();
 			$userLists = null ;
 			$searchFilterOption = $searchObj->search_filter_option ;
+			
+			if ( !isset($searchFilterOption) )
+			    $searchFilterOption = 1 ;
 			
 			if (!isNull($searchObj->username)) {
 				$args = array ();
@@ -128,16 +196,16 @@ class GwpmSearchModel {
 			
 			if(isset($searchObj->gwpm_education)) {
 				$gwpm_education = $searchObj->gwpm_education ;
-				if ( !isNull($gwpm_education[qualification] )) {
+				if ( isset($gwpm_education['qualification']) && !isNull($gwpm_education['qualification'] )) {
 					$args = array ();
 					$filter = "meta_key = 'gwpm_education' AND meta_value LIKE %s" ;
-					$args[0] = '%s:13:"qualification";s:1:"' . like_escape($gwpm_education[qualification]) . '"%' ;
+					$args[0] = '%s:13:"qualification";s:1:"' . like_escape($gwpm_education['qualification']) . '"%' ;
 					$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
 				}
-				if ( !isNull($gwpm_education[status] )) {
+				if (  isset($gwpm_education['status']) && !isNull($gwpm_education['status'] )) {
 					$args = array ();
 					$filter = "meta_key = 'gwpm_education' AND meta_value LIKE %s" ;
-					$args[0] = '%s:6:"status";s:1:"' . like_escape($gwpm_education[status]) . '"%' ;
+					$args[0] = '%s:6:"status";s:1:"' . like_escape($gwpm_education['status']) . '"%' ;
 					$userLists = $this->getUserIds($searchFilterOption, $filter, $args, $userLists, $wpdb) ;
 				}
 			}

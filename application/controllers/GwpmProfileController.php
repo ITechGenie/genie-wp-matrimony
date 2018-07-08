@@ -2,6 +2,7 @@
 class GwpmProfileController extends GwpmMainController {
 
 	function view() {
+	    $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
 		if(isset($_GET['pid'])) $pid = $_GET['pid'] ;
 		else $pid = null ;
 		$this->set('model', $this->_model->getUserObj($pid));
@@ -14,6 +15,7 @@ class GwpmProfileController extends GwpmMainController {
 	function update() {
 		
 		$_keys = getDynamicFieldKeys() ;
+		$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 		$profileObj = new GwpmProfileVO($_POST, $_keys);
 		$profileObj->gwpm_profile_photo = $_FILES["gwpm_profile_photo"] ;
 		$validateObj = $profileObj->validate();
