@@ -5,6 +5,8 @@
  * @package Genie_Wp_Matrimony
  */
 
+ require __DIR__ . "/../test/GwpmTestHelper.php";
+
 /**
  * Gwpm User Create Testing.
  */
