@@ -1,36 +1,34 @@
 <?php
 /**
- * Class GwpmUserCreate
+ * Class GwpmUserCreateTest
  *
  * @package Genie_Wp_Matrimony
  */
 
- require __DIR__ . "/../test/GwpmTestHelper.php";
-
 /**
  * Gwpm User Create Testing.
  */
-class GwpmUserCreate extends WP_UnitTestCase {
+class GwpmUserCreateTest extends WP_UnitTestCase {
 
-	function test_plugin_activation() {    
+	/* function test_plugin_activation() {    
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-		$result = activate_plugin( WP_CONTENT_DIR . '/plugins/genie-wp-matrimony/genie-wp-matrimony-plugin.php', '', TRUE, FALSE );
+        $result = activate_plugin('../genie-wp-matrimony-plugin.php', '', TRUE, FALSE );
 		$this->assertNotWPError( $result );
-	}
+	} */
 
 	/**
 	 * create bulk users
+	 * @TODO Write asserts to Validate user creation
 	 */
 	function test_create_users() {
-		// Replace this with some actual testing code.
-		echo "Create Users Test " ;
+		echo "Create Users Test " . PHP_EOL ;
 
 		$testHelper = new GwpmTestHelper() ;
 
 		$testHelper->setupMatrimony() ;
 
-		$testHelper->createUsers('GWPM-MALE', '10', '1') ;
-		$testHelper->createUsers('PRAK-FEMALE', '10', '2') ;
+		$testHelper->createUsers('GWPM-MALE', 1, '1') ;
+		$testHelper->createUsers('PRAK-FEMALE', 1, '2') ;
 
 		$this->assertTrue( true );
 	}

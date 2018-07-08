@@ -2,11 +2,144 @@
 class GwpmTestHelper {
 
 	function setupMatrimony() {
+	    $gwpm_setup_model = new GwpmSetupModel() ;
 		$init_request[GWPM_USER_LOGIN_PREF] = '1' ;
 		$gwpm_setup_model->setupGWPMDetails($init_request) ;
 	}
+	
+	function migrateToDynaFields() {
+	    
+	    echo 'Starting Migration ' . PHP_EOL ;
+	    
+	    $totalFields = get_option(GWPM_DYNA_FIELD_COUNT);
+	    
+	    if ($totalFields == false)
+            $totalFields = 0;
+        
+        $totalFields++ ;
+        
+        $migObjects = [] ;
+        
+        $migrationKeys = [] ;
+        
+        // Mobile
+        $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_contact_no'] = $nextKey;
+        $migObject = [];
+        
+        $migObject['gwpm_dyna_field_label'] = 'Contact No';
+        $migObject['gwpm_dyna_field_type'] = 'text';
+        
+        $migObjects[$nextKey] = $migObject;
+        
+        // Caste
+        $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_caste'] = $nextKey; 
+        $migObject = [];
+        
+        $migObject['gwpm_dyna_field_label'] = 'Caste';
+        $migObject['gwpm_dyna_field_type'] = 'text';
+        
+        $migObjects[$nextKey] = $migObject;
+        
+        // Religion
+        $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_religion'] = $nextKey; 
+        $migObject = [];
+        
+        $migObject['gwpm_dyna_field_label'] = 'Religion';
+        $migObject['gwpm_dyna_field_type'] = 'text';
+        
+        $migObjects[$nextKey] = $migObject;
+        
+        // Sevai Dosham
+        $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_sevvai_dosham'] = $nextKey; 
+        $migObject = [];
+        
+        $migObject['gwpm_dyna_field_label'] = 'Sevai Dosham';
+        $migObject['gwpm_dyna_field_type'] = 'yes_no';
+        
+        $migObjects[$nextKey] = $migObject;
+        
+        // Marital Status
+        $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_martial_status'] = $nextKey; 
+        $migObject = [];
+        
+        $migObject['gwpm_dyna_field_label'] = 'Marital Status';
+        $migObject['gwpm_dyna_field_type'] = 'select';
+        $migObject['gwpm_dyna_field_values'] = getMaritalOptions() ;
+        
+        $migObjects[$nextKey] = $migObject;
+        
+        // Star Sign (Nakshatram)
+        $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_starsign'] = $nextKey; 
+        $migObject = [];
+        
+        $migObject['gwpm_dyna_field_label'] = 'Star Sign';
+        $migObject['gwpm_dyna_field_type'] = 'select';
+        $migObject['gwpm_dyna_field_values'] = getStarSignOptions() ;
+        
+        $migObjects[$nextKey] = $migObject;
+        
+        // Zodiac Sign (Raasi)
+        $nextKey = GWPM_DYNA_KEY_PREFIX . ($totalFields ++);
+        $migrationKeys['gwpm_zodiac'] = $nextKey; 
+        $migObject = [];
+        
+        $migObject['gwpm_dyna_field_label'] = 'Zodiac Sign';
+        $migObject['gwpm_dyna_field_type'] = 'select';
+        $migObject['gwpm_dyna_field_values'] = getZodiacOptions() ;
+        
+        $migObjects[$nextKey] = $migObject;
+        
+        foreach($migObjects as $key => $value) {
+            
+            appendLog("Process object: " . $key) ;
+            appendLog( print_r($value, true)) ;
+            
+            $dynaMigOpts[$key] = $value['gwpm_dyna_field_label'] ;
+            
+            $result = update_option ($key, $value) ;
+            appendLog("Done " . $key . ' - ' . $result ) ;
+            
+            echo ("Done " . $key . ' - ' . $result . PHP_EOL ) ;
+            
+        }
+        
+        echo "Completed, updateing options: " . PHP_EOL  ;
+        
+        update_option (GWPM_DYNA_FIELD_COUNT, ($totalFields-1)) ;
+        update_option(GWPM_DYNA_FIELD_MIG_OPTS, $migrationKeys);
+        
+        echo "Created new fields for migration <br /><br />" . PHP_EOL  ;
+        
+        print_r($migrationKeys) ;
+	    
+	    echo '==================================' . PHP_EOL  ;
+	    
+	    return $migrationKeys ;
+	   
+	}
+	
+	function migrateUsersToDynaField() {
+	    echo 'Triggering user migration ! '. PHP_EOL  ;
+	    
+	    $adminModel = new GwpmAdminModel() ;
+        $dynaNewFields = $adminModel->migrateToDynamicFieldData() ;
+        print_r($dynaNewFields) ;
+        appendLog("New dyna field: " . PHP_EOL  ) ;
+        echo ("New dyna field: " . PHP_EOL  ) ;
+        appendLog( $dynaNewFields) ;
+        echo "Done " . PHP_EOL ;
+        return $dynaNewFields ;
+	}
 
 	function createUsers($user_key, $noOfUsers, $gender) {
+	    
+	    echo 'Logger location: ' . getLogDir() ;
 	
 		$mymodel = new GwpmProfileModel() ;
 	
@@ -59,26 +192,30 @@ class GwpmTestHelper {
 		
 			$abt = $this->createDateRangeArray( '1980-10-01', '1985-10-05') ;
 			$newdata =  $abt[0] ;
-			echo $newdata . "<br />";
+			echo $newdata . "<br />" ;
 		
 			$_POST['gwpm_dob'] = $newdata;
 		
 		//	$profileObj = new GwpmProfileVO($_POST);
 			$profileObj = new GwpmProfileVO($_POST, $dynaKeys);
-		
-			$profileObj->gwpm_profile_photo = $_FILES["gwpm_profile_photo"] ;
+			
+			if (isset($_FILES["gwpm_profile_photo"]))		
+			     $profileObj->gwpm_profile_photo = $_FILES["gwpm_profile_photo"] ;
+			     
 			$validateObj = $profileObj->validate();		
 		
 			if (sizeof($validateObj) == 0) {
 				$mymodel->updateUser($profileObj);
 				echo __('success_message', 'Profile updated successfully!!' , 'genie-wp-matrimony');
-				echo ('<br />') ;
+				echo ('<br />' . PHP_EOL) ;
 			} else {
 				echo __('Please correct the below fields: ' , 'genie-wp-matrimony');
 				print_r($validateObj) ;
-				echo "<br />" ;
+				echo "<br />" . PHP_EOL ;
 			}
 		}
+		
+		appendLog('User creation completed, setting capabilities, count: ' . sizeof($userIdList) ) ;
 	
 		if(sizeof($userIdList) > 0) {
 		
@@ -88,18 +225,25 @@ class GwpmTestHelper {
 			$column_name = $wpdb->prefix . 'user_level' ;
 			$column_name_2 = $wpdb->prefix . "capabilities";
 		
-			echo $table_name . '-' . $column_name  . ' - ' . implode(',', $userIdList);
+			appendLog( $table_name . '-' . $column_name  . ' - ' . implode(',', $userIdList) );
 			foreach($userIdList as $_userId) {
-				$queryString = "update $table_name set meta_value = 1 WHERE meta_key = '$column_name' AND user_id = %s " ;
-				echo '<br />' . $queryString ;
-				$preparedSql = $wpdb->query($wpdb->prepare($queryString, $_userId));
-				$result = $wpdb->get_results($preparedSql);	
-				print_r($result) ;	
-				$queryString = "UPDATE $table_name SET meta_value = 'a:1:{s:14:\"matrimony_user\";b:1;}' WHERE meta_key = '$column_name_2' AND user_id = (%s)" ;
-				echo '<br />' .$queryString ;
-				$preparedSql = $wpdb->query($wpdb->prepare($queryString, $_userId));
-				$result = $wpdb->get_results($preparedSql);	
-				print_r($result) ;
+			    appendLog('Updating User cabability a nd user level: ' . $_userId ) ;
+			    
+                update_user_meta($_userId, $column_name,  1 );
+                update_user_meta($_userId, $column_name_2,  'a:1:{s:14:\"matrimony_user\";b:1;}' );
+                
+                echo  nl2br('Done for ' .  $_userId . ' !! \n \n <br/>'  . PHP_EOL )  ;
+			    
+				/* $queryString = "update $table_name set meta_value = 1 WHERE meta_key = '$column_name' AND user_id = %d " ;
+				echo  nl2br($queryString . '\n \n <br/>' )  ;
+				$result = $wpdb->query($wpdb->prepare($queryString, array($_userId)  ));
+				//$result = $wpdb->get_results($preparedSql);	
+				appendLog($result) ;	
+				$queryString = "UPDATE $table_name SET meta_value =  WHERE meta_key = '$column_name_2' AND user_id = (%s)" ;
+				echo nl2br( $queryString . '\n \n <br/>' )  ;
+				$result = $wpdb->query($wpdb->prepare($queryString, $_userId));
+				//$result = $wpdb->get_results($preparedSql);	
+				appendLog($result) ;  */
 			}
 		}
 	}
